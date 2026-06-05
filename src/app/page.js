@@ -1,6 +1,10 @@
 "use client";
 
 import Image from "next/image";
+import BentoCard from "../components/BentoCard";
+import BentoGrid from "../components/BentoGrid";
+import ScrollVelocity from "../components/ScrollVelocity";
+import ShinyText from "../components/ShinyText";
 import { useHomepageScripts } from "../hooks/useHomepageScripts";
 
 const HERO_LETTERS = ["T", "A", "B", "A", "N", "I"];
@@ -43,6 +47,25 @@ const NAV_CARDS = [
   },
 ];
 
+const HELLO_ALL_MARQUEE = [
+  "hallo semua",
+  "Halo Semua",
+  "Hello Everyone",
+  "Hola a todos",
+  "Bonjour a tous",
+  "Ciao a tutti",
+  "Hallo allemaal",
+  "Hallo zusammen",
+  "Ola a todos",
+  "Hej allihopa",
+  "Hei kaikki",
+  "Merhaba herkese",
+  "Salam semua",
+  "Namaste sabko",
+  "Konnichiwa minna",
+  "Annyeong everyone",
+];
+
 export default function Home() {
   useHomepageScripts();
 
@@ -53,7 +76,18 @@ export default function Home() {
         <h1 className="hero-title" aria-label="TABANI">
           <span className="hero-title-track" aria-hidden="true">
             {HERO_LETTERS.map((letter, index) => (
-              <span key={`${letter}-${index}`}>{letter}</span>
+              <ShinyText
+                key={`${letter}-${index}`}
+                className="hero-title-letter"
+                text={letter}
+                speed={2.5}
+                delay={0.5}
+                color="var(--color-red)"
+                shineColor="#ff0000"
+                spread={120}
+                direction="left"
+                yoyo={false}
+              />
             ))}
           </span>
         </h1>
@@ -67,45 +101,40 @@ export default function Home() {
         />
       </header>
 
-      {/* Section 2: Greeting */}
-      <section className="greeting-section" aria-labelledby="greeting-heading">
-        <h2 id="greeting-heading" className="greeting-title">
-          Halo Semua
-        </h2>
-      </section>
-
       {/* Section 3: Intro split */}
       <section className="intro-section" aria-label="Perkenalan">
-        <div className="intro-bio">
-          <p className="bio-text">
-            Gua Tabani, seorang Junior Programmer yang hobi ngulik ekosistem
-            Laravel. Fokus gua adalah ngebangun aplikasi web yang nggak cuma
-            jalan, tapi juga aman dan punya fitur real-time yang responsif. Dari
-            magang di Rubicweb sampai bikin marketplace otomotif, gua selalu
-            percaya kalau kode yang bersih adalah kunci aplikasi yang hebat
-          </p>
-        </div>
-        <div className="intro-card-name" aria-label="card name">
-          <span>card name</span>
-        </div>
+        <ScrollVelocity
+          className="intro-marquee intro-marquee-top"
+          texts={[HELLO_ALL_MARQUEE.join(" • ")]}
+          velocity={60}
+          numCopies={8}
+          parallaxClassName="intro-marquee intro-marquee-top"
+          scrollerClassName="intro-marquee-scroller"
+        />
+        <div className="intro-void" aria-hidden="true" />
+        <ScrollVelocity
+          className="intro-marquee intro-marquee-bottom"
+          texts={[HELLO_ALL_MARQUEE.join(" • ")]}
+          velocity={-60}
+          numCopies={8}
+          parallaxClassName="intro-marquee intro-marquee-bottom"
+          scrollerClassName="intro-marquee-scroller"
+        />
       </section>
 
       {/* Section 4: Bento card grid */}
       <section className="card-grid-section" aria-label="Navigasi portfolio">
-        <nav className="card-grid" aria-label="Menu utama">
+        <BentoGrid as="nav" className="card-grid" aria-label="Menu utama">
           {NAV_CARDS.map((card) => (
-            <a
+            <BentoCard
               key={card.href}
-              className={card.className}
               href={card.href}
-              {...(card.placeholder
-                ? { "data-placeholder": card.placeholder }
-                : {})}
-            >
-              <span className="card-label">{card.label}</span>
-            </a>
+              className={card.className}
+              placeholder={card.placeholder}
+              label={card.label}
+            />
           ))}
-        </nav>
+        </BentoGrid>
       </section>
 
       {/* Section 5: Project band */}

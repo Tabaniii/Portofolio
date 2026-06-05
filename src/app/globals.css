@@ -140,17 +140,34 @@ button {
   }
 }
 
-.hero-title-track span {
+.hero-title-letter {
+  position: relative;
   display: block;
   font-size: 1300px;
   font-family: inherit;
   font-weight: inherit;
   line-height: inherit;
-  color: transparent;
-  -webkit-text-stroke: 5px var(--color-hero-outline);
-  text-stroke: 5px var(--color-hero-outline);
-  -webkit-text-stroke-color:var(--color-red);
   text-transform: uppercase;
+}
+
+.hero-title-letter-base,
+.hero-title-letter-overlay {
+  display: block;
+  font-size: inherit;
+  font-family: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+  text-transform: uppercase;
+}
+
+.hero-title-letter-base {
+  color: transparent;
+  -webkit-text-stroke: 5px var(--color-red);
+  text-stroke: 5px var(--color-red);
+}
+
+.hero-title-letter-overlay {
+  text-shadow: none;
 }
 
 .hero-image {
@@ -164,31 +181,60 @@ button {
   display: block;
 }
 
-/* --- Section 2: Greeting --- */
-.greeting-section {
-  width: 100%;
-  min-height: 120px;
-  background: var(--color-black);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.greeting-title {
-  margin: 0;
-  font-size: clamp(44px, 9vw, 72px);
-  font-weight: 900;
-  line-height: 1;
-  text-align: center;
-  color: var(--color-red);
-}
-
 /* --- Section 3: Intro split (100vh — konten diskalakan proporsional) --- */
 .intro-section {
   width: 100%;
   display: grid;
-  grid-template-columns: 1.35fr 1fr;
+  grid-template-rows: auto 1fr auto;
   height: 100vh;
+  min-height: 0;
+  background: var(--color-black);
+}
+
+.intro-marquee {
+  width: 100%;
+  height: clamp(56px, 13vh, 180px);
+  display: flex;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.intro-marquee-top {
+  justify-content: flex-start;
+}
+
+.intro-marquee-bottom {
+  justify-content: flex-end;
+}
+
+.intro-marquee-text {
+  font-size: clamp(72px, 14vw, 240px);
+  font-weight: 900;
+  line-height: 0.86;
+  text-transform: uppercase;
+  color: var(--color-red);
+}
+
+.intro-marquee-scroller {
+  display: flex;
+  white-space: nowrap;
+}
+
+.intro-marquee-scroller span {
+  flex-shrink: 0;
+}
+
+.intro-void {
+  width: 100%;
+  min-height: 0;
+}
+
+.intro-split {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
   min-height: 0;
 }
 
@@ -200,6 +246,13 @@ button {
   height: 100%;
   min-height: 0;
   padding: clamp(16px, 3vh, 40px) clamp(12px, 2.5vw, 28px);
+}
+
+.intro-bio-reveal {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .bio-text {
@@ -231,17 +284,37 @@ button {
   font-weight: 900;
   line-height: 1;
   text-align: center;
+  padding: clamp(14px, 3vh, 24px);
 }
 
-.intro-card-name span {
+.intro-card-tilt {
+  width: min(100%, 360px);
+  height: min(76vh, 360px);
+}
+
+.intro-card-frame {
+  width: 100%;
+  height: 100%;
+  border: 4px dashed var(--color-red);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-black);
+}
+
+.intro-card-frame span {
   padding: 0 12px;
+}
+
+.intro-card-glare {
+  opacity: 0.9;
 }
 
 /* --- Section 4: Orange bento grid (100vh — baris mengikuti proporsi asli) --- */
 .card-grid-section {
   width: 100%;
   height: 100vh;
-  background: var(--color-black);
+  background: var(--color-orange);
   padding: clamp(14px, 2vh, 24px);
   box-sizing: border-box;
   display: flex;
@@ -262,7 +335,7 @@ button {
 
 .grid-card {
   background: var(--color-white);
-  color: var(--color-red);
+  color: var(--color-black);
   border-radius: 5px;
   display: flex;
   align-items: center;
@@ -288,6 +361,7 @@ button {
   line-height: 1;
   text-align: center;
   padding: 0 clamp(6px, 1vw, 12px);
+  color: var(--color-black);
 }
 
 /* Irregular grid placement — locked layout */
@@ -361,7 +435,7 @@ button {
 
 /* --- Responsive: small screens (tinggi section tetap 100vh) --- */
 @media (max-width: 480px) {
-  .intro-section {
+  .intro-split {
     grid-template-columns: 1.35fr 1fr;
   }
 
@@ -374,7 +448,7 @@ button {
     padding: clamp(16px, 5vh, 48px) clamp(14px, 3vw, 28px);
   }
 
-  .hero-title-track span {
+  .hero-title-letter-base {
     -webkit-text-stroke-width: 5px;
     text-stroke-width: 5px;
   }
