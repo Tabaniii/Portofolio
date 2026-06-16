@@ -5,6 +5,7 @@ import BentoCard from "../components/BentoCard";
 import BentoGrid from "../components/BentoGrid";
 import ScrollVelocity from "../components/ScrollVelocity";
 import ShinyText from "../components/ShinyText";
+import TiltedCard from "../components/TiltedCard";
 import { useHomepageScripts } from "../hooks/useHomepageScripts";
 
 const HERO_LETTERS = ["T", "A", "B", "A", "N", "I"];
@@ -48,22 +49,29 @@ const NAV_CARDS = [
 ];
 
 const HELLO_ALL_MARQUEE = [
-  "hallo semua",
-  "Halo Semua",
-  "Hello Everyone",
-  "Hola a todos",
-  "Bonjour a tous",
+  "Halo semua",
+  "Hello everyone",
+  "¡Hola a todos!",
+  "안녕하세요",
+  "Bonjour à tous",
   "Ciao a tutti",
   "Hallo allemaal",
   "Hallo zusammen",
-  "Ola a todos",
-  "Hej allihopa",
-  "Hei kaikki",
+  "Olá a todos",
+  "Hej allihopa!",
+  "Hei kaikki!",
   "Merhaba herkese",
-  "Salam semua",
-  "Namaste sabko",
-  "Konnichiwa minna",
-  "Annyeong everyone",
+  "السلام عليكم للجميع",
+  "नमस्ते सबको",
+  "こんにちは",
+];
+
+const HELLO_ALL_MARQUEE_TEXT = `${HELLO_ALL_MARQUEE.join(" • ")} •`;
+
+const INTRO_PARAGRAPHS = [
+  "gua tabani, seorang junior programmer yang hobi ngulik ekosistem Laravel dan ngebangun alur kerja web yang rapi.",
+  "fokus gua ada di aplikasi yang nggak cuma jalan, tapi juga aman, responsif, dan enak dipakai buat kebutuhan real-time.",
+  "dari magang di Rubicweb sampai ngerjain marketplace otomotif, gua selalu percaya kalau kode yang bersih adalah pondasi produk yang hebat.",
 ];
 
 export default function Home() {
@@ -104,17 +112,62 @@ export default function Home() {
       {/* Section 3: Intro split */}
       <section className="intro-section" aria-label="Perkenalan">
         <ScrollVelocity
-          className="intro-marquee intro-marquee-top"
-          texts={[HELLO_ALL_MARQUEE.join(" • ")]}
+          className="intro-marquee-text"
+          texts={[HELLO_ALL_MARQUEE_TEXT]}
           velocity={60}
           numCopies={8}
           parallaxClassName="intro-marquee intro-marquee-top"
           scrollerClassName="intro-marquee-scroller"
         />
-        <div className="intro-void" aria-hidden="true" />
+        
+        <div className="intro-split">
+          <div className="intro-card-name" aria-label="card name">
+            <div className="w-full max-w-[420px]">
+              <TiltedCard
+                imageSrc="/assets/img/homepage.jpg"
+                altText="Foto Tabani"
+                captionText="Tabani"
+                containerHeight="420px"
+                containerWidth="100%"
+                imageHeight="420px"
+                imageWidth="100%"
+                rotateAmplitude={10}
+                scaleOnHover={1.03}
+                showMobileWarning={false}
+                showTooltip
+                displayOverlayContent
+                overlayContent={
+                  <div className="flex h-full w-full items-end justify-start rounded-[15px] bg-gradient-to-t from-black/85 via-black/20 to-transparent p-5">
+                    <div className="flex flex-col gap-1 text-left">
+                      <p className="m-0 text-[clamp(26px,3vw,40px)] font-black leading-none text-white">
+                        tabani
+                      </p>
+                      <p className="m-0 text-[11px] font-extrabold uppercase tracking-[0.2em] text-[#780606]">
+                        junior programmer
+                      </p>
+                    </div>
+                  </div>
+                }
+              />
+            </div>
+          </div>
+
+          <div className="intro-bio">
+            <div className="intro-bio-copy">
+              <p className="intro-bio-eyebrow">perkenalan</p>
+              <h2 className="intro-bio-title">gua tabani</h2>
+              {INTRO_PARAGRAPHS.map((paragraph) => (
+                <p key={paragraph} className="bio-text">
+                  {paragraph}
+                </p>
+              ))}
+            </div>
+          </div>
+        </div>
+
         <ScrollVelocity
-          className="intro-marquee intro-marquee-bottom"
-          texts={[HELLO_ALL_MARQUEE.join(" • ")]}
+          className="intro-marquee-text"
+          texts={[HELLO_ALL_MARQUEE_TEXT]}
           velocity={-60}
           numCopies={8}
           parallaxClassName="intro-marquee intro-marquee-bottom"
