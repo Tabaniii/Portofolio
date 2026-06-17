@@ -7,7 +7,6 @@ import {
   useMotionValue,
   useTransform,
 } from "framer-motion";
-import "./ShinyText.css";
 
 export default function ShinyText({
   text,
@@ -107,7 +106,7 @@ export default function ShinyText({
 
   return (
     <span
-      className={`shiny-text relative inline-block ${className}`.trim()}
+      className={`relative inline-block ${className}`.trim()}
     >
       <span aria-hidden="true" style={baseStyle}>
         {resolvedText}

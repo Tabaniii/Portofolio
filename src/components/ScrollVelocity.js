@@ -10,7 +10,6 @@ import {
   useVelocity,
 } from "framer-motion";
 import { useLayoutEffect, useRef, useState } from "react";
-import "./ScrollVelocity.css";
 
 function useElementWidth(ref) {
   const [width, setWidth] = useState(0);
@@ -39,8 +38,8 @@ export const ScrollVelocity = ({
   stiffness = 400,
   numCopies = 6,
   velocityMapping = { input: [0, 1000], output: [0, 5] },
-  parallaxClassName = "parallax",
-  scrollerClassName = "scroller",
+  parallaxClassName = "relative overflow-hidden",
+  scrollerClassName = "flex whitespace-nowrap",
   parallaxStyle,
   scrollerStyle,
 }) => {
@@ -106,7 +105,7 @@ export const ScrollVelocity = ({
     const spans = [];
     for (let i = 0; i < numCopies; i++) {
       spans.push(
-        <span className={className} key={i} ref={i === 0 ? copyRef : null}>
+        <span className={`${className} shrink-0`.trim()} key={i} ref={i === 0 ? copyRef : null}>
           {children}&nbsp;
         </span>,
       );
