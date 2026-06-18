@@ -1,13 +1,13 @@
 "use client";
 
+import { BentoGrid, BentoCard } from "../components/BentoGrid";
 import Image from "next/image";
-import BentoCard from "../components/BentoCard";
-import BentoGrid from "../components/BentoGrid";
 import ScrollVelocity from "../components/ScrollVelocity";
 import ScrollReveal from "../components/ScrollReveal";
 import ShinyText from "../components/ShinyText";
 import TiltedCard from "../components/TiltedCard";
 import { useHomepageScripts } from "../hooks/useHomepageScripts";
+import { LayersIcon, DashboardIcon, BlendingModeIcon, ReaderIcon, FrameIcon, FileTextIcon } from "@radix-ui/react-icons";
 
 const HERO_LETTERS = ["T", "A", "B", "A", "N", "I"];
 
@@ -127,6 +127,30 @@ export default function Home() {
 
         {/* Grid Layout Tengah - Dibagi rata 2 kolom (Kiri Gambar, Kanan Teks) */}
         <div className="w-full grid grid-cols-2 gap-8 px-16 items-center max-[768px]:grid-cols-1 max-[768px]:px-6 flex-1">
+          {/* SEBELAH KANAN: Teks Perkenalan */}
+          <div className="flex items-center justify-start text-left">
+            <div className="w-full max-w-[580px] flex flex-col gap-4">
+              <p className="m-0 text-[clamp(12px,1.1vw,16px)] font-black leading-none tracking-[0.18em] uppercase text-brand-red">
+                perkenalan
+              </p>
+
+              <ScrollReveal as="h2" className="m-0 text-[clamp(36px,4.5vw,64px)] font-black leading-[0.95] lowercase text-white">
+                gua tabani
+              </ScrollReveal>
+
+              <div className="flex flex-col gap-3 mt-2">
+                {INTRO_PARAGRAPHS.map((paragraph) => (
+                  <ScrollReveal
+                    key={paragraph}
+                    as="p"
+                    className="w-full m-0 text-[clamp(14px,1.8vh,19px)] font-medium leading-[1.5] tracking-[0.02em] text-zinc-300"
+                  >
+                    {paragraph}
+                  </ScrollReveal>
+                ))}
+              </div>
+            </div>
+          </div>
 
           {/* SEBELAH KIRI: TiltedCard */}
           <div className="text-brand-red flex items-center justify-center">
@@ -159,32 +183,6 @@ export default function Home() {
               />
             </div>
           </div>
-
-          {/* SEBELAH KANAN: Teks Perkenalan */}
-          <div className="flex items-center justify-start text-left">
-            <div className="w-full max-w-[580px] flex flex-col gap-4">
-              <p className="m-0 text-[clamp(12px,1.1vw,16px)] font-black leading-none tracking-[0.18em] uppercase text-brand-red">
-                perkenalan
-              </p>
-
-              <ScrollReveal as="h2" className="m-0 text-[clamp(36px,4.5vw,64px)] font-black leading-[0.95] lowercase text-white">
-                gua tabani
-              </ScrollReveal>
-
-              <div className="flex flex-col gap-3 mt-2">
-                {INTRO_PARAGRAPHS.map((paragraph) => (
-                  <ScrollReveal
-                    key={paragraph}
-                    as="p"
-                    className="w-full m-0 text-[clamp(14px,1.8vh,19px)] font-medium leading-[1.5] tracking-[0.02em] text-zinc-300"
-                  >
-                    {paragraph}
-                  </ScrollReveal>
-                ))}
-              </div>
-            </div>
-          </div>
-
         </div>
 
         {/* Marquee Bawah - Menempel di ujung bawah section */}
@@ -200,20 +198,79 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Section 4: Bento card grid */}
-      <section className="w-full h-screen bg-brand-orange p-[clamp(14px,2vh,24px)] box-border flex flex-col min-h-0" aria-label="Navigasi portfolio">
-        <BentoGrid as="nav" className="flex-1 w-full min-h-0 grid grid-cols-3 grid-rows-[1fr_1.237fr_1fr] gap-[clamp(12px,1.8vh,22px)_clamp(14px,2vw,22px)]" aria-label="Menu utama">
-          {NAV_CARDS.map((card) => (
-            <BentoCard
-              key={card.href}
-              href={card.href}
-              className={card.className}
-              placeholder={card.placeholder}
-              label={card.label}
-            />
-          ))}
+      {/* Section 4: Bento card grid (Pola Zigzag Asli) */}
+      <section className="w-full min-h-screen bg-black text-white p-10 flex flex-col items-center justify-center py-20" aria-label="Navigasi portfolio">
+        <BentoGrid className="max-w-5xl mx-auto w-full auto-rows-[16rem]">
+
+          {/* BARIS 1 */}
+          {/* Kartu 1: Stack (Lebar 2 kolom) */}
+          <BentoCard
+            name="Stack"
+            className="col-span-2"
+            Icon={LayersIcon}
+            description="Teknologi dan alat yang gua pakai buat ngebangun struktur di balik antarmuka digital."
+            href="#stack"
+            cta="Cek Stack"
+            background={<div className="absolute inset-0 bg-zinc-900/40" />}
+          />
+          {/* Kartu 2: Projek (Lebar 1 kolom) */}
+          <BentoCard
+            name="Projek"
+            className="col-span-1"
+            Icon={DashboardIcon}
+            description="Kumpulan karya dan eksperimen."
+            href="#projek"
+            cta="Lihat Projek"
+            background={<div className="absolute inset-0 bg-brand-red/10" />}
+          />
+
+          {/* BARIS 2 */}
+          {/* Kartu 3: Filosofi (Lebar 1 kolom) */}
+          <BentoCard
+            name="Filosofi"
+            className="col-span-1"
+            Icon={BlendingModeIcon}
+            description="Prinsip desain dan cara gua mengeksekusi ide."
+            href="#filosofi"
+            cta="Baca Filosofi"
+            background={<div className="absolute inset-0 bg-brand-red/10" />}
+          />
+          {/* Kartu 4: Pendidikan (Lebar 2 kolom) */}
+          <BentoCard
+            name="Pendidikan"
+            className="col-span-2"
+            Icon={ReaderIcon}
+            description="Latar belakang akademis dan proses belajar gua yang terus berkembang."
+            href="#pendidikan"
+            cta="Riwayat Pendidikan"
+            background={<div className="absolute inset-0 bg-zinc-900/40" />}
+          />
+
+          {/* BARIS 3 */}
+          {/* Kartu 5: DKV Side (Lebar 2 kolom) */}
+          <BentoCard
+            name="Sisi DKV"
+            className="col-span-2"
+            Icon={FrameIcon}
+            description="Eksplorasi visual, tipografi, dan komposisi yang jadi ruang bermain estetika gua."
+            href="#dkv-side"
+            cta="Lihat Desain"
+            background={<div className="absolute inset-0 bg-zinc-900/40" />}
+          />
+          {/* Kartu 6: DW CV (Lebar 1 kolom) */}
+          <BentoCard
+            name="DW CV"
+            className="col-span-1"
+            Icon={FileTextIcon}
+            description="Dokumen resume profesional."
+            href="#cv"
+            cta="Unduh CV"
+            background={<div className="absolute inset-0 bg-brand-red/10" />}
+          />
+
         </BentoGrid>
       </section>
+
 
       {/* Section 5: Project band */}
       <section
