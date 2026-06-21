@@ -25,7 +25,7 @@
 /* TabaniDisplay — local font file, not from Google Fonts */
 @font-face {
   font-family: "TabaniDisplay";
-  src: url("/assets/fonts/Talldark/Talldark.ttf") format("truetype");
+  src: url("/assets/fonts/Talldark/talldark.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
   font-display: swap;
