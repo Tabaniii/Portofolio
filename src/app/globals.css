@@ -13,10 +13,19 @@
   --breakpoint-tablet: 901px;
 }
 
+/* Carattere — script font for Footer giant text */
+@font-face {
+  font-family: "Carattere";
+  src: url("/assets/fonts/Carattere/Carattere-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* TabaniDisplay — local font file, not from Google Fonts */
 @font-face {
   font-family: "TabaniDisplay";
-  src: url("/assets/fonts/talldark.ttf") format("truetype");
+  src: url("/assets/fonts/Talldark/Talldark.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
   font-display: swap;
