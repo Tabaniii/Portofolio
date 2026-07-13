@@ -19,7 +19,7 @@ export default function ShinyText({
   yoyo = false,
   direction = "left",
   disabled = false,
-  strokeWidth = 5,
+  strokeWidth = 8,
   children,
 }) {
   const resolvedText = text ?? (typeof children === "string" ? children : "");
@@ -32,8 +32,7 @@ export default function ShinyText({
     directionRef.current = direction === "left" ? 1 : -1;
     elapsedRef.current = 0;
     progress.set(0);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [direction]);
+  }, [direction, progress]);
 
   const animationDuration = speed * 1000;
   const delayDuration = delay * 1000;

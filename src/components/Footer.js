@@ -5,7 +5,7 @@ import BorderGlow from "./BorderGlow";
 export default function Footer() {
   return (
     <footer
-      className="relative w-full min-h-[70vh] bg-black text-white overflow-hidden"
+      className="relative w-full h-screen bg-black text-white overflow-hidden snap-start"
       id="contact"
       aria-label="Footer"
     >

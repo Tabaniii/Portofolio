@@ -9,7 +9,7 @@ const inter = Inter({
 
 export const metadata = {
   title: "TABANI — Portfolio",
-  description: "Portfolio Tabani — Junior Programmer Laravel",
+  description: "Portfolio Tabani — full-stack web developer",
 };
 
 export default function RootLayout({ children }) {

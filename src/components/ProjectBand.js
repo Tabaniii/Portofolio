@@ -4,7 +4,7 @@ export default function ProjectBand() {
   return (
     <section
       id="projek"
-      className="w-full min-h-screen bg-black text-brand-red flex items-center justify-center"
+      className="w-full h-screen bg-black text-brand-red flex items-center justify-center snap-start"
       aria-labelledby="project-heading"
     >
       <h2 id="project-heading" className="m-0 text-[clamp(42px,7vh,72px)] font-black leading-none text-center">

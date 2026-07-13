@@ -8,7 +8,7 @@ This version has breaking changes — APIs, conventions, and file structure may 
 You must cross-reference all code generation with the rules defined in `design.md`. The project visual style is a "raw personal portfolio layout" with bold block compositions, high-contrast tokens, and heavy typography. 
 
 ### 1. Code-to-Visual Constraints
-- **Zero Layout Drift:** Never restructure the component tree or section reordering. The layout must strictly follow the Section 1 to Section 6 hierarchy in Next.js App Router component mapping.
+- **Zero Layout Drift:** Never restructure the component tree or section reordering. The layout must strictly follow this approved Section hierarchy in Next.js App Router component mapping: (1) Hero, (2) ProjectBand [Selected Projects], (3) About, (4) BentoSection [Workflow & Stack], (5) Footer [Contact].
 - **Tailwind / Global CSS Mapping:** Do not substitute color variables or inject generic Tailwind classes that dilute the raw high-contrast color palette (e.g., `#e66060` for Bio Red, `#ff8d28` for Orange).
 - **Typography Preservation:** Keep typography weights extra bold and massive as defined. The text `TABANI` on the Hero section must remain absolute uppercase, transparent fill, with text-stroke outline overlaying the background image.
 

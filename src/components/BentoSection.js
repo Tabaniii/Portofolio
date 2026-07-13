@@ -5,7 +5,7 @@ import { LayersIcon, DashboardIcon, BlendingModeIcon, ReaderIcon, FrameIcon, Fil
 
 export default function BentoSection() {
   return (
-    <section className="w-full min-h-screen bg-black text-white p-10 flex flex-col items-center justify-center py-20" aria-label="Navigasi portfolio">
+    <section className="w-full h-screen bg-black text-white p-10 flex flex-col items-center justify-center overflow-hidden snap-start" aria-label="Navigasi portfolio">
       <BentoGrid className="max-w-5xl mx-auto w-full auto-rows-[16rem]">
         {/* BARIS 1 */}
         {/* Kartu 1: Stack (Lebar 2 kolom) */}

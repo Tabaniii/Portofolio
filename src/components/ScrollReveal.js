@@ -8,6 +8,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 const ScrollReveal = ({
   children,
+  scrollContainerRef,
   className = '',
   as: Tag = 'div',
 }) => {
@@ -27,6 +28,7 @@ const ScrollReveal = ({
           ease: "power2.out",
           scrollTrigger: {
             trigger: el,
+            scroller: scrollContainerRef?.current || undefined,
             start: "top 90%",
             toggleActions: "play none none none",
           }
@@ -43,7 +45,7 @@ const ScrollReveal = ({
       ctx.revert();
       clearTimeout(timer);
     };
-  }, []);
+  }, [scrollContainerRef]);
 
   return (
     <Tag ref={ref} className={className}>
