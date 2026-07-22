@@ -142,6 +142,7 @@ function ProjectCard({ project }) {
   );
 }
 
+// Test commit for Vercel deployment
 export default function ProjectBand() {
   return (
     <section
