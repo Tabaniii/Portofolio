@@ -14,7 +14,7 @@ const PROJECTS = [
       deployment: ["Vercel"],
     },
     href: "https://ride62.vercel.app/",
-    cover: "/assets/img/fixcover.jpeg",
+    cover: "/assets/img/darkmodefix.png",
     status: "live",
   },
   {
@@ -41,7 +41,7 @@ function ProjectCard({ project }) {
     return (
       <article className="relative flex min-h-[500px] flex-col border border-zinc-800 bg-black opacity-60 cursor-not-allowed">
         {/* Lock Icon Placeholder */}
-        <div className="relative aspect-[4/3] w-full shrink-0 overflow-hidden border-b border-zinc-800 flex items-center justify-center bg-zinc-950">
+        <div className="relative aspect-[16/9] w-full shrink-0 overflow-hidden border-b border-zinc-800 flex items-center justify-center bg-zinc-950">
           <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-zinc-700">
             <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
             <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
@@ -82,7 +82,7 @@ function ProjectCard({ project }) {
   return (
     <article className="relative flex min-h-[500px] flex-col border border-zinc-800 bg-black">
       {/* Cover Image */}
-      <div className="relative aspect-[4/3] w-full shrink-0 overflow-hidden border-b border-zinc-800">
+      <div className="relative aspect-[16/9] w-full shrink-0 overflow-hidden border-b border-zinc-800">
         <Image
           src={project.cover}
           alt={`${project.title} cover`}
