@@ -3,6 +3,19 @@
 import BorderGlow from "./BorderGlow";
 
 export default function Footer() {
+  const socialLinks = [
+    { label: "Instagram", href: "https://www.instagram.com/_tabaniii" },
+    { label: "LinkedIn", href: "https://www.linkedin.com/in/akmal-tabani" },
+    { label: "GitHub", href: "https://github.com/Tabaniii" },
+    { label: "WhatsApp", href: "https://wa.me/85559536429" },
+  ];
+
+  const footerLinks = [
+    { label: "Email", href: "mailto:tabani@email.com" },
+    { label: "Projects", href: "#projek" },
+    { label: "CV", href: "#cv" },
+  ];
+
   return (
     <footer
       className="relative w-full h-screen bg-black text-white overflow-hidden snap-start"
@@ -17,7 +30,10 @@ export default function Footer() {
             Let's <br />
             <span
               className="inline-block mt-[20px] -mb-[20px] font-normal text-brand-red text-[2.0em]"
-              style={{ fontFamily: "Carattere, cursive" }}>Collaborate.</span>
+              style={{ fontFamily: "Carattere, cursive" }}
+            >
+              Collaborate.
+            </span>
           </h2>
           <p className="m-0 text-[15px] lg:text-[16px] font-medium leading-[1.5] text-zinc-300 max-w-sm">
             Mau ngobrol tentang proyek, kolaborasi, atau sekadar kerendahan hati? Drop email ke gua lewat tautan di bawah.
@@ -31,7 +47,7 @@ export default function Footer() {
             glowIntensity={1.2}
             coneSpread={25}
             animated={true}
-            colors={['#780606', '#8e3b3b', '#ff8d28']}
+            colors={["#780606", "#8e3b3b", "#ff8d28"]}
             className="w-fit group transition-all duration-300 hover:!bg-brand-red"
           >
             <a
@@ -48,57 +64,39 @@ export default function Footer() {
           {/* Socials Column */}
           <nav aria-label="Social links">
             <ul className="flex flex-col gap-3 m-0 p-0 list-none">
-              <li className="m-0">
-                <a
-                  href="https://instagram.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-[12px] font-medium uppercase tracking-[0.1em] text-zinc-300 no-underline transition-colors duration-300 hover:text-brand-red focus-visible:outline-none"
-                >
-                  Instagram
-                </a>
-              </li>
-              <li className="m-0">
-                <a
-                  href="https://linkedin.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-[12px] font-medium uppercase tracking-[0.1em] text-zinc-300 no-underline transition-colors duration-300 hover:text-brand-red focus-visible:outline-none"
-                >
-                  LinkedIn
-                </a>
-              </li>
-              <li className="m-0">
-                <a
-                  href="https://github.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-[12px] font-medium uppercase tracking-[0.1em] text-zinc-300 no-underline transition-colors duration-300 hover:text-brand-red focus-visible:outline-none"
-                >
-                  GitHub
-                </a>
-              </li>
+              {socialLinks.map((link) => (
+                <li key={link.label} className="m-0">
+                  <a
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[12px] font-medium uppercase tracking-[0.1em] text-zinc-300 no-underline transition-colors duration-300 hover:text-brand-red focus-visible:outline-none"
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              ))}
             </ul>
           </nav>
 
-          {/* Internal Column */}
-          <nav aria-label="Internal links">
+          {/* Contact Column */}
+          <nav aria-label="Contact details">
             <ul className="flex flex-col gap-3 m-0 p-0 list-none">
-              <li className="m-0">
-                <a
-                  href="#projek"
-                  className="text-[12px] font-medium uppercase tracking-[0.1em] text-zinc-300 no-underline transition-colors duration-300 hover:text-brand-red focus-visible:outline-none"
-                >
-                  Projects
-                </a>
-              </li>
-              <li className="m-0">
-                <a
-                  href="#cv"
-                  className="text-[12px] font-medium uppercase tracking-[0.1em] text-zinc-300 no-underline transition-colors duration-300 hover:text-brand-red focus-visible:outline-none"
-                >
-                  CV
-                </a>
+              {footerLinks.map((link) => (
+                <li key={link.label} className="m-0">
+                  <a
+                    href={link.href}
+                    className="text-[12px] font-medium uppercase tracking-[0.1em] text-zinc-300 no-underline transition-colors duration-300 hover:text-brand-red focus-visible:outline-none"
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+              <li className="m-0 pt-1">
+                <span 
+                  className="block text-[15px] font-medium uppercase tracking-[0.1em] text-brand-red">
+                  Open for freelance
+                </span>
               </li>
             </ul>
           </nav>

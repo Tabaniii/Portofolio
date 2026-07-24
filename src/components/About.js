@@ -25,14 +25,14 @@ const HELLO_ALL_MARQUEE = [
 const HELLO_ALL_MARQUEE_TEXT = `${HELLO_ALL_MARQUEE.join(" • ")} •`;
 
 const INTRO_PARAGRAPHS = [
-  "gua Tabani, seorang full-stack web developer yang hobi ngulik ekosistem Laravel dan ngebangun alur kerja web yang rapi.",
-  "fokus gua ada di aplikasi yang nggak cuma jalan, tapi juga aman, responsif, dan enak dipakai buat kebutuhan real-time.",
-  "dari magang di Rubicweb sampai ngerjain marketplace otomotif, gua selalu percaya kalau kode yang bersih adalah pondasi produk yang hebat.",
+  "i'm Tabani, a full-stack web developer who loves exploring the Laravel ecosystem and building clean web workflows.",
+  "my focus is on apps that don't just work, but also feel secure, responsive, and smooth for real-time needs.",
+  "from my internship at Rubicweb to building an automotive marketplace, i've always believed clean code is the foundation of a great product.",
 ];
 
 export default function About({ scrollContainerRef }) {
   return (
-    <section className="w-full h-screen bg-black flex flex-col justify-between overflow-hidden snap-start" aria-label="Perkenalan">
+    <section className="w-full h-screen bg-black flex flex-col justify-between overflow-hidden snap-start" aria-label="Introduction">
       {/* Marquee Atas - Menempel di ujung atas section */}
       <div className="w-full pt-2">
         <ScrollVelocity
@@ -52,11 +52,11 @@ export default function About({ scrollContainerRef }) {
         <div className="flex items-center justify-start text-left">
           <div className="w-full max-w-[580px] flex flex-col gap-4">
             <p className="m-0 text-[clamp(12px,1.1vw,16px)] font-black leading-none tracking-[0.18em] uppercase text-brand-red">
-              perkenalan
+              introduction
             </p>
 
             <ScrollReveal scrollContainerRef={scrollContainerRef} as="h2" className="m-0 text-[clamp(36px,4.5vw,64px)] font-black leading-[0.95] lowercase text-white">
-              gua tabani
+              i'm tabani
             </ScrollReveal>
 
             <div className="flex flex-col gap-3 mt-2">
@@ -79,7 +79,7 @@ export default function About({ scrollContainerRef }) {
           <div className="w-full max-w-[400px] aspect-square">
             <TiltedCard
               imageSrc="/assets/img/homepage.jpg"
-              altText="Foto Tabani"
+              altText="Tabani portrait"
               captionText="Tabani"
               containerHeight="100%"
               containerWidth="100%"
@@ -96,7 +96,7 @@ export default function About({ scrollContainerRef }) {
                     <p className="m-0 text-[clamp(26px,3vw,40px)] font-black leading-none text-white">
                       Tabani
                     </p>
-                    <p className="m-0 text-[11px] font-extrabold uppercase tracking-[0.2em] text-[#780606]">
+                    <p className="m-0 text-[11px] font-extrabold uppercase tracking-[0.2em] text-white">
                       full-stack web developer
                     </p>
                   </div>
