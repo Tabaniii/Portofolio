@@ -23,61 +23,105 @@ const BentoCard = ({
   description,
   href,
   cta,
+  eyebrow,
+  note,
+  cardHref,
+  cardTarget,
+  cardRel,
+  cardDownload,
   ...props
-}) => (
-  <div
-    key={name}
-    className={cn(
-      "group relative col-span-3 flex flex-col justify-between overflow-hidden rounded-xl",
-      // light styles
-      "bg-white [box-shadow:0_0_0_1px_rgba(0,0,0,.03),0_2px_4px_rgba(0,0,0,.05),0_12px_24px_rgba(0,0,0,.05)]",
-      // dark styles
-      "dark:bg-black transform-gpu dark:[box-shadow:0_-20px_80px_-20px_#ffffff1f_inset] dark:[border:1px_solid_rgba(255,255,255,.1)]",
-      className
-    )}
-    {...props}
-  >
-    <div>{background}</div>
-    <div className="p-4">
-      <div className="pointer-events-none z-10 flex transform-gpu flex-col gap-1 transition-all duration-300 lg:group-hover:-translate-y-10">
-        <Icon className="h-12 w-12 origin-left transform-gpu text-neutral-700 transition-all duration-300 ease-in-out group-hover:scale-75 dark:text-neutral-300" />
-        <h3 className="text-xl font-semibold text-neutral-700 dark:text-neutral-300">
-          {name}
-        </h3>
-        <p className="max-w-lg text-neutral-400">{description}</p>
-      </div>
+}) => {
+  const interactiveProps = cardHref
+    ? {
+        role: "link",
+        tabIndex: 0,
+        onClick: () => {
+          if (cardTarget === "_blank") {
+            window.open(cardHref, cardTarget, "noopener,noreferrer");
+            return;
+          }
 
-      <div
-        className={cn(
-          "pointer-events-none flex w-full translate-y-0 transform-gpu flex-row items-center transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 lg:hidden"
-        )}
-      >
-        <a 
-          href={href} 
-          className="pointer-events-auto flex items-center text-sm font-medium hover:underline text-white"
-        >
-          {cta}
-          <ArrowRightIcon className="ms-2 h-4 w-4 rtl:rotate-180" />
-        </a>
-      </div>
-    </div>
+          if (cardDownload) {
+            const link = document.createElement("a");
+            link.href = cardHref;
+            link.download =
+              typeof cardDownload === "string" ? cardDownload : "";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            return;
+          }
 
+          window.location.href = cardHref;
+        },
+        onKeyDown: (event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            event.currentTarget.click();
+          }
+        },
+      }
+    : {};
+
+  return (
     <div
+      key={name}
       className={cn(
-        "pointer-events-none absolute bottom-0 hidden w-full translate-y-10 transform-gpu flex-row items-center p-4 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 lg:flex"
+        "group relative col-span-3 overflow-hidden rounded-[22px] border border-white/10 bg-black text-white transition-transform duration-300",
+        "shadow-[0_18px_50px_rgba(0,0,0,0.38),inset_0_1px_0_rgba(255,255,255,0.03)] hover:-translate-y-1.5 hover:border-[rgba(120,6,6,0.35)]",
+        cardHref ? "cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-red" : "",
+        className
       )}
+      {...interactiveProps}
+      {...props}
     >
-      <a 
-        href={href} 
-        className="pointer-events-auto flex items-center text-sm font-medium hover:underline text-white"
-      >
-        {cta}
-        <ArrowRightIcon className="ms-2 h-4 w-4 rtl:rotate-180" />
-      </a>
-    </div>
+      <div className="absolute inset-0">{background}</div>
+      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.03),transparent_24%,transparent_72%,rgba(120,6,6,0.12))] opacity-70 transition-opacity duration-300 group-hover:opacity-100" />
 
-    <div className="pointer-events-none absolute inset-0 transform-gpu transition-all duration-300 group-hover:bg-black/3 group-hover:dark:bg-neutral-800/10" />
-  </div>
-);
+      <div className="relative z-10 flex h-full flex-col justify-between p-5 lg:p-6">
+        <div className="flex max-w-[85%] flex-col gap-3">
+          {eyebrow ? (
+            <span className="text-[10px] font-black uppercase tracking-[0.22em] text-brand-red">
+              {eyebrow}
+            </span>
+          ) : null}
+
+          <Icon className="h-10 w-10 origin-left text-zinc-200 transition-transform duration-300 ease-out group-hover:scale-90 group-hover:text-white" />
+
+          <div className="space-y-1.5">
+            <h3 className="text-[clamp(24px,2.4vw,32px)] font-black leading-none text-white">
+              {name}
+            </h3>
+            <p className="max-w-lg text-[14px] leading-[1.55] text-zinc-400">
+              {description}
+            </p>
+          </div>
+        </div>
+
+        <div className="flex items-end justify-between gap-4">
+          <div className="min-h-[18px]">
+            {note ? (
+              <p className="m-0 text-[11px] font-medium uppercase tracking-[0.14em] text-zinc-500">
+                {note}
+              </p>
+            ) : null}
+          </div>
+
+          <a
+            href={href}
+            target={cardTarget}
+            rel={cardRel}
+            download={cardDownload}
+            onClick={(event) => event.stopPropagation()}
+            className="pointer-events-none inline-flex translate-y-2 items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-[11px] font-black uppercase tracking-[0.16em] text-white no-underline opacity-0 transition-all duration-300 hover:border-[rgba(120,6,6,0.45)] hover:text-brand-red group-hover:pointer-events-auto group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:translate-y-0 group-focus-within:opacity-100"
+          >
+            {cta}
+            <ArrowRightIcon className="h-4 w-4 rtl:rotate-180" />
+          </a>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export { BentoCard, BentoGrid };

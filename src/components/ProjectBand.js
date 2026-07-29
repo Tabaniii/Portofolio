@@ -1,12 +1,15 @@
 "use client";
 
-
+import { useEffect, useState } from "react";
 import Image from "next/image";
+import { motion } from "framer-motion";
 
 const PROJECTS = [
   {
     id: "ride62",
     title: "Ride62",
+    description:
+      "Mobility booking flow dengan realtime dispatch, live status, dan operasi yang terasa cepat di banyak surface.",
     stack: {
       frontend: ["Bootstrap", "Tailwind CSS", "jQuery", "Vite", "Sass", "Laravel Echo"],
       backend: ["PHP", "Laravel", "Pusher PHP Server", "Vercel Blob PHP"],
@@ -20,6 +23,8 @@ const PROJECTS = [
   {
     id: "project-02",
     title: "SajiIn",
+    description:
+      "Ordering experience dengan checkout, media asset handling, dan transaksi yang dibungkus dalam flow yang padat.",
     stack: {
       frontend: [
         "HTML",
@@ -53,148 +58,305 @@ const PROJECTS = [
   },
 ];
 
-function ProjectCard({ project }) {
-  const isLive = project.status === "live";
+function SectionIcon({ kind }) {
+  const commonProps = {
+    className: "h-4 w-4 text-zinc-500",
+    viewBox: "0 0 24 24",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: "1.7",
+    strokeLinecap: "round",
+    strokeLinejoin: "round",
+    "aria-hidden": "true",
+  };
 
-  if (!isLive) {
-    // Coming Soon card
+  switch (kind) {
+    case "description":
+      return (
+        <svg {...commonProps}>
+          <path d="M4 6h16" />
+          <path d="M4 12h10" />
+          <path d="M4 18h7" />
+          <path d="M18 10l2 2-5 5H13v-2z" />
+        </svg>
+      );
+    case "frontend":
+      return (
+        <svg {...commonProps}>
+          <rect x="3" y="5" width="18" height="12" rx="2" />
+          <path d="M8 20h8" />
+          <path d="M12 17v3" />
+        </svg>
+      );
+    case "backend":
+      return (
+        <svg {...commonProps}>
+          <rect x="4" y="4" width="16" height="6" rx="1.5" />
+          <rect x="4" y="14" width="16" height="6" rx="1.5" />
+          <path d="M8 7h.01" />
+          <path d="M8 17h.01" />
+          <path d="M14 7h2" />
+          <path d="M14 17h2" />
+        </svg>
+      );
+    case "database":
+      return (
+        <svg {...commonProps}>
+          <ellipse cx="12" cy="6" rx="7" ry="3" />
+          <path d="M5 6v8c0 1.7 3.1 3 7 3s7-1.3 7-3V6" />
+          <path d="M5 10c0 1.7 3.1 3 7 3s7-1.3 7-3" />
+        </svg>
+      );
+    case "deployment":
+      return (
+        <svg {...commonProps}>
+          <path d="M12 4v12" />
+          <path d="m7 9 5-5 5 5" />
+          <path d="M5 20h14" />
+        </svg>
+      );
+    default:
+      return (
+        <svg {...commonProps}>
+          <circle cx="12" cy="12" r="8" />
+          <path d="M12 8v4l3 3" />
+        </svg>
+      );
+  }
+}
+
+function TechBadge({ label }) {
+  return (
+    <span className="inline-flex items-center rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-[10px] font-medium tracking-[0.05em] text-zinc-300">
+      <span>{label}</span>
+    </span>
+  );
+}
+
+function StackGroup({ category, items }) {
+  return (
+    <div className="flex flex-col gap-2">
+      <div className="flex items-center gap-2">
+        <SectionIcon kind={category} />
+        <h4 className="m-0 text-[10px] font-bold uppercase tracking-[0.15em] text-brand-red">
+          {category}
+        </h4>
+      </div>
+      <div className="flex flex-wrap gap-2">
+        {items.map((item) => (
+          <TechBadge key={item} label={item} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function CardButton({ href, disabled = false }) {
+  const content = (
+    <>
+      <span className="text-[11px] font-bold uppercase tracking-[0.15em] transition-all duration-200 group-hover:font-black">
+        SEE DETAIL
+      </span>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="transition-transform duration-200 group-hover:translate-x-0.5">
+        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+        <polyline points="15 3 21 3 21 9" />
+        <line x1="10" y1="14" x2="21" y2="3" />
+      </svg>
+    </>
+  );
+
+  if (disabled) {
     return (
-      <article className="relative flex min-h-[500px] flex-col border border-zinc-800 bg-black opacity-60 cursor-not-allowed">
-        {/* Lock Icon Placeholder */}
-        <div className="relative aspect-[16/9] w-full shrink-0 overflow-hidden border-b border-zinc-800 flex items-center justify-center bg-zinc-950">
-          {project.cover ? (
-            <Image
-              src={project.cover}
-              alt={`${project.title} cover`}
-              fill
-              className="object-cover object-center"
-              sizes="(max-width: 700px) 100vw, 33vw"
-            />
-          ) : (
-            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-zinc-700">
-              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-              <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-            </svg>
-          )}
-        </div>
-
-        {/* Title */}
-        <div className="border-b border-zinc-800 p-4">
-          <h3 className="m-0 text-[clamp(20px,3vh,28px)] font-black leading-none text-zinc-600">
-            {project.title}
-          </h3>
-        </div>
-
-        {/* Stack */}
-        <div className="border-b border-zinc-800 p-4">
-          <p className="m-0 text-[14px] font-medium text-zinc-700">
-            {project.stack}
-          </p>
-        </div>
-
-        {/* Spacer to push button down */}
-        <div className="flex-grow" />
-
-        {/* Disabled Button */}
-        <div className="inline-flex w-full items-center justify-center gap-2 border-t border-zinc-800 bg-zinc-900 px-4 py-4 text-[12px] font-black uppercase tracking-[0.18em] text-zinc-700">
-          See Detail
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
-            <polyline points="15 3 21 3 21 9"/>
-            <line x1="10" y1="14" x2="21" y2="3"/>
-          </svg>
-        </div>
-      </article>
+      <div className="group inline-flex w-full items-center justify-center gap-2 border-t border-white/5 bg-[#121212] px-4 py-4 text-zinc-600">
+        {content}
+      </div>
     );
   }
 
-  // Live Project Card
   return (
-    <article className="relative flex min-h-[500px] flex-col border border-zinc-800 bg-black">
-      {/* Cover Image */}
-      <div className="relative aspect-[16/9] w-full shrink-0 overflow-hidden border-b border-zinc-800">
-        <Image
-          src={project.cover}
-          alt={`${project.title} cover`}
-          fill
-          className="object-cover object-center"
-          sizes="(max-width: 700px) 100vw, 33vw"
-          priority
-        />
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="group inline-flex w-full items-center justify-center gap-2 border-t border-white/5 bg-[#121212] px-4 py-4 text-zinc-300 no-underline transition-colors duration-300 hover:bg-[#1a1a1a] hover:text-white"
+    >
+      {content}
+    </a>
+  );
+}
+
+function LiveProjectCard({ project, index }) {
+  return (
+    <motion.article
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ duration: 0.6, delay: index * 0.15, ease: "easeOut" }}
+      className="group relative flex min-h-[620px] flex-col overflow-hidden rounded-[20px] border border-white/10 bg-[#0d0d0d] transition-transform duration-300 hover:-translate-y-1.5 hover:border-[rgba(220,38,38,0.2)]"
+    >
+      <div className="relative border-b border-white/5 p-4">
+        <div className="relative aspect-[16/9] overflow-hidden rounded-[12px] border border-white/5 bg-[#121212]">
+          <Image
+            src={project.cover}
+            alt={`${project.title} cover`}
+            fill
+            className="object-cover object-center transition-transform duration-500 group-hover:scale-[1.02]"
+            sizes="(max-width: 700px) 100vw, 33vw"
+            priority
+          />
+          <div className="absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-full border border-[rgba(220,38,38,0.2)] bg-black/60 px-2.5 py-1 text-[9px] font-bold uppercase tracking-[0.15em] text-brand-red backdrop-blur-md">
+            <span className="h-1.5 w-1.5 rounded-full bg-brand-red" />
+            Live
+          </div>
+        </div>
       </div>
 
-      {/* Title */}
-      <div className="border-b border-zinc-800 p-4">
-        <h3 className="m-0 text-[clamp(20px,3vh,28px)] font-black leading-none text-white">
+      <div className="px-5 py-4">
+        <h3 className="m-0 text-[24px] font-bold leading-none text-white">
           {project.title}
         </h3>
       </div>
 
-      {/* Stack (Categorized) */}
-      <div className="border-b border-zinc-800 p-4 flex flex-col gap-3">
+      <div className="px-5 pb-4">
+        <p className="m-0 text-[13px] leading-[1.6] text-zinc-400">
+          {project.description}
+        </p>
+      </div>
+
+      <div className="flex flex-col gap-4 border-t border-white/5 px-5 py-4">
         {Object.entries(project.stack).map(([category, items]) => (
-          <div key={category} className="flex flex-col gap-1">
-            <h4 className="m-0 text-[11px] font-extrabold uppercase tracking-[0.18em] text-brand-red">
-              {category}
-            </h4>
-            <div className="flex flex-wrap gap-2">
-              {items.map((item, index) => (
-                <span
-                  key={index}
-                  className="px-2 py-1 text-[11px] font-medium border border-zinc-700 bg-zinc-950 text-zinc-300"
-                >
-                  {item}
-                </span>
-              ))}
-            </div>
-          </div>
+          <StackGroup key={category} category={category} items={items} />
         ))}
       </div>
 
-      {/* Spacer to push button down */}
       <div className="flex-grow" />
 
-      {/* See Detail Button */}
-      <a
-        href={project.href}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="inline-flex w-full items-center justify-center gap-2 border-t border-zinc-700 bg-zinc-950 px-4 py-4 text-[12px] font-black uppercase tracking-[0.18em] text-white no-underline transition-all duration-200 hover:border-t-brand-red hover:bg-brand-red focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-red"
-      >
-        See Detail
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
-          <polyline points="15 3 21 3 21 9"/>
-          <line x1="10" y1="14" x2="21" y2="3"/>
-        </svg>
-      </a>
-    </article>
+      <CardButton href={project.href} />
+    </motion.article>
   );
 }
 
-// Test commit for Vercel deployment
+function MysteryCard({ project, index }) {
+  const [isGlitching, setIsGlitching] = useState(false);
+
+  useEffect(() => {
+    let glitchTimeout;
+    let resetTimeout;
+    let active = true;
+
+    const scheduleGlitch = () => {
+      const delay = 4200 + Math.random() * 7000;
+      glitchTimeout = window.setTimeout(() => {
+        if (!active) return;
+
+        setIsGlitching(true);
+        resetTimeout = window.setTimeout(() => {
+          if (!active) return;
+          setIsGlitching(false);
+          scheduleGlitch();
+        }, 90);
+      }, delay);
+    };
+
+    scheduleGlitch();
+
+    return () => {
+      active = false;
+      window.clearTimeout(glitchTimeout);
+      window.clearTimeout(resetTimeout);
+    };
+  }, []);
+
+  return (
+    <motion.article
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ duration: 0.6, delay: index * 0.15, ease: "easeOut" }}
+      className={`group relative flex min-h-[620px] cursor-not-allowed flex-col overflow-hidden rounded-[20px] border border-white/10 bg-[#0d0d0d] opacity-90 transition-transform duration-300 hover:-translate-y-1.5 hover:border-[rgba(220,38,38,0.2)] ${isGlitching ? "projectband-glitch" : ""}`}
+      aria-disabled="true"
+    >
+      <div className="border-b border-white/5 p-4">
+        <div className="relative aspect-[16/9] overflow-hidden rounded-[12px] border border-white/5 bg-[#121212] flex items-center justify-center">
+          <div className="absolute left-1/2 top-1/2 h-[80px] w-[80px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/5 bg-[#0a0a0a]" />
+          <div className="absolute left-1/2 top-1/2 h-[12px] w-[12px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-brand-red shadow-[0_0_10px_rgba(120,6,6,0.8)]" />
+          
+          <div className="absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-full border border-[rgba(220,38,38,0.2)] bg-black/60 px-2.5 py-1 text-[9px] font-bold uppercase tracking-[0.15em] text-brand-red/80 backdrop-blur-md">
+            Classified
+          </div>
+        </div>
+      </div>
+
+      <div className="px-5 py-4">
+        <h3 className="m-0 text-[24px] font-bold leading-none text-zinc-500">
+          {project.title}
+        </h3>
+      </div>
+
+      <div className="px-5 pb-4">
+        <p className="m-0 text-[13px] leading-[1.6] text-zinc-600">
+          Access masih dikunci. Surface ini sengaja tampil kayak data field terenkripsi yang belum dibuka.
+        </p>
+      </div>
+
+      <div className="border-t border-white/5 px-5 py-4">
+        <div className="rounded-[12px] border border-white/5 bg-white/5 p-4">
+          <div className="mb-3 flex items-center gap-2">
+            <SectionIcon kind="database" />
+            <h4 className="m-0 text-[10px] font-bold uppercase tracking-[0.15em] text-zinc-500">
+              status
+            </h4>
+          </div>
+          <div className="grid gap-2">
+            <div className="flex items-center justify-between rounded-[8px] border border-white/5 bg-black/40 px-3 py-2">
+              <span className="text-[10px] font-bold uppercase tracking-[0.1em] text-zinc-500">channel</span>
+              <span className="text-[10px] font-bold uppercase tracking-[0.1em] text-brand-red/80">sealed</span>
+            </div>
+            <div className="flex items-center justify-between rounded-[8px] border border-white/5 bg-black/40 px-3 py-2">
+              <span className="text-[10px] font-bold uppercase tracking-[0.1em] text-zinc-500">access</span>
+              <span className="text-[10px] font-bold uppercase tracking-[0.1em] text-brand-red/80">{project.stack}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="flex-grow" />
+
+      <CardButton disabled />
+    </motion.article>
+  );
+}
+
+function ProjectCard({ project, index }) {
+  if (project.status !== "live") {
+    return <MysteryCard project={project} index={index} />;
+  }
+
+  return <LiveProjectCard project={project} index={index} />;
+}
+
 export default function ProjectBand() {
   return (
     <section
       id="projek"
-      className="w-full min-h-screen bg-black text-white flex flex-col snap-start px-6 py-8 max-[768px]:py-6 min-[901px]:px-16 min-[901px]:py-12"
+      className="relative isolate flex min-h-screen w-full snap-start flex-col overflow-hidden bg-black px-6 py-8 text-white max-[768px]:py-6 min-[901px]:px-16 min-[901px]:py-12"
       aria-labelledby="project-heading"
     >
-      <header className="flex items-end justify-between gap-6 mb-6 min-[901px]:mb-8">
+      <header className="relative z-10 mb-6 flex items-end justify-between gap-6 min-[901px]:mb-8">
         <h2
           id="project-heading"
-          className="m-0 text-[clamp(42px,7vh,72px)] font-black leading-none text-brand-red"
+          className="m-0 font-[TabaniDisplay,Inter,Poppins,Arial,Helvetica,sans-serif] text-[clamp(48px,7vh,76px)] font-black leading-none tracking-[0.02em] text-brand-red"
         >
           Projek
         </h2>
-        <p className="m-0 pb-1 text-[11px] font-extrabold uppercase tracking-[0.22em] text-zinc-500">
+        <p className="m-0 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-400 backdrop-blur-md">
           Grid · 03
         </p>
       </header>
 
-      <div className="grid grid-cols-1 gap-4 min-[700px]:grid-cols-3 min-[700px]:gap-5">
-        {PROJECTS.map((project) => (
-          <ProjectCard key={project.id} project={project} />
+      <div className="relative z-10 grid grid-cols-1 gap-4 min-[700px]:grid-cols-3 min-[700px]:gap-5">
+        {PROJECTS.map((project, index) => (
+          <ProjectCard key={project.id} project={project} index={index} />
         ))}
       </div>
     </section>

@@ -35,3 +35,50 @@
 :root {
   --color-red: #780606;
 }
+
+@keyframes projectband-single-glitch {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+    filter: saturate(1);
+  }
+
+  30% {
+    transform: translate3d(2px, 0, 0);
+    filter: saturate(1.25);
+  }
+
+  60% {
+    transform: translate3d(-3px, 0, 0);
+    filter: saturate(1.45);
+  }
+}
+
+.projectband-glitch {
+  animation: projectband-single-glitch 90ms steps(2, end) 1;
+}
+
+.projectband-glitch::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      180deg,
+      transparent 0%,
+      rgba(120, 6, 6, 0.08) 42%,
+      rgba(120, 6, 6, 0.32) 48%,
+      transparent 54%
+    );
+  mix-blend-mode: screen;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .projectband-glitch {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}
