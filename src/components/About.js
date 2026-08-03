@@ -1,8 +1,12 @@
 "use client";
 
+import { useEffect, useRef } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import ScrollVelocity from "./ScrollVelocity";
-import ScrollReveal from "./ScrollReveal";
 import TiltedCard from "./TiltedCard";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const HELLO_ALL_MARQUEE = [
   "Halo semua",
@@ -31,8 +35,158 @@ const INTRO_PARAGRAPHS = [
 ];
 
 export default function About({ scrollContainerRef }) {
+  const sectionRef = useRef(null);
+  const introRef = useRef(null);
+  const cardRef = useRef(null);
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    const intro = introRef.current;
+    const card = cardRef.current;
+
+    if (!section || !intro || !card) return;
+
+    const ctx = gsap.context(() => {
+      const introTimeline = gsap.timeline({
+        scrollTrigger: {
+          trigger: section,
+          scroller: scrollContainerRef?.current || undefined,
+          start: "top bottom",
+          end: "bottom top",
+          scrub: 0.95,
+        },
+      });
+
+      introTimeline.fromTo(
+        intro,
+        {
+          x: -42,
+          opacity: 0.35,
+          filter: "blur(8px)",
+        },
+        {
+          keyframes: [
+            {
+              x: -18,
+              opacity: 0.68,
+              filter: "blur(4px)",
+              duration: 0.45,
+              ease: "sine.out",
+            },
+            {
+              x: 0,
+              opacity: 1,
+              filter: "blur(0px)",
+              duration: 0.85,
+              ease: "power2.out",
+            },
+            {
+              x: -28,
+              opacity: 0.62,
+              filter: "blur(5px)",
+              duration: 0.7,
+              ease: "power1.inOut",
+            },
+          ],
+        }
+      );
+
+      const cardTimeline = gsap.timeline({
+        scrollTrigger: {
+          trigger: section,
+          scroller: scrollContainerRef?.current || undefined,
+          start: "top bottom",
+          end: "bottom top",
+          scrub: 1.15,
+        },
+      });
+
+      cardTimeline
+        .fromTo(
+          card,
+          {
+            xPercent: 18,
+            yPercent: 8,
+            rotate: 1.8,
+            skewX: 5,
+            scaleX: 0.965,
+            scaleY: 1.035,
+            opacity: 0.82,
+            filter: "blur(12px)",
+            transformOrigin: "right center",
+          },
+          {
+            keyframes: [
+              {
+                xPercent: 10,
+                yPercent: 4,
+                rotate: 1.2,
+                skewX: 3,
+                scaleX: 1.02,
+                scaleY: 0.985,
+                opacity: 0.92,
+                filter: "blur(8px)",
+                duration: 0.45,
+                ease: "power2.out",
+              },
+              {
+                xPercent: 0,
+                yPercent: 0,
+                rotate: 0,
+                skewX: 0,
+                scaleX: 1,
+                scaleY: 1,
+                opacity: 1,
+                filter: "blur(0px)",
+                duration: 0.9,
+                ease: "elastic.out(0.9, 0.65)",
+              },
+              {
+                xPercent: -3,
+                yPercent: -1.5,
+                rotate: -0.4,
+                skewX: -1.2,
+                scaleX: 1.01,
+                scaleY: 0.992,
+                opacity: 0.99,
+                filter: "blur(1px)",
+                duration: 0.35,
+                ease: "sine.inOut",
+              },
+              {
+                xPercent: 18,
+                yPercent: -7,
+                rotate: -1.6,
+                skewX: -5,
+                scaleX: 0.965,
+                scaleY: 1.03,
+                opacity: 0.82,
+                filter: "blur(12px)",
+                duration: 0.9,
+                ease: "power2.inOut",
+              },
+            ],
+          },
+          0
+        );
+    }, section);
+
+    const timer = setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 100);
+
+    return () => {
+      ctx.revert();
+      clearTimeout(timer);
+    };
+  }, [scrollContainerRef]);
+
   return (
-    <section className="w-full h-screen bg-black flex flex-col justify-between overflow-hidden snap-start" aria-label="Introduction">
+    <section
+      ref={sectionRef}
+      className="w-full h-screen bg-black flex flex-col justify-between overflow-hidden snap-start"
+      aria-label="Introduction"
+    >
       {/* Marquee Atas - Menempel di ujung atas section */}
       <div className="w-full pt-2">
         <ScrollVelocity
@@ -48,34 +202,32 @@ export default function About({ scrollContainerRef }) {
 
       {/* Grid Layout Tengah - Dibagi rata 2 kolom (Kiri Gambar, Kanan Teks) */}
       <div className="w-full grid grid-cols-2 gap-8 px-16 items-center max-[768px]:grid-cols-1 max-[768px]:px-6 flex-1">
-        {/* SEBELAH KANAN: Teks Perkenalan */}
-        <div className="flex items-center justify-start text-left">
+        {/* SEBELAH KIRI: Teks Perkenalan */}
+        <div ref={introRef} className="flex items-center justify-start text-left will-change-transform">
           <div className="w-full max-w-[580px] flex flex-col gap-4">
             <p className="m-0 text-[clamp(12px,1.1vw,16px)] font-black leading-none tracking-[0.18em] uppercase text-brand-red">
               introduction
             </p>
 
-            <ScrollReveal scrollContainerRef={scrollContainerRef} as="h2" className="m-0 text-[clamp(36px,4.5vw,64px)] font-black leading-[0.95] lowercase text-white">
+            <h2 className="m-0 text-[clamp(36px,4.5vw,64px)] font-black leading-[0.95] lowercase text-white">
               i'm tabani
-            </ScrollReveal>
+            </h2>
 
             <div className="flex flex-col gap-3 mt-2">
               {INTRO_PARAGRAPHS.map((paragraph) => (
-                <ScrollReveal
+                <p
                   key={paragraph}
-                  scrollContainerRef={scrollContainerRef}
-                  as="p"
                   className="w-full m-0 text-[clamp(14px,1.8vh,19px)] font-medium leading-[1.5] tracking-[0.02em] text-zinc-300"
                 >
                   {paragraph}
-                </ScrollReveal>
+                </p>
               ))}
             </div>
           </div>
         </div>
 
-        {/* SEBELAH KIRI: TiltedCard */}
-        <div className="text-brand-red flex items-center justify-center">
+        {/* SEBELAH KANAN: TiltedCard */}
+        <div ref={cardRef} className="text-brand-red flex items-center justify-center will-change-transform">
           <div className="w-full max-w-[400px] aspect-square">
             <TiltedCard
               imageSrc="/assets/img/homepage.jpg"

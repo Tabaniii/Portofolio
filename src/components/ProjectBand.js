@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { ScrollSlideUp } from "./MotionPrimitives";
 
 const PROJECTS = [
   {
@@ -187,11 +187,12 @@ function CardButton({ href, disabled = false }) {
 
 function LiveProjectCard({ project, index }) {
   return (
-    <motion.article
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.6, delay: index * 0.15, ease: "easeOut" }}
+    <ScrollSlideUp
+      as="article"
+      delay={index * 0.15}
+      duration={0.75}
+      distance={34}
+      margin="-50px"
       className="group relative flex min-h-[620px] flex-col overflow-hidden rounded-[20px] border border-white/10 bg-[#0d0d0d] transition-transform duration-300 hover:-translate-y-1.5 hover:border-[rgba(220,38,38,0.2)]"
     >
       <div className="relative border-b border-white/5 p-4">
@@ -232,7 +233,7 @@ function LiveProjectCard({ project, index }) {
       <div className="flex-grow" />
 
       <CardButton href={project.href} />
-    </motion.article>
+    </ScrollSlideUp>
   );
 }
 
@@ -268,11 +269,12 @@ function MysteryCard({ project, index }) {
   }, []);
 
   return (
-    <motion.article
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.6, delay: index * 0.15, ease: "easeOut" }}
+    <ScrollSlideUp
+      as="article"
+      delay={index * 0.15}
+      duration={0.75}
+      distance={34}
+      margin="-50px"
       className={`group relative flex min-h-[620px] cursor-not-allowed flex-col overflow-hidden rounded-[20px] border border-white/10 bg-[#0d0d0d] opacity-90 transition-transform duration-300 hover:-translate-y-1.5 hover:border-[rgba(220,38,38,0.2)] ${isGlitching ? "projectband-glitch" : ""}`}
       aria-disabled="true"
     >
@@ -323,7 +325,7 @@ function MysteryCard({ project, index }) {
       <div className="flex-grow" />
 
       <CardButton disabled />
-    </motion.article>
+    </ScrollSlideUp>
   );
 }
 

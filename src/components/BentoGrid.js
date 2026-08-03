@@ -1,5 +1,8 @@
+"use client";
+
 import { ArrowRightIcon } from "@radix-ui/react-icons";
 import { cn } from "../lib/utils";
+import { DirectionalSlide } from "./MotionPrimitives";
 
 const BentoGrid = ({ children, className, ...props }) => {
   return (
@@ -29,6 +32,9 @@ const BentoCard = ({
   cardTarget,
   cardRel,
   cardDownload,
+  revealDelay = 0,
+  revealOnce = false,
+  entryFrom = "left",
   ...props
 }) => {
   const interactiveProps = cardHref
@@ -64,8 +70,14 @@ const BentoCard = ({
     : {};
 
   return (
-    <div
+    <DirectionalSlide
+      as="div"
       key={name}
+      direction={entryFrom}
+      delay={revealDelay}
+      once={revealOnce}
+      distance={64}
+      duration={0.82}
       className={cn(
         "group relative col-span-3 overflow-hidden rounded-[22px] border border-white/10 bg-black text-white transition-transform duration-300",
         "shadow-[0_18px_50px_rgba(0,0,0,0.38),inset_0_1px_0_rgba(255,255,255,0.03)] hover:-translate-y-1.5 hover:border-[rgba(120,6,6,0.35)]",
@@ -120,7 +132,7 @@ const BentoCard = ({
           </a>
         </div>
       </div>
-    </div>
+    </DirectionalSlide>
   );
 };
 

@@ -126,6 +126,8 @@ export default function BentoSection() {
         <BentoCard
           name="Stack"
           className="col-span-2"
+          entryFrom="left"
+          revealDelay={0}
           Icon={LayersIcon}
           eyebrow="capabilities"
           description="Core tools and systems."
@@ -137,6 +139,8 @@ export default function BentoSection() {
         <BentoCard
           name="Projects"
           className="col-span-1"
+          entryFrom="right"
+          revealDelay={0.08}
           Icon={DashboardIcon}
           eyebrow="selected"
           description="Selected work in production."
@@ -149,6 +153,8 @@ export default function BentoSection() {
         <BentoCard
           name="Philosophy"
           className="col-span-1"
+          entryFrom="left"
+          revealDelay={0.16}
           Icon={BlendingModeIcon}
           eyebrow="mindset"
           description="Principles behind execution."
@@ -160,6 +166,8 @@ export default function BentoSection() {
         <BentoCard
           name="Education"
           className="col-span-2"
+          entryFrom="right"
+          revealDelay={0.24}
           Icon={ReaderIcon}
           eyebrow="journey"
           description="Academic and learning path."
@@ -172,6 +180,8 @@ export default function BentoSection() {
         <BentoCard
           name="dkv side"
           className="col-span-2"
+          entryFrom="left"
+          revealDelay={0.32}
           Icon={FrameIcon}
           eyebrow="visual practice"
           description="Visual studies and composition."
@@ -183,6 +193,8 @@ export default function BentoSection() {
         <BentoCard
           name="Resume"
           className="col-span-1"
+          entryFrom="right"
+          revealDelay={0.4}
           Icon={FileTextIcon}
           eyebrow="profile"
           description="Professional resume summary."

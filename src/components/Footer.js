@@ -1,6 +1,7 @@
 "use client";
 
 import BorderGlow from "./BorderGlow";
+import { ScrollSlideUp, StaggerGroup, StaggerItem } from "./MotionPrimitives";
 
 export default function Footer() {
   const socialLinks = [
@@ -25,7 +26,12 @@ export default function Footer() {
       {/* Top Section: Grid/Flex Layout */}
       <div className="relative z-10 w-full h-full flex flex-col lg:flex-row justify-between items-start lg:items-center gap-12 lg:gap-8 px-6 lg:px-16 pt-16 lg:pt-24 pb-20 lg:pb-0">
         {/* Left Side: Call-to-Action */}
-        <div className="flex flex-col gap-4 lg:max-w-md">
+        <ScrollSlideUp
+          className="flex flex-col gap-4 lg:max-w-md"
+          duration={0.85}
+          distance={38}
+          amount={0.25}
+        >
           <h2 className="m-0 text-[clamp(42px,6vw,72px)] font-black leading-[0.9] tracking-tight">
             Let's <br />
             <span
@@ -57,15 +63,21 @@ export default function Footer() {
               Send Email
             </a>
           </BorderGlow>
-        </div>
+        </ScrollSlideUp>
 
         {/* Right Side: Navigation Links */}
         <div className="flex flex-row gap-12 lg:gap-20">
           {/* Socials Column */}
           <nav aria-label="Social links">
-            <ul className="flex flex-col gap-3 m-0 p-0 list-none">
+            <StaggerGroup
+              as="ul"
+              className="flex flex-col gap-3 m-0 p-0 list-none"
+              stagger={0.08}
+              delayChildren={0.1}
+              amount={0.3}
+            >
               {socialLinks.map((link) => (
-                <li key={link.label} className="m-0">
+                <StaggerItem key={link.label} as="li" className="m-0">
                   <a
                     href={link.href}
                     target="_blank"
@@ -74,31 +86,37 @@ export default function Footer() {
                   >
                     {link.label}
                   </a>
-                </li>
+                </StaggerItem>
               ))}
-            </ul>
+            </StaggerGroup>
           </nav>
 
           {/* Contact Column */}
           <nav aria-label="Contact details">
-            <ul className="flex flex-col gap-3 m-0 p-0 list-none">
+            <StaggerGroup
+              as="ul"
+              className="flex flex-col gap-3 m-0 p-0 list-none"
+              stagger={0.08}
+              delayChildren={0.14}
+              amount={0.3}
+            >
               {footerLinks.map((link) => (
-                <li key={link.label} className="m-0">
+                <StaggerItem key={link.label} as="li" className="m-0">
                   <a
                     href={link.href}
                     className="text-[12px] font-medium uppercase tracking-[0.1em] text-zinc-300 no-underline transition-colors duration-300 hover:text-brand-red focus-visible:outline-none"
                   >
                     {link.label}
                   </a>
-                </li>
+                </StaggerItem>
               ))}
-              <li className="m-0 pt-1">
+              <StaggerItem as="li" className="m-0 pt-1">
                 <span 
                   className="block text-[15px] font-medium uppercase tracking-[0.1em] text-brand-red">
                   Open for freelance
                 </span>
-              </li>
-            </ul>
+              </StaggerItem>
+            </StaggerGroup>
           </nav>
         </div>
       </div>
