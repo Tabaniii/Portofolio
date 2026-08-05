@@ -193,7 +193,7 @@ function LiveProjectCard({ project, index }) {
       duration={0.75}
       distance={34}
       margin="-50px"
-      className="group relative flex min-h-[620px] flex-col overflow-hidden rounded-[20px] border border-white/10 bg-[#0d0d0d] transition-transform duration-300 hover:-translate-y-1.5 hover:border-[rgba(220,38,38,0.2)]"
+      className="group relative flex min-h-[auto] sm:min-h-[620px] flex-col overflow-hidden rounded-[16px] sm:rounded-[20px] border border-white/10 bg-[#0d0d0d] transition-transform duration-300 hover:-translate-y-1.5 hover:border-[rgba(220,38,38,0.2)]"
     >
       <div className="relative border-b border-white/5 p-4">
         <div className="relative aspect-[16/9] overflow-hidden rounded-[12px] border border-white/5 bg-[#121212]">
@@ -212,19 +212,19 @@ function LiveProjectCard({ project, index }) {
         </div>
       </div>
 
-      <div className="px-5 py-4">
-        <h3 className="m-0 text-[24px] font-bold leading-none text-white">
+      <div className="px-4 sm:px-5 py-3 sm:py-4">
+        <h3 className="m-0 text-[clamp(20px,4vw,24px)] font-bold leading-none text-white">
           {project.title}
         </h3>
       </div>
 
-      <div className="px-5 pb-4">
-        <p className="m-0 text-[13px] leading-[1.6] text-zinc-400">
+      <div className="px-4 sm:px-5 pb-3 sm:pb-4">
+        <p className="m-0 text-[clamp(13px,2.8vw,14px)] leading-[1.6] text-zinc-400 line-length-control">
           {project.description}
         </p>
       </div>
 
-      <div className="flex flex-col gap-4 border-t border-white/5 px-5 py-4">
+      <div className="flex flex-col gap-3 sm:gap-4 border-t border-white/5 px-4 sm:px-5 py-3 sm:py-4">
         {Object.entries(project.stack).map(([category, items]) => (
           <StackGroup key={category} category={category} items={items} />
         ))}
@@ -275,7 +275,7 @@ function MysteryCard({ project, index }) {
       duration={0.75}
       distance={34}
       margin="-50px"
-      className={`group relative flex min-h-[620px] cursor-not-allowed flex-col overflow-hidden rounded-[20px] border border-white/10 bg-[#0d0d0d] opacity-90 transition-transform duration-300 hover:-translate-y-1.5 hover:border-[rgba(220,38,38,0.2)] ${isGlitching ? "projectband-glitch" : ""}`}
+      className={`group relative flex min-h-[auto] sm:min-h-[620px] cursor-not-allowed flex-col overflow-hidden rounded-[16px] sm:rounded-[20px] border border-white/10 bg-[#0d0d0d] opacity-90 transition-transform duration-300 hover:-translate-y-1.5 hover:border-[rgba(220,38,38,0.2)] ${isGlitching ? "projectband-glitch" : ""}`}
       aria-disabled="true"
     >
       <div className="border-b border-white/5 p-4">
@@ -289,19 +289,19 @@ function MysteryCard({ project, index }) {
         </div>
       </div>
 
-      <div className="px-5 py-4">
-        <h3 className="m-0 text-[24px] font-bold leading-none text-zinc-500">
+      <div className="px-4 sm:px-5 py-3 sm:py-4">
+        <h3 className="m-0 text-[clamp(20px,4vw,24px)] font-bold leading-none text-zinc-500">
           {project.title}
         </h3>
       </div>
 
-      <div className="px-5 pb-4">
-        <p className="m-0 text-[13px] leading-[1.6] text-zinc-600">
+      <div className="px-4 sm:px-5 pb-3 sm:pb-4">
+        <p className="m-0 text-[clamp(13px,2.8vw,14px)] leading-[1.6] text-zinc-600 line-length-control">
           Access masih dikunci. Surface ini sengaja tampil kayak data field terenkripsi yang belum dibuka.
         </p>
       </div>
 
-      <div className="border-t border-white/5 px-5 py-4">
+      <div className="border-t border-white/5 px-4 sm:px-5 py-3 sm:py-4">
         <div className="rounded-[12px] border border-white/5 bg-white/5 p-4">
           <div className="mb-3 flex items-center gap-2">
             <SectionIcon kind="database" />
@@ -341,22 +341,22 @@ export default function ProjectBand() {
   return (
     <section
       id="projek"
-      className="relative isolate flex min-h-screen w-full snap-start flex-col overflow-hidden bg-black px-6 py-8 text-white max-[768px]:py-6 min-[901px]:px-16 min-[901px]:py-12"
+      className="relative isolate flex min-h-screen w-full snap-start flex-col overflow-hidden bg-black section-padding-x py-8 sm:py-10 lg:py-12 text-white"
       aria-labelledby="project-heading"
     >
-      <header className="relative z-10 mb-6 flex items-end justify-between gap-6 min-[901px]:mb-8">
+      <header className="relative z-10 mb-6 sm:mb-8 flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4 sm:gap-6">
         <h2
           id="project-heading"
-          className="m-0 font-[TabaniDisplay,Inter,Poppins,Arial,Helvetica,sans-serif] text-[clamp(48px,7vh,76px)] font-black leading-none tracking-[0.02em] text-brand-red"
+          className="m-0 font-[TabaniDisplay,Inter,Poppins,Arial,Helvetica,sans-serif] text-[clamp(40px,8vw,76px)] font-black leading-none tracking-[0.02em] text-brand-red"
         >
           Projek
         </h2>
-        <p className="m-0 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-400 backdrop-blur-md">
+        <p className="m-0 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-400 backdrop-blur-md shrink-0">
           Grid · 03
         </p>
       </header>
 
-      <div className="relative z-10 grid grid-cols-1 gap-4 min-[700px]:grid-cols-3 min-[700px]:gap-5">
+      <div className="relative z-10 responsive-grid-1-2-3">
         {PROJECTS.map((project, index) => (
           <ProjectCard key={project.id} project={project} index={index} />
         ))}

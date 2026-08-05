@@ -9,8 +9,100 @@
   --color-dark: #111111;
   --font-hero: "TabaniDisplay", Inter, Poppins, Arial, Helvetica, sans-serif;
   --font-body: Inter, Poppins, Arial, Helvetica, sans-serif;
-  --breakpoint-mobile: 481px;
-  --breakpoint-tablet: 901px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
+}
+
+@layer utilities {
+  .section-padding-x {
+    padding-left: clamp(1rem, 4vw, 4rem);
+    padding-right: clamp(1rem, 4vw, 4rem);
+  }
+
+  .section-padding-y {
+    padding-top: clamp(3rem, 8vh, 6rem);
+    padding-bottom: clamp(3rem, 8vh, 6rem);
+  }
+
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+    padding-inline: 1rem;
+    padding-block: 0.75rem;
+  }
+
+  .line-length-control {
+    max-width: 65ch;
+  }
+
+  .responsive-grid-1-2 {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(1rem, 3vw, 2rem);
+  }
+
+  @media (min-width: 768px) {
+    .responsive-grid-1-2 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .responsive-grid-1-2-3 {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(1rem, 3vw, 1.5rem);
+  }
+
+  @media (min-width: 640px) {
+    .responsive-grid-1-2-3 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .responsive-grid-1-2-3 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
 }
 
 /* Carattere — script font for Footer giant text */

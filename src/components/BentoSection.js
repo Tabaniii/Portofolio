@@ -9,21 +9,21 @@ function StackAmbient() {
   return (
     <div className="absolute inset-0 overflow-hidden">
       <div className="absolute inset-y-0 right-0 w-[60%] bg-[radial-gradient(circle_at_center,rgba(120,6,6,0.18),transparent_58%)] opacity-70 transition-transform duration-500 group-hover:scale-105" />
-      <div className="absolute right-6 top-6 flex flex-wrap justify-end gap-2">
+      <div className="absolute right-3 sm:right-4 lg:right-6 top-3 sm:top-4 lg:top-6 flex flex-wrap justify-end gap-1.5 sm:gap-2 max-w-[55%] sm:max-w-[50%] lg:max-w-[45%]">
         {chips.map((chip) => (
           <span
             key={chip}
-            className="rounded-full border border-white/10 bg-black/50 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.14em] text-zinc-400"
+            className="rounded-full border border-white/10 bg-black/50 px-2.5 sm:px-3 py-0.5 sm:py-1 text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.14em] text-zinc-400"
           >
             {chip}
           </span>
         ))}
       </div>
-      <div className="absolute bottom-6 right-6 left-[42%] flex items-end gap-2 opacity-75">
-        <span className="h-8 w-2 rounded-full bg-white/10" />
-        <span className="h-14 w-2 rounded-full bg-white/10" />
-        <span className="h-20 w-2 rounded-full bg-brand-red/50" />
-        <span className="h-12 w-2 rounded-full bg-white/10" />
+      <div className="absolute bottom-4 sm:bottom-5 lg:bottom-6 right-4 sm:right-5 lg:right-6 left-[42%] sm:left-[45%] flex items-end gap-1.5 sm:gap-2 opacity-75">
+        <span className="h-6 sm:h-8 w-1.5 sm:w-2 rounded-full bg-white/10" />
+        <span className="h-10 sm:h-14 w-1.5 sm:w-2 rounded-full bg-white/10" />
+        <span className="h-16 sm:h-20 w-1.5 sm:w-2 rounded-full bg-brand-red/50" />
+        <span className="h-9 sm:h-12 w-1.5 sm:w-2 rounded-full bg-white/10" />
       </div>
     </div>
   );
@@ -67,12 +67,12 @@ function EducationAmbient() {
   return (
     <div className="absolute inset-0 overflow-hidden">
       <div className="absolute inset-y-0 right-0 w-[45%] bg-[linear-gradient(180deg,rgba(120,6,6,0.14),transparent)]" />
-      <div className="absolute right-8 top-8 bottom-8 w-px bg-white/10" />
-      <div className="absolute right-[27px] top-10 flex h-[calc(100%-5rem)] flex-col justify-between">
+      <div className="absolute right-5 sm:right-7 lg:right-8 top-5 sm:top-7 lg:top-8 bottom-16 sm:bottom-20 lg:bottom-24 w-px bg-white/10" />
+      <div className="absolute right-4 sm:right-[23px] lg:right-[27px] top-6 sm:top-8 lg:top-10 flex h-[calc(100%-8rem)] sm:h-[calc(100%-9rem)] lg:h-[calc(100%-10rem)] flex-col justify-between">
         {years.map((year, index) => (
           <div key={year} className="relative">
-            <span className={`absolute -left-[5px] top-1/2 h-3 w-3 -translate-y-1/2 rounded-full ${index === 1 ? "bg-brand-red" : "bg-white/30"}`} />
-            <span className="ml-5 text-[10px] font-bold uppercase tracking-[0.14em] text-zinc-500">
+            <span className={`absolute -left-[4px] sm:-left-[5px] top-1/2 h-2.5 w-2.5 sm:h-3 sm:w-3 -translate-y-1/2 rounded-full ${index === 1 ? "bg-brand-red" : "bg-white/30"}`} />
+            <span className="ml-4 sm:ml-5 text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.14em] text-zinc-500">
               {year}
             </span>
           </div>
@@ -84,16 +84,16 @@ function EducationAmbient() {
 
 function DkvAmbient() {
   const strips = ["type", "grid", "poster"];
+  const stripOffsets = ["translate-x-0 sm:translate-x-0", "translate-x-0 sm:translate-x-2", "translate-x-0 sm:translate-x-4"];
 
   return (
     <div className="absolute inset-0 overflow-hidden">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_right,rgba(120,6,6,0.18),transparent_55%)]" />
-      <div className="absolute right-6 top-6 flex w-[34%] flex-col gap-3">
+      <div className="absolute right-3 sm:right-4 lg:right-6 top-3 sm:top-5 lg:top-6 flex w-[42%] sm:w-[38%] lg:w-[34%] max-w-[55%] flex-col gap-2 sm:gap-3">
         {strips.map((strip, index) => (
           <div
             key={strip}
-            className="rounded-full border border-white/10 bg-black/40 px-4 py-2 text-[10px] font-black uppercase tracking-[0.22em] text-zinc-400 transition-transform duration-500"
-            style={{ transform: `translateX(${index * 8}px)` }}
+            className={`rounded-full border border-white/10 bg-black/40 px-2.5 sm:px-3 lg:px-4 py-1.5 sm:py-1.5 lg:py-2 text-[9px] sm:text-[10px] font-black uppercase tracking-[0.18em] sm:tracking-[0.22em] text-zinc-400 transition-transform duration-500 truncate ${stripOffsets[index]}`}
           >
             {strip}
           </div>
@@ -121,11 +121,12 @@ function CvAmbient() {
 
 export default function BentoSection() {
   return (
-    <section className="w-full h-screen bg-black text-white p-10 flex flex-col items-center justify-center overflow-hidden snap-start" aria-label="Navigasi portfolio">
-      <BentoGrid className="max-w-5xl mx-auto w-full auto-rows-[16rem]">
+    <section className="w-full min-h-screen bg-black text-white section-padding-x py-10 sm:py-12 lg:py-16 flex flex-col items-center justify-center overflow-hidden snap-start" aria-label="Navigasi portfolio">
+      <BentoGrid className="max-w-5xl mx-auto w-full">
         <BentoCard
           name="Stack"
-          className="col-span-2"
+          mobileName="Stack"
+          className="col-span-3 md:col-span-2 lg:col-span-2"
           entryFrom="left"
           revealDelay={0}
           Icon={LayersIcon}
@@ -138,7 +139,8 @@ export default function BentoSection() {
         />
         <BentoCard
           name="Projects"
-          className="col-span-1"
+          mobileName="Projek"
+          className="col-span-2 md:col-span-1 lg:col-span-1"
           entryFrom="right"
           revealDelay={0.08}
           Icon={DashboardIcon}
@@ -152,7 +154,8 @@ export default function BentoSection() {
 
         <BentoCard
           name="Philosophy"
-          className="col-span-1"
+          mobileName="Filosofi"
+          className="col-span-2 md:col-span-1 lg:col-span-1"
           entryFrom="left"
           revealDelay={0.16}
           Icon={BlendingModeIcon}
@@ -165,7 +168,8 @@ export default function BentoSection() {
         />
         <BentoCard
           name="Education"
-          className="col-span-2"
+          mobileName="Pendidikan"
+          className="col-span-3 md:col-span-2 lg:col-span-2"
           entryFrom="right"
           revealDelay={0.24}
           Icon={ReaderIcon}
@@ -179,7 +183,8 @@ export default function BentoSection() {
 
         <BentoCard
           name="dkv side"
-          className="col-span-2"
+          mobileName="Art"
+          className="col-span-3 md:col-span-2 lg:col-span-2"
           entryFrom="left"
           revealDelay={0.32}
           Icon={FrameIcon}
@@ -192,7 +197,8 @@ export default function BentoSection() {
         />
         <BentoCard
           name="Resume"
-          className="col-span-1"
+          mobileName="resume"
+          className="col-span-2 md:col-span-1 lg:col-span-1"
           entryFrom="right"
           revealDelay={0.4}
           Icon={FileTextIcon}

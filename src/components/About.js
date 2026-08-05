@@ -184,14 +184,14 @@ export default function About({ scrollContainerRef }) {
   return (
     <section
       ref={sectionRef}
-      className="w-full h-screen bg-black flex flex-col justify-between overflow-hidden snap-start"
+      className="w-full min-h-screen bg-black flex flex-col justify-between overflow-hidden snap-start py-4 sm:py-0"
       aria-label="Introduction"
     >
       {/* Marquee Atas - Menempel di ujung atas section */}
-      <div className="w-full pt-2">
+      <div className="w-full pt-2 sm:pt-2 shrink-0">
         <ScrollVelocity
           scrollContainerRef={scrollContainerRef}
-          className="text-[clamp(36px,7vw,120px)] font-black leading-[0.86] uppercase text-brand-red"
+          className="text-[clamp(28px,8vw,120px)] font-black leading-[0.86] uppercase text-brand-red"
           texts={[HELLO_ALL_MARQUEE_TEXT]}
           velocity={60}
           numCopies={8}
@@ -200,24 +200,24 @@ export default function About({ scrollContainerRef }) {
         />
       </div>
 
-      {/* Grid Layout Tengah - Dibagi rata 2 kolom (Kiri Gambar, Kanan Teks) */}
-      <div className="w-full grid grid-cols-2 gap-8 px-16 items-center max-[768px]:grid-cols-1 max-[768px]:px-6 flex-1">
+      {/* Grid Layout Tengah - Dibagi rata 2 kolom (Kiri Teks, Kanan Gambar) */}
+      <div className="w-full responsive-grid-1-2 section-padding-x items-center flex-1 py-4 sm:py-8 md:py-4 my-auto">
         {/* SEBELAH KIRI: Teks Perkenalan */}
-        <div ref={introRef} className="flex items-center justify-start text-left will-change-transform">
-          <div className="w-full max-w-[580px] flex flex-col gap-4">
-            <p className="m-0 text-[clamp(12px,1.1vw,16px)] font-black leading-none tracking-[0.18em] uppercase text-brand-red">
+        <div ref={introRef} className="flex items-center justify-start text-left will-change-transform order-2 md:order-1">
+          <div className="w-full max-w-[580px] flex flex-col gap-3 sm:gap-4">
+            <p className="m-0 text-[clamp(11px,2.5vw,14px)] font-black leading-none tracking-[0.18em] uppercase text-brand-red">
               introduction
             </p>
 
-            <h2 className="m-0 text-[clamp(36px,4.5vw,64px)] font-black leading-[0.95] lowercase text-white">
+            <h2 className="m-0 text-[clamp(32px,10vw,64px)] font-black leading-[0.95] lowercase text-white">
               i'm tabani
             </h2>
 
-            <div className="flex flex-col gap-3 mt-2">
+            <div className="flex flex-col gap-2 sm:gap-3 mt-1 sm:mt-2">
               {INTRO_PARAGRAPHS.map((paragraph) => (
                 <p
                   key={paragraph}
-                  className="w-full m-0 text-[clamp(14px,1.8vh,19px)] font-medium leading-[1.5] tracking-[0.02em] text-zinc-300"
+                  className="w-full m-0 text-[clamp(14px,3vw,17px)] font-medium leading-[1.6] tracking-[0.02em] text-zinc-300 line-length-control"
                 >
                   {paragraph}
                 </p>
@@ -227,8 +227,8 @@ export default function About({ scrollContainerRef }) {
         </div>
 
         {/* SEBELAH KANAN: TiltedCard */}
-        <div ref={cardRef} className="text-brand-red flex items-center justify-center will-change-transform">
-          <div className="w-full max-w-[400px] aspect-square">
+        <div ref={cardRef} className="text-brand-red flex items-center justify-center will-change-transform order-1 md:order-2">
+          <div className="w-full max-w-[280px] sm:max-w-[340px] md:max-w-[400px] aspect-square">
             <TiltedCard
               imageSrc="/assets/img/homepage.jpg"
               altText="Tabani portrait"
@@ -243,12 +243,12 @@ export default function About({ scrollContainerRef }) {
               showTooltip
               displayOverlayContent
               overlayContent={
-                <div className="flex h-full w-full items-end justify-start rounded-[15px] bg-gradient-to-t from-black/85 via-black/20 to-transparent p-5">
+                <div className="flex h-full w-full items-end justify-start rounded-[15px] bg-gradient-to-t from-black/85 via-black/20 to-transparent p-4 sm:p-5">
                   <div className="flex flex-col gap-1 text-left">
-                    <p className="m-0 text-[clamp(26px,3vw,40px)] font-black leading-none text-white">
+                    <p className="m-0 text-[clamp(22px,6vw,40px)] font-black leading-none text-white">
                       Tabani
                     </p>
-                    <p className="m-0 text-[11px] font-extrabold uppercase tracking-[0.2em] text-white">
+                    <p className="m-0 text-[clamp(10px,2vw,12px)] font-extrabold uppercase tracking-[0.2em] text-white">
                       full-stack web developer
                     </p>
                   </div>
@@ -260,10 +260,10 @@ export default function About({ scrollContainerRef }) {
       </div>
 
       {/* Marquee Bawah - Menempel di ujung bawah section */}
-      <div className="w-full pb-2">
+      <div className="w-full pb-2 sm:pb-2 shrink-0">
         <ScrollVelocity
           scrollContainerRef={scrollContainerRef}
-          className="text-[clamp(36px,7vw,120px)] font-black leading-[0.86] uppercase text-brand-red"
+          className="text-[clamp(28px,8vw,120px)] font-black leading-[0.86] uppercase text-brand-red"
           texts={[HELLO_ALL_MARQUEE_TEXT]}
           velocity={-60}
           numCopies={8}
