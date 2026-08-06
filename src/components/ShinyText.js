@@ -84,17 +84,19 @@ export default function ShinyText({
   }, []);
 
   const maskPosition = useTransform(progress, (p) => `${150 - p * 2}% center`);
+  const strokeValue =
+    typeof strokeWidth === "number" ? `${strokeWidth}px` : strokeWidth;
 
   const baseStyle = {
     color: "transparent",
-    WebkitTextStroke: `${strokeWidth}px ${color}`,
-    textStroke: `${strokeWidth}px ${color}`,
+    WebkitTextStroke: `${strokeValue} ${color}`,
+    textStroke: `${strokeValue} ${color}`,
   };
 
   const shineStyle = {
     color: "transparent",
-    WebkitTextStroke: `${strokeWidth}px ${shineColor}`,
-    textStroke: `${strokeWidth}px ${shineColor}`,
+    WebkitTextStroke: `${strokeValue} ${shineColor}`,
+    textStroke: `${strokeValue} ${shineColor}`,
     WebkitMaskImage: `linear-gradient(${spread}deg, transparent 0%, transparent 35%, #000 50%, transparent 65%, transparent 100%)`,
     maskImage: `linear-gradient(${spread}deg, transparent 0%, transparent 35%, #000 50%, transparent 65%, transparent 100%)`,
     WebkitMaskSize: "200% auto",

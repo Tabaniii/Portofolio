@@ -104,6 +104,7 @@ export function DirectionalSlide({
   once = false,
   amount = 0.18,
   margin = "0px 0px -72px 0px",
+  ...rest
 }) {
   const reduceMotion = useReducedMotion();
   const Component = getMotionComponent(as);
@@ -124,6 +125,7 @@ export function DirectionalSlide({
           ? { duration: 0.01 }
           : { ...stableTween, duration, delay }
       }
+      {...rest}
     >
       {children}
     </Component>

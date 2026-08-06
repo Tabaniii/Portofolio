@@ -128,6 +128,77 @@ h6 {
   --color-red: #780606;
 }
 
+/* Hero — mobile: TABANI vertikal + lebar; tablet horizontal; desktop landscape locked */
+.hero-section {
+  --hero-stroke: 4px;
+  --hero-letter-scale-x: 4.5;
+}
+
+.hero-title-track {
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.25rem 0;
+  font-size: clamp(96px, 16vh, 180px);
+  line-height: 0.78;
+}
+
+.hero-title-letter {
+  font-size: 1em;
+  transform: scaleX(var(--hero-letter-scale-x));
+  transform-origin: center center;
+}
+
+.hero-image {
+  object-position: center 28%;
+}
+
+/* Tablet+ — horizontal again (iPad follow-up later); desktop landscape locked below */
+@media (min-width: 768px) {
+  .hero-section {
+    --hero-stroke: 5.5px;
+    --hero-letter-scale-x: 1;
+  }
+
+  .hero-title-track {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 0.75rem;
+    font-size: clamp(180px, 42vmin, 520px);
+    line-height: 0.72;
+  }
+
+  .hero-title-letter {
+    transform: none;
+  }
+
+  .hero-image {
+    object-position: center 26%;
+  }
+}
+
+/* Desktop landscape only — keep the approved desktop composition untouched */
+@media (min-width: 1024px) and (orientation: landscape) {
+  .hero-section {
+    --hero-stroke: 8px;
+  }
+
+  .hero-title-track {
+    padding-left: 10px;
+    padding-right: 10px;
+    font-size: inherit;
+  }
+
+  .hero-title-letter {
+    font-size: 1250px;
+  }
+
+  .hero-image {
+    object-position: center;
+  }
+}
+
 @keyframes projectband-single-glitch {
   0%,
   100% {
