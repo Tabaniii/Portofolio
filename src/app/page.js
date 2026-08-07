@@ -13,7 +13,7 @@ export default function Home() {
   useHomepageScripts();
 
   return (
-    <main ref={mainRef} className="w-full h-screen overflow-y-scroll snap-y snap-mandatory scroll-smooth" id="top">
+    <main ref={mainRef} className="w-full h-[100dvh] overflow-y-scroll snap-y snap-mandatory scroll-smooth bg-black" id="top">
       {/* Section 1: Hero */}
       <Hero />
 

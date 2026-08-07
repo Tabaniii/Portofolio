@@ -24,8 +24,8 @@ const BentoGrid = ({ children, className, ...props }) => {
   return (
     <div
       className={cn(
-        "grid w-full grid-cols-5 md:grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-3 lg:gap-4",
-        "auto-rows-[minmax(8.25rem,auto)] md:auto-rows-[minmax(18rem,auto)]",
+        "grid w-full grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-3 lg:gap-4",
+        "auto-rows-auto items-start md:auto-rows-[minmax(18rem,auto)] lg:items-stretch",
         "lg:grid-rows-[repeat(3,minmax(0,1fr))] lg:h-full lg:min-h-0",
         className
       )}
@@ -171,7 +171,7 @@ const BentoCard = ({
         "shadow-[0_14px_36px_rgba(0,0,0,0.34),inset_0_1px_0_rgba(255,255,255,0.03)]",
         "transition-[transform,border-color] duration-200 ease-out active:scale-[0.985]",
         "md:transition-[border-color,transform] md:duration-300 md:hover:border-[rgba(120,6,6,0.35)] md:active:scale-100",
-        "lg:h-full lg:min-h-0",
+        "lg:h-full lg:min-h-0 h-full",
         "cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-red",
         isNativeNewTabLink && "no-underline text-inherit",
         className
@@ -182,7 +182,7 @@ const BentoCard = ({
       <div className="pointer-events-none absolute inset-0 opacity-35 md:opacity-100 [&_.bento-marquee]:pointer-events-auto">{background}</div>
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.03),transparent_28%,transparent_72%,rgba(120,6,6,0.1))] opacity-80 md:opacity-70 md:transition-opacity md:duration-300 md:group-hover:opacity-100" />
 
-      <div className="relative z-10 flex h-full min-h-[8.25rem] md:min-h-[18rem] lg:min-h-0 transform-gpu flex-col justify-between p-4 md:p-5 lg:p-5">
+      <div className="relative z-10 flex h-full min-h-0 md:min-h-[18rem] lg:min-h-0 transform-gpu flex-col justify-between p-3.5 sm:p-4 md:p-5 lg:p-5">
         <div className="flex max-w-[88%] md:max-w-[60%] lg:max-w-[85%] flex-col gap-1.5 md:gap-2 lg:gap-3">
           {eyebrow ? (
             <span className="text-[9px] sm:text-[10px] md:text-[clamp(10px,2vw,11px)] font-black uppercase tracking-[0.2em] md:tracking-[0.22em] text-brand-red">

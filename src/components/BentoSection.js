@@ -129,12 +129,12 @@ function CvAmbient() {
 
 export default function BentoSection() {
   return (
-    <section className="w-full min-h-screen lg:h-[100svh] lg:max-h-[100svh] bg-black text-white section-padding-x py-10 sm:py-12 lg:py-5 flex flex-col items-center justify-center overflow-hidden snap-start snap-always" aria-label="Navigasi portfolio">
-      <BentoGrid className="max-w-5xl mx-auto w-full flex-1 min-h-0 lg:max-h-full">
+    <section className="w-full min-h-[100dvh] bg-black text-white section-padding-x py-8 sm:py-12 lg:min-h-0 lg:h-[100svh] lg:max-h-[100svh] lg:py-5 flex flex-col items-center justify-start lg:justify-center overflow-hidden snap-start snap-always" aria-label="Navigasi portfolio">
+      <BentoGrid className="max-w-5xl mx-auto w-full lg:flex-1 lg:min-h-0 lg:max-h-full">
         <BentoCard
           name="Stack"
           mobileName="Stack"
-          className="col-span-3 md:col-span-2 lg:col-span-2"
+          className="col-span-1 min-h-[12.5rem] md:col-span-2 md:min-h-[18rem] lg:col-span-2 lg:min-h-0"
           entryFrom="left"
           revealOnce
           revealDelay={0}
@@ -148,7 +148,7 @@ export default function BentoSection() {
         <BentoCard
           name="Projects"
           mobileName="Projek"
-          className="col-span-2 md:col-span-1 lg:col-span-1"
+          className="col-span-1 min-h-[10rem] md:col-span-1 md:min-h-[18rem] lg:col-span-1 lg:min-h-0"
           entryFrom="right"
           revealOnce
           revealDelay={0.08}
@@ -163,7 +163,7 @@ export default function BentoSection() {
         <BentoCard
           name="Philosophy"
           mobileName="Filosofi"
-          className="col-span-2 md:col-span-1 lg:col-span-1"
+          className="col-span-1 min-h-[10rem] md:col-span-1 md:min-h-[18rem] lg:col-span-1 lg:min-h-0"
           entryFrom="left"
           revealOnce
           revealDelay={0.16}
@@ -177,7 +177,7 @@ export default function BentoSection() {
         <BentoCard
           name="Education"
           mobileName="Pendidikan"
-          className="col-span-3 md:col-span-2 lg:col-span-2"
+          className="col-span-1 min-h-[12.5rem] md:col-span-2 md:min-h-[18rem] lg:col-span-2 lg:min-h-0"
           entryFrom="right"
           revealOnce
           revealDelay={0.24}
@@ -192,7 +192,7 @@ export default function BentoSection() {
         <BentoCard
           name="Art"
           mobileName="Art"
-          className="col-span-3 md:col-span-2 lg:col-span-2"
+          className="col-span-1 min-h-[12.5rem] md:col-span-2 md:min-h-[18rem] lg:col-span-2 lg:min-h-0"
           entryFrom="left"
           revealOnce
           revealDelay={0.32}
@@ -206,7 +206,7 @@ export default function BentoSection() {
         <BentoCard
           name="Resume"
           mobileName="resume"
-          className="col-span-2 md:col-span-1 lg:col-span-1"
+          className="col-span-1 min-h-[10rem] md:col-span-1 md:min-h-[18rem] lg:col-span-1 lg:min-h-0"
           entryFrom="right"
           revealOnce
           revealDelay={0.4}
