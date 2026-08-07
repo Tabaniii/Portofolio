@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Hero from "../components/Hero";
 import About from "../components/About";
 import BentoSection from "../components/BentoSection";
 import ProjectBand from "../components/ProjectBand";
 import Footer from "../components/Footer";
+import LenisProvider from "../components/LenisProvider";
 import { useHomepageScripts } from "../hooks/useHomepageScripts";
 import { consumeScrollTarget } from "../components/ReturnToBentoLink";
 
@@ -22,40 +23,81 @@ function scrollScrollerToId(scroller, id) {
 }
 
 export default function Home() {
-  const mainRef = useRef(null);
+  const lenisRef = useRef(null);
+  const scrollContainerRef = useRef(null);
+  const [scrollReady, setScrollReady] = useState(false);
   useHomepageScripts();
 
+  // Bind Lenis wrapper sebagai scroller untuk Framer Motion + GSAP.
   useEffect(() => {
-    const sectionId = consumeScrollTarget();
-    if (!sectionId) return;
+    let frame = 0;
+    let tries = 0;
 
-    if (sectionId !== "bento" && !document.getElementById(sectionId)) return;
+    const bind = () => {
+      const wrapper = lenisRef.current?.wrapper ?? null;
+      if (wrapper) {
+        scrollContainerRef.current = wrapper;
+        setScrollReady(true);
+        return;
+      }
+
+      if (tries < 30) {
+        tries += 1;
+        frame = requestAnimationFrame(bind);
+      }
+    };
+
+    bind();
+    return () => cancelAnimationFrame(frame);
+  }, []);
+
+  useEffect(() => {
+    if (!scrollReady) return undefined;
+
+    const sectionId = consumeScrollTarget();
+    if (!sectionId) return undefined;
+
+    if (sectionId !== "bento" && !document.getElementById(sectionId)) {
+      return undefined;
+    }
 
     const timers = [0, 50, 150, 350, 700].map((delay) =>
       window.setTimeout(() => {
-        scrollScrollerToId(mainRef.current, sectionId);
+        const scroller = lenisRef.current?.wrapper ?? scrollContainerRef.current;
+        scrollScrollerToId(scroller, sectionId);
       }, delay),
     );
 
     return () => timers.forEach((timer) => window.clearTimeout(timer));
-  }, []);
+  }, [scrollReady]);
 
   return (
-    <main ref={mainRef} className="w-full h-[100dvh] overflow-y-scroll snap-y snap-mandatory scroll-smooth bg-black" id="top">
+    <LenisProvider
+      ref={lenisRef}
+      id="top"
+      className="w-full h-[100dvh] overflow-y-auto overscroll-none bg-black"
+    >
       {/* Section 1: Hero */}
-      <Hero id="hero"/>
+      <Hero id="hero" />
 
-      {/* Section 2: Selected Projects — shown first for recruiter/client UX */}
-      <ProjectBand id="projects"/>
+      {/* Section 2: Selected Projects — sticky stacking cards */}
+      <ProjectBand
+        key={scrollReady ? "projects-ready" : "projects-pending"}
+        scrollContainerRef={scrollContainerRef}
+      />
 
       {/* Section 3: About Me — intro, philosophy, background */}
-      <About scrollContainerRef={mainRef} id="about"/>
+      <About
+        key={scrollReady ? "about-ready" : "about-pending"}
+        scrollContainerRef={scrollContainerRef}
+        id="about"
+      />
 
       {/* Section 4: Workflow & Stack — process, tools, bento nav */}
-      <BentoSection id="bento"/>
+      <BentoSection id="bento" />
 
       {/* Section 5: Contact & footer */}
-      <Footer id="footer"/>
-    </main>
+      <Footer id="footer" />
+    </LenisProvider>
   );
 }

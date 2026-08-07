@@ -1,0 +1,99 @@
+"use client";
+
+import { useRef } from "react";
+import { useScroll } from "framer-motion";
+import Card from "./Card";
+
+/**
+ * Project data untuk sticky stacking cards.
+ * Warna pastel dibedakan per kartu supaya stack terbaca jelas.
+ */
+export const PROJECTS = [
+  {
+    id: "ride62",
+    label: "01",
+    title: "Ride62",
+    description:
+      "Mobility booking flow dengan realtime dispatch, live status, dan operasi yang terasa cepat di banyak surface.",
+    price: "Live",
+    color: "#F3E0D0",
+    cover: "/assets/img/darkmodefix.png",
+    href: "https://ride62.vercel.app/",
+    status: "live",
+    stack: {
+      frontend: ["Bootstrap", "Tailwind CSS", "jQuery", "Vite", "Sass", "Laravel Echo"],
+      backend: ["PHP", "Laravel", "Pusher PHP Server", "Vercel Blob PHP"],
+      database: ["MySQL", "MariaDB", "PostgreSQL", "SQLite"],
+      deployment: ["Vercel"],
+    },
+  },
+  {
+    id: "sajjin",
+    label: "02",
+    title: "SajiIn",
+    description:
+      "Ordering experience dengan checkout, media asset handling, dan transaksi yang dibungkus dalam flow yang padat.",
+    price: "Live",
+    color: "#D8E8DC",
+    cover: "/assets/img/SajiIndarkmode.png",
+    href: "https://sajihub.vercel.app",
+    status: "live",
+    stack: {
+      frontend: ["HTML", "CSS", "Tailwind", "Vanilla JavaScript"],
+      backend: ["PHP Native", "MySQLi", ".env Loader", "Midtrans Snap", "Cloudinary"],
+      database: ["MySQL-Compatible DB", "TiDB Cloud"],
+      deployment: ["Vercel"],
+    },
+  },
+  {
+    id: "project-03",
+    label: "03",
+    title: "Project 03",
+    description:
+      "Access masih dikunci. Surface ini sengaja tampil kayak data field terenkripsi yang belum dibuka.",
+    price: "Soon",
+    color: "#EBD4D4",
+    href: "#",
+    status: "soon",
+    stack: "Coming Soon",
+  },
+];
+
+/**
+ * Scroll container untuk efek sticky stacking cards.
+ * Progress section di-share ke tiap Card untuk scale/dim.
+ */
+export default function ProjectsSection({
+  projects = PROJECTS,
+  scrollContainerRef,
+}) {
+  const containerRef = useRef(null);
+
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    container: scrollContainerRef,
+    offset: ["start start", "end end"],
+  });
+
+  return (
+    <div ref={containerRef} className="relative w-full">
+      {projects.map((project, index) => {
+        const targetScale = 1 - (projects.length - index) * 0.045;
+        const start = index / projects.length;
+        const end = 1;
+
+        return (
+          <Card
+            key={project.id}
+            project={project}
+            index={index}
+            progress={scrollYProgress}
+            range={[start, end]}
+            targetScale={targetScale}
+            scrollContainerRef={scrollContainerRef}
+          />
+        );
+      })}
+    </div>
+  );
+}
