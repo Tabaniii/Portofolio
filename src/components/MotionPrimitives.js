@@ -115,9 +115,11 @@ export function DirectionalSlide({
       className={cn(className)}
       initial={{
         x: reduceMotion ? 0 : offset,
+        opacity: reduceMotion ? 1 : 0,
       }}
       whileInView={{
         x: 0,
+        opacity: 1,
       }}
       viewport={{ once, amount, margin }}
       transition={

@@ -9,6 +9,28 @@
   --color-dark: #111111;
   --font-hero: "TabaniDisplay", Inter, Poppins, Arial, Helvetica, sans-serif;
   --font-body: Inter, Poppins, Arial, Helvetica, sans-serif;
+  --animate-marquee: marquee var(--duration) linear infinite;
+  --animate-marquee-vertical: marquee-vertical var(--duration) linear infinite;
+
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+
+    to {
+      transform: translateX(calc(-100% - var(--gap)));
+    }
+  }
+
+  @keyframes marquee-vertical {
+    from {
+      transform: translateY(0);
+    }
+
+    to {
+      transform: translateY(calc(-100% - var(--gap)));
+    }
+  }
 }
 
 *,
@@ -243,5 +265,14 @@ h6 {
     transition: none !important;
     transform: none !important;
     opacity: 1 !important;
+  }
+
+  .animate-marquee,
+  .animate-marquee-vertical {
+    animation: none !important;
+  }
+
+  .bento-marquee figure {
+    filter: none !important;
   }
 }

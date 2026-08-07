@@ -351,9 +351,6 @@ export default function ProjectBand() {
         >
           Projek
         </h2>
-        <p className="m-0 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-400 backdrop-blur-md shrink-0">
-          Grid · 03
-        </p>
       </header>
 
       <div className="relative z-10 responsive-grid-1-2-3">
