@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ArrowRightIcon } from "@radix-ui/react-icons";
 import { useEffect, useState } from "react";
@@ -67,6 +68,13 @@ const BentoCard = ({
   const linkRel = cardRel ?? (opensNewTab ? "noopener noreferrer" : undefined);
   const isExternalUrl = /^https?:\/\//i.test(finalHref);
   const isFile = /\.(pdf|png|jpg|jpeg|svg|docx|doc|xlsx|xls|zip)$/i.test(finalHref);
+  const isInternalAppRoute =
+    finalHref.startsWith("/") &&
+    !finalHref.startsWith("//") &&
+    !isExternalUrl &&
+    !isFile &&
+    !cardDownload &&
+    !opensNewTab;
   const isNativeNewTabLink = opensNewTab && isExternalUrl && !cardDownload;
 
   const openInNewTab = () => {
@@ -141,21 +149,27 @@ const BentoCard = ({
         target: "_blank",
         rel: linkRel,
       }
-    : {
-        role: "link",
-        tabIndex: 0,
-        onClick: handleNavigate,
-        onKeyDown: (event) => {
-          if (event.key === "Enter" || event.key === " ") {
-            event.preventDefault();
-            handleNavigate();
-          }
-        },
-      };
+    : isInternalAppRoute
+      ? {
+          href: finalHref,
+        }
+      : {
+          role: "link",
+          tabIndex: 0,
+          onClick: handleNavigate,
+          onKeyDown: (event) => {
+            if (event.key === "Enter" || event.key === " ") {
+              event.preventDefault();
+              handleNavigate();
+            }
+          },
+        };
+
+  const SlideTag = isNativeNewTabLink ? "a" : isInternalAppRoute ? Link : "div";
 
   return (
     <DirectionalSlide
-      as={isNativeNewTabLink ? "a" : "div"}
+      as={SlideTag}
       key={name}
       direction={entryFrom}
       delay={isMobile ? 0 : revealDelay}
@@ -173,7 +187,7 @@ const BentoCard = ({
         "md:transition-[border-color,transform] md:duration-300 md:hover:border-[rgba(120,6,6,0.35)] md:active:scale-100",
         "lg:h-full lg:min-h-0 h-full",
         "cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-red",
-        isNativeNewTabLink && "no-underline text-inherit",
+        (isNativeNewTabLink || isInternalAppRoute) && "no-underline text-inherit",
         className
       )}
       {...interactiveProps}
@@ -225,7 +239,7 @@ const BentoCard = ({
 
       {cta ? (
         <div className="pointer-events-none absolute bottom-0 z-20 hidden w-full translate-y-10 transform-gpu flex-row items-center p-4 md:p-5 opacity-0 transition-all duration-300 ease-out group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:translate-y-0 group-focus-within:opacity-100 md:flex">
-          {isNativeNewTabLink ? (
+          {isNativeNewTabLink || isInternalAppRoute ? (
             <span className="inline-flex items-center gap-1.5 text-[clamp(12px,2vw,14px)] font-medium text-zinc-400">
               {cta}
               <ArrowRightIcon className="h-4 w-4 rtl:rotate-180 shrink-0" />

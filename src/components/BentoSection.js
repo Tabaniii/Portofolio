@@ -127,9 +127,9 @@ function CvAmbient() {
   );
 }
 
-export default function BentoSection() {
+export default function BentoSection({ id = "bento" }) {
   return (
-    <section className="w-full min-h-[100dvh] bg-black text-white section-padding-x py-8 sm:py-12 lg:min-h-0 lg:h-[100svh] lg:max-h-[100svh] lg:py-5 flex flex-col items-center justify-start lg:justify-center overflow-hidden snap-start snap-always" aria-label="Navigasi portfolio">
+    <section id={id} className="w-full min-h-[100dvh] bg-black text-white section-padding-x py-8 sm:py-12 lg:min-h-0 lg:h-[100svh] lg:max-h-[100svh] lg:py-5 flex flex-col items-center justify-start lg:justify-center overflow-hidden snap-start snap-always" aria-label="Navigasi portfolio">
       <BentoGrid className="max-w-5xl mx-auto w-full lg:flex-1 lg:min-h-0 lg:max-h-full">
         <BentoCard
           name="Stack"
@@ -141,7 +141,7 @@ export default function BentoSection() {
           Icon={LayersIcon}
           eyebrow="capabilities"
           description="Core tools and systems."
-          href="#stack"
+          href="/stack"
           cta="View Stack"
           background={<StackAmbient />}
         />
@@ -170,7 +170,7 @@ export default function BentoSection() {
           Icon={BlendingModeIcon}
           eyebrow="mindset"
           description="Principles behind execution."
-          href="#filosofi"
+          href="/philosophy"
           cta="Read Philosophy"
           background={<PhilosophyAmbient />}
         />

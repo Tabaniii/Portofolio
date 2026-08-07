@@ -20,6 +20,9 @@ export const stableTween = {
 
 function getMotionComponent(as) {
   if (!as) return motion.div;
+  if (typeof as !== "string") {
+    return typeof motion.create === "function" ? motion.create(as) : motion(as);
+  }
   return motion[as] ?? motion.div;
 }
 

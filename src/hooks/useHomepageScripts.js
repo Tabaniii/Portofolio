@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 
-const IN_PAGE_TARGETS = new Set(["projek", "contact", "top"]);
+const IN_PAGE_TARGETS = new Set(["projek", "contact", "top", "bento"]);
 
 // Desktop hero = layar lebar landscape (laptop/monitor).
 const DESKTOP_HERO_MQ =
@@ -162,6 +162,19 @@ export function useHomepageScripts() {
       anchor.addEventListener("click", handleInPageClick);
     });
 
+    const scrollToHashTarget = () => {
+      const id = window.location.hash?.replace(/^#/, "");
+      if (!id || !IN_PAGE_TARGETS.has(id)) return;
+      const target = document.getElementById(id);
+      if (!target) return;
+      requestAnimationFrame(() => {
+        target.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    };
+
+    scrollToHashTarget();
+    window.addEventListener("hashchange", scrollToHashTarget);
+
     fitHeroTitle();
 
     const fontsReady = document.fonts?.ready;
@@ -198,6 +211,7 @@ export function useHomepageScripts() {
         heroImg.removeEventListener("load", onHeroLoad);
       }
       window.removeEventListener("resize", onResize);
+      window.removeEventListener("hashchange", scrollToHashTarget);
       clearTimeout(resizeTimer);
     };
   }, []);

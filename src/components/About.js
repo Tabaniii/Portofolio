@@ -37,138 +37,30 @@ const INTRO_PARAGRAPHS = [
 export default function About({ scrollContainerRef }) {
   const sectionRef = useRef(null);
   const introRef = useRef(null);
-  const cardRef = useRef(null);
 
   useEffect(() => {
     const section = sectionRef.current;
     const intro = introRef.current;
-    const card = cardRef.current;
 
-    if (!section || !intro || !card) return;
+    if (!section || !intro) return;
 
     const ctx = gsap.context(() => {
-      const introTimeline = gsap.timeline({
-        scrollTrigger: {
-          trigger: section,
-          scroller: scrollContainerRef?.current || undefined,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: 0.95,
-        },
-      });
-
-      introTimeline.fromTo(
+      gsap.fromTo(
         intro,
+        { opacity: 0, y: 24 },
         {
-          x: -42,
-          opacity: 0.35,
-          filter: "blur(8px)",
-        },
-        {
-          keyframes: [
-            {
-              x: -18,
-              opacity: 0.68,
-              filter: "blur(4px)",
-              duration: 0.45,
-              ease: "sine.out",
-            },
-            {
-              x: 0,
-              opacity: 1,
-              filter: "blur(0px)",
-              duration: 0.85,
-              ease: "power2.out",
-            },
-            {
-              x: -28,
-              opacity: 0.62,
-              filter: "blur(5px)",
-              duration: 0.7,
-              ease: "power1.inOut",
-            },
-          ],
+          opacity: 1,
+          y: 0,
+          duration: 0.7,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: section,
+            scroller: scrollContainerRef?.current || undefined,
+            start: "top 72%",
+            toggleActions: "play none none reverse",
+          },
         }
       );
-
-      const cardTimeline = gsap.timeline({
-        scrollTrigger: {
-          trigger: section,
-          scroller: scrollContainerRef?.current || undefined,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: 1.15,
-        },
-      });
-
-      cardTimeline
-        .fromTo(
-          card,
-          {
-            xPercent: 18,
-            yPercent: 8,
-            rotate: 1.8,
-            skewX: 5,
-            scaleX: 0.965,
-            scaleY: 1.035,
-            opacity: 0.82,
-            filter: "blur(12px)",
-            transformOrigin: "right center",
-          },
-          {
-            keyframes: [
-              {
-                xPercent: 10,
-                yPercent: 4,
-                rotate: 1.2,
-                skewX: 3,
-                scaleX: 1.02,
-                scaleY: 0.985,
-                opacity: 0.92,
-                filter: "blur(8px)",
-                duration: 0.45,
-                ease: "power2.out",
-              },
-              {
-                xPercent: 0,
-                yPercent: 0,
-                rotate: 0,
-                skewX: 0,
-                scaleX: 1,
-                scaleY: 1,
-                opacity: 1,
-                filter: "blur(0px)",
-                duration: 0.9,
-                ease: "elastic.out(0.9, 0.65)",
-              },
-              {
-                xPercent: -3,
-                yPercent: -1.5,
-                rotate: -0.4,
-                skewX: -1.2,
-                scaleX: 1.01,
-                scaleY: 0.992,
-                opacity: 0.99,
-                filter: "blur(1px)",
-                duration: 0.35,
-                ease: "sine.inOut",
-              },
-              {
-                xPercent: 18,
-                yPercent: -7,
-                rotate: -1.6,
-                skewX: -5,
-                scaleX: 0.965,
-                scaleY: 1.03,
-                opacity: 0.82,
-                filter: "blur(12px)",
-                duration: 0.9,
-                ease: "power2.inOut",
-              },
-            ],
-          },
-          0
-        );
     }, section);
 
     const timer = setTimeout(() => {
@@ -203,7 +95,7 @@ export default function About({ scrollContainerRef }) {
       {/* Grid Layout Tengah - Dibagi rata 2 kolom (Kiri Teks, Kanan Gambar) */}
       <div className="w-full responsive-grid-1-2 section-padding-x items-center flex-1 py-4 sm:py-8 md:py-4 my-auto">
         {/* SEBELAH KIRI: Teks Perkenalan */}
-        <div ref={introRef} className="flex items-center justify-start text-left will-change-transform order-2 md:order-1">
+        <div ref={introRef} className="flex items-center justify-start text-left order-2 md:order-1">
           <div className="w-full max-w-[580px] flex flex-col gap-3 sm:gap-4">
             <p className="m-0 text-[clamp(11px,2.5vw,14px)] font-black leading-none tracking-[0.18em] uppercase text-brand-red">
               introduction
@@ -227,7 +119,7 @@ export default function About({ scrollContainerRef }) {
         </div>
 
         {/* SEBELAH KANAN: TiltedCard */}
-        <div ref={cardRef} className="text-brand-red flex items-center justify-center will-change-transform order-1 md:order-2">
+        <div className="text-brand-red flex items-center justify-center order-1 md:order-2">
           <div className="w-full max-w-[280px] sm:max-w-[340px] md:max-w-[400px] aspect-square">
             <TiltedCard
               imageSrc="/assets/img/homepage.jpg"
