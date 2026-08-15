@@ -6,7 +6,7 @@ import Card from "./Card";
 
 /**
  * Project data untuk sticky stacking cards.
- * Warna pastel dibedakan per kartu supaya stack terbaca jelas.
+ * Palet merah/hitam dibedakan per kartu supaya stack terbaca jelas.
  */
 export const PROJECTS = [
   {
@@ -16,7 +16,8 @@ export const PROJECTS = [
     description:
       "Mobility booking flow dengan realtime dispatch, live status, dan operasi yang terasa cepat di banyak surface.",
     price: "Live",
-    color: "#F3E0D0",
+    color: "#780606",
+    tone: "red",
     cover: "/assets/img/darkmodefix.png",
     href: "https://ride62.vercel.app/",
     status: "live",
@@ -34,7 +35,8 @@ export const PROJECTS = [
     description:
       "Ordering experience dengan checkout, media asset handling, dan transaksi yang dibungkus dalam flow yang padat.",
     price: "Live",
-    color: "#D8E8DC",
+    color: "#000000",
+    tone: "black",
     cover: "/assets/img/SajiIndarkmode.png",
     href: "https://sajihub.vercel.app",
     status: "live",
@@ -52,7 +54,8 @@ export const PROJECTS = [
     description:
       "Access masih dikunci. Surface ini sengaja tampil kayak data field terenkripsi yang belum dibuka.",
     price: "Soon",
-    color: "#EBD4D4",
+    color: "#780606",
+    tone: "red",
     href: "#",
     status: "soon",
     stack: "Coming Soon",

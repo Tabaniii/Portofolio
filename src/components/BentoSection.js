@@ -4,16 +4,15 @@ import {
   Layers,
   LayoutDashboard,
   Compass,
-  GraduationCap,
   Frame,
   FileText,
 } from "lucide-react";
 import { BentoGrid, BentoCard } from "./BentoGrid";
+import EducationBentoCard from "./EducationBentoCard";
 import StackBeam from "./bento/StackBeam";
 import ProjectsMarquee from "./bento/ProjectsMarquee";
 import {
   PhilosophyVisual,
-  EducationVisual,
   ArtVisual,
   ResumeVisual,
 } from "./bento/MiniVisuals";
@@ -75,19 +74,11 @@ export default function BentoSection({ id = "bento" }) {
           background={<PhilosophyVisual />}
         />
 
-        <BentoCard
-          name="Education"
-          mobileName="Pendidikan"
+        <EducationBentoCard
           className="col-span-1 min-h-[13rem] md:col-span-2 md:min-h-[17rem] lg:col-span-1 lg:min-h-0"
           entryFrom="right"
           revealOnce
           revealDelay={0.14}
-          Icon={GraduationCap}
-          eyebrow="journey"
-          description="Academic and learning path."
-          href="#pendidikan"
-          cta="View"
-          background={<EducationVisual />}
         />
 
         <BentoCard

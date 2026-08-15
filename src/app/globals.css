@@ -12,9 +12,19 @@
   --font-bricolage: "Bricolage Grotesque", Inter, Poppins, Arial, Helvetica, sans-serif;
   --font-outfit: "Outfit", Inter, Poppins, Arial, Helvetica, sans-serif;
   --font-carattere: "Carattere", "Apple Chancery", cursive;
+  --font-instrument: "Instrument Serif", ui-serif, Georgia, "Times New Roman", serif;
   --color-brand-cream: #f5f0e8;
   --animate-marquee: marquee var(--duration) linear infinite;
   --animate-marquee-vertical: marquee-vertical var(--duration) linear infinite;
+  --animate-bento-drift: bento-drift 18s ease-in-out infinite;
+  --animate-bento-tilt: bento-tilt 22s ease-in-out infinite;
+  --animate-bento-morph: bento-morph 16s ease-in-out infinite;
+  --animate-bento-glow: bento-glow 9s ease-in-out infinite;
+  --animate-bento-rhythm: bento-rhythm 6s ease-in-out infinite;
+  --animate-bento-draw: bento-draw 7s ease-in-out infinite;
+  --animate-bento-pulse: bento-pulse 5s ease-in-out infinite;
+  --animate-bento-float: bento-float 7s ease-in-out infinite;
+  --animate-bento-bar: bento-bar 6s ease-in-out infinite;
 
   @keyframes marquee {
     from {
@@ -33,6 +43,130 @@
 
     to {
       transform: translateY(calc(-100% - var(--gap)));
+    }
+  }
+
+  @keyframes bento-drift {
+    0%,
+    100% {
+      transform: translate3d(0, 0, 0);
+    }
+
+    33% {
+      transform: translate3d(-3px, -5px, 0);
+    }
+
+    66% {
+      transform: translate3d(3px, -2px, 0);
+    }
+  }
+
+  @keyframes bento-tilt {
+    0%,
+    100% {
+      transform: rotate(-5deg) translateY(2px);
+    }
+
+    50% {
+      transform: rotate(5deg) translateY(-2px);
+    }
+  }
+
+  @keyframes bento-morph {
+    0%,
+    100% {
+      transform: scale(1) rotate(0deg);
+    }
+
+    50% {
+      transform: scale(1.12) rotate(-8deg);
+    }
+  }
+
+  /* Rotating spotlight — staggered delays hand the highlight between elements */
+  @keyframes bento-glow {
+    0%,
+    100% {
+      opacity: 0.34;
+    }
+
+    18% {
+      opacity: 1;
+    }
+
+    40% {
+      opacity: 0.34;
+    }
+  }
+
+  @keyframes bento-rhythm {
+    0%,
+    100% {
+      opacity: 0.35;
+    }
+
+    50% {
+      opacity: 1;
+    }
+  }
+
+  /* Draws the stroke in, holds, then pulls it off the opposite end */
+  @keyframes bento-draw {
+    0% {
+      stroke-dashoffset: var(--bento-dash);
+      opacity: 0.12;
+    }
+
+    40% {
+      stroke-dashoffset: 0;
+      opacity: 1;
+    }
+
+    72% {
+      stroke-dashoffset: 0;
+      opacity: 1;
+    }
+
+    100% {
+      stroke-dashoffset: calc(var(--bento-dash) * -1);
+      opacity: 0.12;
+    }
+  }
+
+  @keyframes bento-pulse {
+    0%,
+    100% {
+      opacity: 0.35;
+      transform: scale(0.9);
+    }
+
+    50% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes bento-float {
+    0%,
+    100% {
+      transform: translate3d(0, 0, 0) rotate(-0.6deg);
+    }
+
+    50% {
+      transform: translate3d(0, -6px, 0) rotate(0.6deg);
+    }
+  }
+
+  @keyframes bento-bar {
+    0%,
+    100% {
+      transform: scaleX(0.45);
+      opacity: 0.5;
+    }
+
+    50% {
+      transform: scaleX(1);
+      opacity: 1;
     }
   }
 }
@@ -165,6 +299,23 @@ h6 {
   src: url("/assets/fonts/Outfit/Outfit-VariableFont_wght.ttf") format("truetype");
   font-weight: 100 900;
   font-style: normal;
+  font-display: swap;
+}
+
+/* Instrument Serif — editorial serif for the education timeline overlay */
+@font-face {
+  font-family: "Instrument Serif";
+  src: url("/assets/fonts/Instrument_Serif/InstrumentSerif-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Instrument Serif";
+  src: url("/assets/fonts/Instrument_Serif/InstrumentSerif-Italic.ttf") format("truetype");
+  font-weight: 400;
+  font-style: italic;
   font-display: swap;
 }
 
@@ -304,5 +455,33 @@ h6 {
   .bento-marquee figure {
     filter: none !important;
     backdrop-filter: none !important;
+  }
+
+  .animate-bento-drift,
+  .animate-bento-tilt,
+  .animate-bento-morph,
+  .animate-bento-glow,
+  .animate-bento-rhythm,
+  .animate-bento-draw,
+  .animate-bento-pulse,
+  .animate-bento-float,
+  .animate-bento-bar {
+    animation: none !important;
+  }
+
+  /* Only the transform-driven marks need resetting; the rest animate opacity */
+  .animate-bento-drift,
+  .animate-bento-tilt,
+  .animate-bento-morph,
+  .animate-bento-pulse,
+  .animate-bento-float,
+  .animate-bento-bar {
+    transform: none !important;
+  }
+
+  /* Without the draw animation the dash would leave the stroke hidden */
+  .bento-draw-path {
+    stroke-dashoffset: 0 !important;
+    opacity: 1 !important;
   }
 }

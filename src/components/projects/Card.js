@@ -8,16 +8,21 @@ import { cn } from "../../lib/utils";
 
 function TechBadge({ label }) {
   return (
-    <span className="inline-flex items-center rounded-full border border-black/10 bg-black/[0.04] px-2.5 py-1 text-[10px] font-medium tracking-[0.04em] text-[#111111]/75">
+    <span className="inline-flex items-center rounded-full border border-white/15 bg-white/[0.08] px-2.5 py-1 text-[10px] font-medium tracking-[0.04em] text-white/80">
       {label}
     </span>
   );
 }
 
-function StackGroup({ category, items }) {
+function StackGroup({ category, items, isBlack }) {
   return (
     <div className="flex flex-col gap-2">
-      <h4 className="m-0 text-[10px] font-bold uppercase tracking-[0.15em] text-brand-red">
+      <h4
+        className={cn(
+          "m-0 text-[10px] font-bold uppercase tracking-[0.15em]",
+          isBlack ? "text-brand-red" : "text-white",
+        )}
+      >
         {category}
       </h4>
       <div className="flex flex-wrap gap-1.5">
@@ -29,11 +34,19 @@ function StackGroup({ category, items }) {
   );
 }
 
-function CtaButton({ project, isSoon }) {
+function CtaButton({ project, isSoon, isBlack }) {
+  const ctaClass = isBlack
+    ? "bg-brand-red text-white"
+    : "bg-black text-white";
+
   if (isSoon) {
     return (
       <span
-        className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-brand-red text-white/80 sm:h-12 sm:w-12"
+        className={cn(
+          "inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full sm:h-12 sm:w-12",
+          ctaClass,
+          "text-white/80",
+        )}
         aria-hidden="true"
       >
         <ArrowTopRightIcon className="h-5 w-5" />
@@ -46,7 +59,10 @@ function CtaButton({ project, isSoon }) {
       href={project.href}
       target="_blank"
       rel="noopener noreferrer"
-      className="group inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-brand-red text-white transition-transform duration-300 hover:scale-105 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-red sm:h-12 sm:w-12"
+      className={cn(
+        "group inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full transition-transform duration-300 hover:scale-105 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-red sm:h-12 sm:w-12",
+        ctaClass,
+      )}
       aria-label={`Open ${project.title}`}
     >
       <ArrowTopRightIcon className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
@@ -82,11 +98,12 @@ export default function Card({
   const imageScale = useTransform(scrollYProgress, [0, 1], [1.08, 1]);
 
   const isSoon = project.status === "soon";
+  const isBlack = project.tone === "black";
   const hasStackObject =
     project.stack && typeof project.stack === "object" && !Array.isArray(project.stack);
 
   const coverBlock = project.cover ? (
-    <div className="relative aspect-[16/10] w-full overflow-hidden rounded-[20px] sm:rounded-[24px] bg-black/10">
+    <div className="relative aspect-[16/10] w-full overflow-hidden rounded-[20px] sm:rounded-[24px] bg-black/40">
       {reduceMotion ? (
         <Image
           src={project.cover}
@@ -110,8 +127,8 @@ export default function Card({
       )}
     </div>
   ) : (
-    <div className="flex aspect-[16/10] w-full items-center justify-center overflow-hidden rounded-[20px] sm:rounded-[24px] bg-black/5">
-      <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-black/35">
+    <div className="flex aspect-[16/10] w-full items-center justify-center overflow-hidden rounded-[20px] sm:rounded-[24px] bg-black/55">
+      <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-white/40">
         classified
       </span>
     </div>
@@ -120,7 +137,7 @@ export default function Card({
   const stackBlock = (
     <div className="flex min-h-0 min-w-0 flex-1 flex-col justify-center gap-4 sm:gap-5">
       {project.description ? (
-        <p className="m-0 max-w-2xl text-[clamp(13px,2.2vw,15px)] font-medium leading-[1.55] text-[#111111]/75 line-length-control">
+        <p className="m-0 max-w-2xl text-[clamp(13px,2.2vw,15px)] font-medium leading-[1.55] text-white/75 line-length-control">
           {project.description}
         </p>
       ) : null}
@@ -128,24 +145,24 @@ export default function Card({
       {hasStackObject ? (
         <div className="flex flex-col gap-3.5 sm:gap-4">
           {Object.entries(project.stack).map(([category, items]) => (
-            <StackGroup key={category} category={category} items={items} />
+            <StackGroup key={category} category={category} items={items} isBlack={isBlack} />
           ))}
         </div>
       ) : (
         <div className="grid max-w-md gap-2">
-          <div className="flex items-center justify-between rounded-[10px] border border-black/10 bg-black/[0.04] px-3 py-2.5">
-            <span className="text-[10px] font-bold uppercase tracking-[0.1em] text-black/45">
+          <div className="flex items-center justify-between rounded-[10px] border border-white/12 bg-black/25 px-3 py-2.5">
+            <span className="text-[10px] font-bold uppercase tracking-[0.1em] text-white/45">
               channel
             </span>
-            <span className="text-[10px] font-bold uppercase tracking-[0.1em] text-brand-red">
+            <span className="text-[10px] font-bold uppercase tracking-[0.1em] text-white">
               sealed
             </span>
           </div>
-          <div className="flex items-center justify-between rounded-[10px] border border-black/10 bg-black/[0.04] px-3 py-2.5">
-            <span className="text-[10px] font-bold uppercase tracking-[0.1em] text-black/45">
+          <div className="flex items-center justify-between rounded-[10px] border border-white/12 bg-black/25 px-3 py-2.5">
+            <span className="text-[10px] font-bold uppercase tracking-[0.1em] text-white/45">
               access
             </span>
-            <span className="text-[10px] font-bold uppercase tracking-[0.1em] text-brand-red">
+            <span className="text-[10px] font-bold uppercase tracking-[0.1em] text-white">
               {typeof project.stack === "string" ? project.stack : "Coming Soon"}
             </span>
           </div>
@@ -153,7 +170,7 @@ export default function Card({
       )}
 
       {project.price ? (
-        <p className="m-0 font-bricolage text-[clamp(14px,2.4vw,18px)] font-bold tracking-[-0.02em] text-[#111111]/55">
+        <p className="m-0 font-bricolage text-[clamp(14px,2.4vw,18px)] font-bold tracking-[-0.02em] text-white/55">
           {project.price}
         </p>
       ) : null}
@@ -163,7 +180,7 @@ export default function Card({
   const body = (
     <div
       className={cn(
-        "relative flex w-full flex-col overflow-hidden rounded-[28px] sm:rounded-[36px] border border-black/5",
+        "relative flex w-full flex-col overflow-hidden rounded-[28px] sm:rounded-[36px] border border-white/10",
         "shadow-[0_24px_80px_rgba(0,0,0,0.28)]",
       )}
       style={{ backgroundColor: project.color }}
@@ -172,14 +189,14 @@ export default function Card({
         {/* Row 1 — Title + CTA */}
         <div className="flex items-start justify-between gap-4">
           <div className="flex min-w-0 flex-col gap-1.5">
-            <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-black/45">
+            <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-white/45">
               {project.label ?? `0${index + 1}`}
             </span>
-            <h3 className="m-0 font-bricolage text-[clamp(32px,6vw,58px)] font-extrabold leading-[0.95] tracking-[-0.03em] text-[#111111]">
+            <h3 className="m-0 font-bricolage text-[clamp(32px,6vw,58px)] font-extrabold leading-[0.95] tracking-[-0.03em] text-white">
               {project.title}
             </h3>
           </div>
-          <CtaButton project={project} isSoon={isSoon} />
+          <CtaButton project={project} isSoon={isSoon} isBlack={isBlack} />
         </div>
 
         {/* Row 2 — Image full-width (tinggi terkendali) + Stack */}
