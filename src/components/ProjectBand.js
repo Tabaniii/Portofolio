@@ -1,10 +1,8 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
-import ProjectsSection from "./projects/ProjectsSection";
+import ProjectsSection, { PROJECT_HEADING } from "./projects/ProjectsSection";
 import { premiumEasing } from "./MotionPrimitives";
-
-const HEADING = "PROFESIONAL PROJECT";
 
 /**
  * Section Selected Projects — sticky stacking cards.
@@ -19,14 +17,14 @@ export default function ProjectBand({ scrollContainerRef }) {
       className="relative isolate w-full snap-none bg-black section-padding-x pt-24 sm:pt-32 lg:pt-40 pb-10 sm:pb-12 text-white"
       aria-labelledby="project-heading"
     >
-      <header className="sticky top-6 sm:top-8 z-30 mb-8 sm:mb-10 flex items-center justify-center pointer-events-none">
+      <header className="sticky top-6 z-50 isolate mb-8 flex items-center justify-center pointer-events-none sm:top-8 sm:mb-10">
         <h2
           id="project-heading"
-          className="m-0 max-w-[95vw] text-center font-[TabaniDisplay,Inter,Poppins,Arial,Helvetica,sans-serif] text-[clamp(42px,9vw,92px)] font-black leading-[0.92] tracking-[0.04em] text-brand-red uppercase drop-shadow-[0_2px_24px_rgba(0,0,0,0.85)]"
+          className="project-heading-title m-0 max-w-[95vw] text-center font-[TabaniDisplay,Inter,Poppins,Arial,Helvetica,sans-serif] text-[clamp(42px,9vw,92px)] font-black leading-[0.92] tracking-[0.04em] uppercase"
         >
-          <span className="sr-only">{HEADING}</span>
+          <span className="sr-only">{PROJECT_HEADING}</span>
           <motion.span
-            className="flex flex-wrap items-center justify-center gap-x-[0.32em] gap-y-2"
+            className="flex flex-nowrap items-center justify-center gap-x-[0.32em]"
             aria-hidden="true"
             initial="hidden"
             whileInView="visible"
@@ -41,7 +39,7 @@ export default function ProjectBand({ scrollContainerRef }) {
               },
             }}
           >
-            {HEADING.split(" ").map((word, wordIndex) => (
+            {PROJECT_HEADING.split(" ").map((word, wordIndex) => (
               <span key={`${word}-${wordIndex}`} className="inline-flex">
                 {word.split("").map((char, charIndex) => (
                   <motion.span

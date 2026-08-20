@@ -4,6 +4,8 @@ import { useRef } from "react";
 import { useScroll } from "framer-motion";
 import Card from "./Card";
 
+export const PROJECT_HEADING = "PROFESIONAL PROJECT";
+
 /**
  * Project data untuk sticky stacking cards.
  * Palet merah/hitam dibedakan per kartu supaya stack terbaca jelas.
@@ -19,7 +21,7 @@ export const PROJECTS = [
     color: "#780606",
     tone: "red",
     cover: "/assets/img/darkmodefix.png",
-    coverInset: true,
+    coverContain: true,
     href: "https://ride62.vercel.app/",
     status: "live",
     stack: {
@@ -39,6 +41,7 @@ export const PROJECTS = [
     color: "#000000",
     tone: "black",
     cover: "/assets/img/SajiIndarkmode.png",
+    coverContain: true,
     coverLift: true,
     href: "https://sajihub.vercel.app",
     status: "live",
@@ -86,7 +89,7 @@ export default function ProjectsSection({
   });
 
   return (
-    <div ref={containerRef} className="relative w-full">
+    <div ref={containerRef} className="relative z-0 w-full">
       {projects.map((project, index) => {
         const targetScale = 1 - (projects.length - index) * 0.045;
         const start = index / projects.length;

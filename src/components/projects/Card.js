@@ -14,9 +14,11 @@ function TechBadge({ label }) {
   );
 }
 
-function StackGroup({ category, items, isBlack }) {
+const MOBILE_STACK_KEYS = new Set(["frontend", "backend"]);
+
+function StackGroup({ category, items, isBlack, className }) {
   return (
-    <div className="flex flex-col gap-2">
+    <div className={cn("flex flex-col gap-2", className)}>
       <h4
         className={cn(
           "m-0 text-[10px] font-bold uppercase tracking-[0.15em]",
@@ -96,11 +98,14 @@ export default function Card({
   const scale = useTransform(progress, range, [1, targetScale]);
   const dimOpacity = useTransform(progress, range, [0, isLast ? 0 : 0.38]);
   const enterY = useTransform(scrollYProgress, [0, 1], [36, 0]);
+  const stackLift = `calc(-4vh + ${index * 22}px)`;
 
   const isSoon = project.status === "soon";
   const isBlack = project.tone === "black";
   const hasStackObject =
     project.stack && typeof project.stack === "object" && !Array.isArray(project.stack);
+  const hasCoreStack =
+    hasStackObject && ("frontend" in project.stack || "backend" in project.stack);
 
   const coverImage = (
     <Image
@@ -110,7 +115,7 @@ export default function Card({
       unoptimized
       quality={100}
       className={cn(
-        project.coverInset ? "object-contain" : "object-cover",
+        project.coverContain ? "object-contain" : "object-cover",
         project.coverPosition === "top" ? "object-top" : "object-center",
         project.coverLift && "brightness-110",
       )}
@@ -121,13 +126,7 @@ export default function Card({
 
   const coverBlock = project.cover ? (
     <div className="relative aspect-[16/10] w-full overflow-hidden rounded-[20px] sm:rounded-[24px] bg-black">
-      {project.coverInset ? (
-        <div className="absolute inset-[4%] sm:inset-[5%]">
-          {coverImage}
-        </div>
-      ) : (
-        coverImage
-      )}
+      {coverImage}
     </div>
   ) : (
     <div className="flex aspect-[16/10] w-full items-center justify-center overflow-hidden rounded-[20px] sm:rounded-[24px] bg-black/55">
@@ -148,7 +147,17 @@ export default function Card({
       {hasStackObject ? (
         <div className="flex flex-col gap-3.5 sm:gap-4">
           {Object.entries(project.stack).map(([category, items]) => (
-            <StackGroup key={category} category={category} items={items} isBlack={isBlack} />
+            <StackGroup
+              key={category}
+              category={category}
+              items={items}
+              isBlack={isBlack}
+              className={
+                hasCoreStack && !MOBILE_STACK_KEYS.has(category)
+                  ? "hidden sm:flex"
+                  : undefined
+              }
+            />
           ))}
         </div>
       ) : (
@@ -185,6 +194,7 @@ export default function Card({
       className={cn(
         "relative flex w-full flex-col overflow-hidden rounded-[28px] sm:rounded-[36px] border border-white/10",
         "shadow-[0_24px_80px_rgba(0,0,0,0.28)]",
+        "max-sm:max-h-full",
       )}
       style={{ backgroundColor: project.color }}
     >
@@ -224,22 +234,22 @@ export default function Card({
   return (
     <div
       ref={cardRef}
-      className="sticky top-0 flex h-[100dvh] w-full items-center justify-center"
+      className="sticky top-0 z-0 flex h-[100dvh] w-full items-center justify-center max-sm:box-border max-sm:py-4"
     >
       {reduceMotion ? (
         <div
-          className="relative w-full origin-top"
-          style={{ top: `calc(-4vh + ${index * 22}px)` }}
+          className="relative w-full origin-top max-sm:max-h-full"
+          style={{ top: stackLift }}
         >
           {body}
         </div>
       ) : (
         <motion.div
-          className="relative w-full origin-top will-change-transform"
+          className="relative w-full origin-top will-change-transform max-sm:max-h-full"
           style={{
             scale,
             y: enterY,
-            top: `calc(-4vh + ${index * 22}px)`,
+            top: stackLift,
           }}
         >
           {body}

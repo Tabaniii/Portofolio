@@ -401,6 +401,12 @@ h6 {
   }
 }
 
+.project-heading-title {
+  color: #780606;
+  -webkit-text-fill-color: #780606;
+  filter: drop-shadow(0 2px 24px rgba(0, 0, 0, 0.85));
+}
+
 @keyframes projectband-single-glitch {
   0%,
   100% {
