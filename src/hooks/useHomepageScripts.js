@@ -172,7 +172,10 @@ export function useHomepageScripts() {
       });
     };
 
-    scrollToHashTarget();
+    const isReload = performance.getEntriesByType("navigation")[0]?.type === "reload";
+    if (!isReload) {
+      scrollToHashTarget();
+    }
     window.addEventListener("hashchange", scrollToHashTarget);
 
     fitHeroTitle();

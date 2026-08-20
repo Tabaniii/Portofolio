@@ -19,6 +19,7 @@ export const PROJECTS = [
     color: "#780606",
     tone: "red",
     cover: "/assets/img/darkmodefix.png",
+    coverInset: true,
     href: "https://ride62.vercel.app/",
     status: "live",
     stack: {
@@ -38,6 +39,7 @@ export const PROJECTS = [
     color: "#000000",
     tone: "black",
     cover: "/assets/img/SajiIndarkmode.png",
+    coverLift: true,
     href: "https://sajihub.vercel.app",
     status: "live",
     stack: {
@@ -48,17 +50,22 @@ export const PROJECTS = [
     },
   },
   {
-    id: "project-03",
+    id: "karalia",
     label: "03",
-    title: "Project 03",
+    title: "Karalia",
     description:
-      "Access masih dikunci. Surface ini sengaja tampil kayak data field terenkripsi yang belum dibuka.",
-    price: "Soon",
+      "Web jual beli emas dan logam mulia. Di project ini gua cuma pegang Functional Testing dengan Positive Testing — bukan sebagai pembuat.",
+    price: "Live",
     color: "#780606",
     tone: "red",
-    href: "#",
-    status: "soon",
-    stack: "Coming Soon",
+    cover: "/assets/img/karalia.png",
+    coverPosition: "top",
+    href: "https://www.karalia.co.id",
+    status: "live",
+    stack: {
+      role: ["Functional Testing"],
+      method: ["Positive Testing"],
+    },
   },
 ];
 
@@ -94,6 +101,7 @@ export default function ProjectsSection({
             range={[start, end]}
             targetScale={targetScale}
             scrollContainerRef={scrollContainerRef}
+            isLast={index === projects.length - 1}
           />
         );
       })}

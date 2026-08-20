@@ -8,7 +8,7 @@ import ProjectBand from "../components/ProjectBand";
 import Footer from "../components/Footer";
 import LenisProvider from "../components/LenisProvider";
 import { useHomepageScripts } from "../hooks/useHomepageScripts";
-import { consumeScrollTarget } from "../components/ReturnToBentoLink";
+import { consumeScrollTarget, clearScrollTarget, isPageReload } from "../components/ReturnToBentoLink";
 
 function scrollScrollerToId(scroller, id) {
   const target = document.getElementById(id);
@@ -27,6 +27,24 @@ export default function Home() {
   const scrollContainerRef = useRef(null);
   const [scrollReady, setScrollReady] = useState(false);
   useHomepageScripts();
+
+  useEffect(() => {
+    if ("scrollRestoration" in history) {
+      history.scrollRestoration = "manual";
+    }
+
+    if (isPageReload()) {
+      clearScrollTarget();
+      if (window.location.hash) {
+        history.replaceState(
+          null,
+          "",
+          window.location.pathname + window.location.search,
+        );
+      }
+      window.scrollTo(0, 0);
+    }
+  }, []);
 
   // Bind Lenis wrapper sebagai scroller untuk Framer Motion + GSAP.
   useEffect(() => {
@@ -53,6 +71,32 @@ export default function Home() {
 
   useEffect(() => {
     if (!scrollReady) return undefined;
+
+    // Hard refresh harus selalu mulai dari Hero, bukan sisa hash/scroll bento.
+    if (isPageReload()) {
+      clearScrollTarget();
+      if (window.location.hash) {
+        history.replaceState(
+          null,
+          "",
+          window.location.pathname + window.location.search,
+        );
+      }
+
+      const resetToHero = () => {
+        const nextScroller =
+          lenisRef.current?.wrapper ?? scrollContainerRef.current;
+        const nextLenis = lenisRef.current?.lenis;
+        nextScroller?.scrollTo({ top: 0, behavior: "auto" });
+        nextLenis?.scrollTo(0, { immediate: true });
+        window.scrollTo(0, 0);
+      };
+
+      const timers = [0, 50, 150, 350].map((delay) =>
+        window.setTimeout(resetToHero, delay),
+      );
+      return () => timers.forEach((timer) => window.clearTimeout(timer));
+    }
 
     const sectionId = consumeScrollTarget();
     if (!sectionId) return undefined;

@@ -10,6 +10,11 @@ export function rememberScrollTarget(sectionId) {
   sessionStorage.setItem(SCROLL_KEY, sectionId);
 }
 
+export function clearScrollTarget() {
+  if (typeof window === "undefined") return;
+  sessionStorage.removeItem(SCROLL_KEY);
+}
+
 export function consumeScrollTarget() {
   if (typeof window === "undefined") return null;
   const fromStore = sessionStorage.getItem(SCROLL_KEY);
@@ -19,6 +24,12 @@ export function consumeScrollTarget() {
   }
   const fromHash = window.location.hash?.replace(/^#/, "");
   return fromHash || null;
+}
+
+export function isPageReload() {
+  if (typeof performance === "undefined") return false;
+  const nav = performance.getEntriesByType("navigation")[0];
+  return nav?.type === "reload";
 }
 
 export default function ReturnToBentoLink({

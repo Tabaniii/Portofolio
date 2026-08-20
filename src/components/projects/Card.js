@@ -8,7 +8,7 @@ import { cn } from "../../lib/utils";
 
 function TechBadge({ label }) {
   return (
-    <span className="inline-flex items-center rounded-full border border-white/15 bg-white/[0.08] px-2.5 py-1 text-[10px] font-medium tracking-[0.04em] text-white/80">
+    <span className="inline-flex items-center rounded-full border border-white/15 bg-white/[0.08] px-2.5 py-1 text-[10px] font-medium tracking-[0.04em] text-white">
       {label}
     </span>
   );
@@ -82,6 +82,7 @@ export default function Card({
   range,
   targetScale,
   scrollContainerRef,
+  isLast = false,
 }) {
   const cardRef = useRef(null);
   const reduceMotion = useReducedMotion();
@@ -93,37 +94,39 @@ export default function Card({
   });
 
   const scale = useTransform(progress, range, [1, targetScale]);
-  const dimOpacity = useTransform(progress, range, [0, 0.38]);
+  const dimOpacity = useTransform(progress, range, [0, isLast ? 0 : 0.38]);
   const enterY = useTransform(scrollYProgress, [0, 1], [36, 0]);
-  const imageScale = useTransform(scrollYProgress, [0, 1], [1.08, 1]);
 
   const isSoon = project.status === "soon";
   const isBlack = project.tone === "black";
   const hasStackObject =
     project.stack && typeof project.stack === "object" && !Array.isArray(project.stack);
 
+  const coverImage = (
+    <Image
+      src={project.cover}
+      alt={`${project.title} preview`}
+      fill
+      unoptimized
+      quality={100}
+      className={cn(
+        project.coverInset ? "object-contain" : "object-cover",
+        project.coverPosition === "top" ? "object-top" : "object-center",
+        project.coverLift && "brightness-110",
+      )}
+      sizes="(max-width: 640px) 100vw, 50vw"
+      priority={index === 0 || isLast}
+    />
+  );
+
   const coverBlock = project.cover ? (
-    <div className="relative aspect-[16/10] w-full overflow-hidden rounded-[20px] sm:rounded-[24px] bg-black/40">
-      {reduceMotion ? (
-        <Image
-          src={project.cover}
-          alt={`${project.title} preview`}
-          fill
-          className="object-cover object-center"
-          sizes="(max-width: 640px) 100vw, 40vw"
-          priority={index === 0}
-        />
+    <div className="relative aspect-[16/10] w-full overflow-hidden rounded-[20px] sm:rounded-[24px] bg-black">
+      {project.coverInset ? (
+        <div className="absolute inset-[4%] sm:inset-[5%]">
+          {coverImage}
+        </div>
       ) : (
-        <motion.div className="absolute inset-0" style={{ scale: imageScale }}>
-          <Image
-            src={project.cover}
-            alt={`${project.title} preview`}
-            fill
-            className="object-cover object-center"
-            sizes="(max-width: 640px) 100vw, 40vw"
-            priority={index === 0}
-          />
-        </motion.div>
+        coverImage
       )}
     </div>
   ) : (
@@ -137,7 +140,7 @@ export default function Card({
   const stackBlock = (
     <div className="flex min-h-0 min-w-0 flex-1 flex-col justify-center gap-4 sm:gap-5">
       {project.description ? (
-        <p className="m-0 max-w-2xl text-[clamp(13px,2.2vw,15px)] font-medium leading-[1.55] text-white/75 line-length-control">
+        <p className="m-0 max-w-2xl text-[clamp(13px,2.2vw,15px)] font-medium leading-[1.55] text-white line-length-control">
           {project.description}
         </p>
       ) : null}
@@ -151,7 +154,7 @@ export default function Card({
       ) : (
         <div className="grid max-w-md gap-2">
           <div className="flex items-center justify-between rounded-[10px] border border-white/12 bg-black/25 px-3 py-2.5">
-            <span className="text-[10px] font-bold uppercase tracking-[0.1em] text-white/45">
+            <span className="text-[10px] font-bold uppercase tracking-[0.1em] text-white/80">
               channel
             </span>
             <span className="text-[10px] font-bold uppercase tracking-[0.1em] text-white">
@@ -159,7 +162,7 @@ export default function Card({
             </span>
           </div>
           <div className="flex items-center justify-between rounded-[10px] border border-white/12 bg-black/25 px-3 py-2.5">
-            <span className="text-[10px] font-bold uppercase tracking-[0.1em] text-white/45">
+            <span className="text-[10px] font-bold uppercase tracking-[0.1em] text-white/80">
               access
             </span>
             <span className="text-[10px] font-bold uppercase tracking-[0.1em] text-white">
@@ -170,7 +173,7 @@ export default function Card({
       )}
 
       {project.price ? (
-        <p className="m-0 font-bricolage text-[clamp(14px,2.4vw,18px)] font-bold tracking-[-0.02em] text-white/55">
+        <p className="m-0 font-bricolage text-[clamp(14px,2.4vw,18px)] font-bold tracking-[-0.02em] text-white">
           {project.price}
         </p>
       ) : null}
@@ -189,7 +192,7 @@ export default function Card({
         {/* Row 1 — Title + CTA */}
         <div className="flex items-start justify-between gap-4">
           <div className="flex min-w-0 flex-col gap-1.5">
-            <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-white/45">
+            <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-white/80">
               {project.label ?? `0${index + 1}`}
             </span>
             <h3 className="m-0 font-bricolage text-[clamp(32px,6vw,58px)] font-extrabold leading-[0.95] tracking-[-0.03em] text-white">
