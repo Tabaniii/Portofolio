@@ -15,7 +15,7 @@ import { createPortal } from "react-dom";
 import { cn } from "../lib/utils";
 import { premiumEasing, stableTween } from "./MotionPrimitives";
 import { EducationVisual } from "./bento/MiniVisuals";
-import { educationData } from "../data/educationTimeline";
+import { educationData, INITIAL_STEP_INDEX } from "../data/educationTimeline";
 
 const EducationScene = dynamic(() => import("./bento/EducationScene"), {
   ssr: false,
@@ -94,12 +94,12 @@ export default function EducationBentoCard({
   const closeRef = useRef(null);
   const triggerRef = useRef(null);
   const warmedRef = useRef(false);
-  const activeIndexRef = useRef(0);
+  const activeIndexRef = useRef(INITIAL_STEP_INDEX);
   const touchOriginRef = useRef(null);
   const originRef = useRef(null);
 
   const [expanded, setExpanded] = useState(false);
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(INITIAL_STEP_INDEX);
   const [origin, setOrigin] = useState(null);
   const [viewport, setViewport] = useState({ width: 0, height: 0 });
 
@@ -147,8 +147,8 @@ export default function EducationBentoCard({
     warmScene();
     captureOrigin();
     setViewport({ width: window.innerWidth, height: window.innerHeight });
-    activeIndexRef.current = 0;
-    setActiveIndex(0);
+    activeIndexRef.current = INITIAL_STEP_INDEX;
+    setActiveIndex(INITIAL_STEP_INDEX);
     setExpanded(true);
   }, [captureOrigin, warmScene]);
 
@@ -228,7 +228,7 @@ export default function EducationBentoCard({
           : event.deltaX;
       if (Math.abs(delta) < 12) return;
 
-      lockedUntil = now + (reduceMotion ? 320 : 900);
+      lockedUntil = now + (reduceMotion ? 220 : 1100);
       goTo(activeIndexRef.current + (delta > 0 ? 1 : -1));
     };
 

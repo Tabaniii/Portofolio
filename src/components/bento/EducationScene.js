@@ -10,18 +10,18 @@ import {
 } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import {
-  Billboard,
   Html,
   Line,
   PerspectiveCamera,
   useGLTF,
   useProgress,
 } from "@react-three/drei";
-import { Box3, Group, MathUtils, Vector3 } from "three";
+import { Box3, CatmullRomCurve3, Group, MathUtils, Vector3 } from "three";
 import gsap from "gsap";
 import { cn } from "../../lib/utils";
 import {
   FALLBACK_CAMERA,
+  INITIAL_STEP_INDEX,
   resolveCameraStep,
   resolveNodePoints,
   timelineData,
@@ -31,25 +31,35 @@ export const EDUCATION_MODEL_URL = "/assets/sceen.glb";
 
 /** Sisi terpanjang diorama setelah dinormalisasi — jadi acuan semua koordinat timeline. */
 const NORMALIZED_SIZE = 10;
-const FLY_DURATION = 1.65;
-const FLY_EASE = "power3.inOut";
+const FLY_DURATION = 1.15;
+const FLY_EASE = "power2.inOut";
 const CREAM = "#f5f0e8";
 const LABEL_FADE = 8;
+const LOOK_YAW = 0.18;
+const LOOK_PITCH = 0.1;
+const LOOK_DAMP = 3.6;
+
+/** Preview kartu: kotak kayu + jam, kamera agak ditarik supaya judul tetap kebaca. */
+const PREVIEW_POSE = {
+  cameraPos: [-0.55, 0.72, 2.55],
+  targetPos: [-0.08, 0.62, 1.12],
+};
 
 /**
  * drei memetakan Html transform dengan rasio (distanceFactor / 400) unit dunia
  * per piksel. 0.85 ≈ 1 px = 0.0021 unit, cukup besar untuk dibaca di viewport.
  */
 const HTML_SCALE = 0.85;
+const LABEL_REF_DISTANCE = 3.05;
 
-const PIN_SIZE = 0.055;
-const PIN_SQUARE = [
-  [-PIN_SIZE, -PIN_SIZE, 0],
-  [PIN_SIZE, -PIN_SIZE, 0],
-  [PIN_SIZE, PIN_SIZE, 0],
-  [-PIN_SIZE, PIN_SIZE, 0],
-  [-PIN_SIZE, -PIN_SIZE, 0],
-];
+/** Titik jalur sedikit di depan kamera, ke arah look-at, supaya rute kebaca di viewport. */
+const ROUTE_MIX = 0.36;
+const ROUTE_LIFT = 0.1;
+const ROUTE_ARCH = 0.18;
+const ROUTE_SAMPLES = 96;
+const ROUTE_TENSION = 0.28;
+const ROUTE_DASH = 0.075;
+const ROUTE_GAP = 0.048;
 
 export function preloadEducationModel() {
   useGLTF.preload(EDUCATION_MODEL_URL);
@@ -146,45 +156,123 @@ function AdaptiveViewport() {
   return null;
 }
 
-function setLineOpacity(object, value) {
-  if (!object) return;
+function routePoint(step, index, lastIndex) {
+  const { cameraPos, targetPos } = resolveCameraStep(step);
+  const arch = Math.sin((index / Math.max(lastIndex, 1)) * Math.PI) * ROUTE_ARCH;
+  return new Vector3(
+    MathUtils.lerp(cameraPos[0], targetPos[0], ROUTE_MIX),
+    MathUtils.lerp(cameraPos[1], targetPos[1], ROUTE_MIX) + ROUTE_LIFT + arch,
+    MathUtils.lerp(cameraPos[2], targetPos[2], ROUTE_MIX),
+  );
+}
 
-  const apply = (material) => {
-    if (!material) return;
-    material.transparent = true;
-    material.opacity = value;
-    material.needsUpdate = true;
-  };
+function writeLinePoints(line, points) {
+  if (!line?.geometry) return;
+  if (!points || points.length < 2) {
+    line.visible = false;
+    return;
+  }
 
-  apply(object.material);
-  object.traverse?.((child) => apply(child.material));
+  const positions = [];
+  for (let i = 0; i < points.length; i += 1) {
+    const point = points[i];
+    positions.push(point.x, point.y, point.z);
+  }
+
+  line.visible = true;
+  line.geometry.setPositions(positions);
+  line.computeLineDistances();
+}
+
+function CameraRoute({ steps, progressRef }) {
+  const solidRef = useRef(null);
+  const dashRef = useRef(null);
+
+  const sampled = useMemo(() => {
+    if (steps.length < 2) return [];
+    const lastIndex = steps.length - 1;
+    const curve = new CatmullRomCurve3(
+      steps.map((step, index) => routePoint(step, index, lastIndex)),
+      false,
+      "catmullrom",
+      ROUTE_TENSION,
+    );
+    return curve.getSpacedPoints(ROUTE_SAMPLES);
+  }, [steps]);
+
+  const seed = sampled.length >= 2 ? [sampled[0], sampled[1]] : [
+    [0, 0, 0],
+    [0, 0.01, 0],
+  ];
+
+  useFrame(() => {
+    if (sampled.length < 2) return;
+
+    const last = sampled.length - 1;
+    const split = Math.round(MathUtils.clamp(progressRef.current, 0, 1) * last);
+
+    writeLinePoints(solidRef.current, split >= 1 ? sampled.slice(0, split + 1) : null);
+    writeLinePoints(dashRef.current, split < last ? sampled.slice(split) : null);
+  });
+
+  if (sampled.length < 2) return null;
+
+  return (
+    <group>
+      <Line
+        ref={solidRef}
+        points={seed}
+        color={CREAM}
+        lineWidth={1.45}
+        transparent
+        opacity={0.95}
+        depthTest={false}
+        depthWrite={false}
+        frustumCulled={false}
+        renderOrder={18}
+      />
+      <Line
+        ref={dashRef}
+        points={sampled}
+        color={CREAM}
+        lineWidth={1.3}
+        dashed
+        dashSize={ROUTE_DASH}
+        gapSize={ROUTE_GAP}
+        transparent
+        opacity={0.72}
+        depthTest={false}
+        depthWrite={false}
+        frustumCulled={false}
+        renderOrder={17}
+      />
+    </group>
+  );
 }
 
 function TimelineNode({ step, index, active, reduceMotion }) {
   const htmlRef = useRef(null);
-  const lineRef = useRef(null);
-  const pinFillRef = useRef(null);
-  const pinLineRef = useRef(null);
   const opacity = useRef(active && reduceMotion ? 1 : 0);
 
-  const { anchorPos, labelPos, cameraPos, labelSide } = useMemo(
+  const { labelPos, cameraPos, labelSide, labelTone } = useMemo(
     () => resolveNodePoints(step, index),
     [index, step],
   );
 
-  const { start, end, yaw } = useMemo(() => {
-    const from = new Vector3(...anchorPos);
-    const to = new Vector3(...labelPos);
-    const dir = to.clone().sub(from);
-    const distance = dir.length();
-    if (distance > 0.0001) dir.multiplyScalar(1 / distance);
+  const { yaw, distanceFactor } = useMemo(() => {
+    const cameraDistance = new Vector3(...cameraPos).distanceTo(
+      new Vector3(...labelPos),
+    );
 
     return {
-      start: from.addScaledVector(dir, PIN_SIZE * 1.2).toArray(),
-      end: labelPos,
       yaw: Math.atan2(cameraPos[0] - labelPos[0], cameraPos[2] - labelPos[2]),
+      distanceFactor: MathUtils.clamp(
+        HTML_SCALE * (cameraDistance / LABEL_REF_DISTANCE),
+        0.22,
+        1.05,
+      ),
     };
-  }, [anchorPos, cameraPos, labelPos]);
+  }, [cameraPos, labelPos]);
 
   useFrame((_, delta) => {
     const target = active ? 1 : 0;
@@ -193,12 +281,6 @@ function TimelineNode({ step, index, active, reduceMotion }) {
       : MathUtils.damp(opacity.current, target, LABEL_FADE, delta);
     opacity.current = next;
 
-    setLineOpacity(lineRef.current, next);
-    setLineOpacity(pinLineRef.current, next);
-
-    const pinFill = pinFillRef.current;
-    if (pinFill) pinFill.opacity = next * 0.72;
-
     if (htmlRef.current) {
       htmlRef.current.style.opacity = String(next);
       htmlRef.current.style.visibility = next < 0.02 ? "hidden" : "visible";
@@ -206,54 +288,15 @@ function TimelineNode({ step, index, active, reduceMotion }) {
   });
 
   const isLeft = labelSide === "left";
+  const isBright = labelTone === "bright";
 
   return (
     <group>
-      <Billboard position={anchorPos}>
-        <group scale={active ? 1.15 : 1}>
-          <mesh renderOrder={20}>
-            <planeGeometry args={[PIN_SIZE * 2, PIN_SIZE * 2]} />
-            <meshBasicMaterial
-              ref={pinFillRef}
-              color="#050505"
-              transparent
-              opacity={0}
-              depthTest={false}
-              toneMapped={false}
-            />
-          </mesh>
-          <Line
-            ref={pinLineRef}
-            points={PIN_SQUARE}
-            color={CREAM}
-            lineWidth={1.5}
-            transparent
-            opacity={0}
-            depthTest={false}
-            renderOrder={21}
-          />
-        </group>
-      </Billboard>
-
-      <Line
-        ref={lineRef}
-        points={[start, end]}
-        color={CREAM}
-        lineWidth={1.35}
-        dashed
-        dashSize={0.055}
-        gapSize={0.038}
-        transparent
-        opacity={0}
-        depthTest={false}
-        renderOrder={18}
-      />
-
       <Html
         transform
         center={false}
-        distanceFactor={HTML_SCALE}
-        position={end}
+        distanceFactor={distanceFactor}
+        position={labelPos}
         rotation={[0, yaw, 0]}
         pointerEvents="none"
         zIndexRange={[50, 0]}
@@ -261,40 +304,83 @@ function TimelineNode({ step, index, active, reduceMotion }) {
       >
         <div
           ref={htmlRef}
-          className="w-max select-none whitespace-nowrap"
+          className="flex w-max max-w-[240px] select-none items-stretch gap-[10px] sm:max-w-[280px]"
           style={{
             opacity: 0,
             visibility: "hidden",
-            textAlign: isLeft ? "right" : "left",
+            flexDirection: isLeft ? "row-reverse" : "row",
             transform: isLeft ? "translate(-100%, -42%)" : "translate(10px, -42%)",
-            textShadow: "0 1px 18px rgba(0,0,0,0.92)",
+            textShadow: isBright
+              ? "-1px 0 0 rgba(12,8,6,0.9), 1px 0 0 rgba(12,8,6,0.9), 0 -1px 0 rgba(12,8,6,0.9), 0 1px 0 rgba(12,8,6,0.9), 0 2px 12px rgba(0,0,0,0.8)"
+              : "0 0 1px rgba(0,0,0,0.85), 0 1px 14px rgba(0,0,0,0.78)",
           }}
         >
-          <span className="block font-outfit text-[13px] font-medium uppercase leading-none tracking-[0.22em] text-brand-cream/90">
-            {step.year}
-          </span>
+          <span
+            aria-hidden
+            className={
+              isBright
+                ? "mt-[3px] w-px shrink-0 self-stretch bg-brand-cream"
+                : "mt-[3px] w-px shrink-0 self-stretch bg-brand-cream/80"
+            }
+          />
 
-          <h3 className="mb-0 mt-[8px] font-instrument text-[38px] font-normal leading-[0.95] tracking-[-0.01em] text-brand-cream">
-            {step.title}
-          </h3>
+          <div style={{ textAlign: isLeft ? "right" : "left" }}>
+            <span className="block font-outfit text-[13px] font-medium uppercase leading-none tracking-[0.22em] text-brand-cream">
+              {step.year}
+            </span>
 
-          <p className="mb-0 mt-[6px] font-outfit text-[15px] leading-tight text-brand-cream/75">
-            {step.subtitle}
-          </p>
+            <span
+              aria-hidden
+              className={
+                isBright
+                  ? "mt-[9px] mb-[8px] block h-px w-8 bg-brand-cream"
+                  : "mt-[9px] mb-[8px] block h-px w-8 bg-brand-cream/70"
+              }
+              style={{ marginLeft: isLeft ? "auto" : 0 }}
+            />
+
+            <h3 className="mb-0 mt-0 font-instrument text-[32px] font-normal leading-[0.95] tracking-[-0.01em] text-brand-cream sm:text-[38px]">
+              {step.title}
+            </h3>
+
+            <p
+              className={
+                isBright
+                  ? "mb-0 mt-[6px] font-outfit text-[15px] leading-tight text-brand-cream"
+                  : "mb-0 mt-[6px] font-outfit text-[15px] leading-tight text-brand-cream/80"
+              }
+            >
+              {step.subtitle}
+            </p>
+          </div>
         </div>
       </Html>
     </group>
   );
 }
 
-function TimelineCamera({ activeIndex, steps, reduceMotion, onDepart, onArrive }) {
+function TimelineCamera({
+  activeIndex,
+  steps,
+  reduceMotion,
+  onDepart,
+  onArrive,
+  pathProgress,
+}) {
   const cameraRef = useRef(null);
-  const first = resolveCameraStep(steps[0] ?? FALLBACK_CAMERA);
-  const anchor = useRef(new Vector3(...first.cameraPos));
-  const target = useRef(new Vector3(...first.targetPos));
+  const opening = resolveCameraStep(
+    steps[activeIndex] ?? steps[INITIAL_STEP_INDEX] ?? FALLBACK_CAMERA,
+  );
+  const openingRef = useRef(opening);
+  const anchor = useRef(new Vector3(...opening.cameraPos));
+  const target = useRef(new Vector3(...opening.targetPos));
   const settled = useRef(false);
   const onArriveRef = useRef(onArrive);
   const onDepartRef = useRef(onDepart);
+  const pointerAim = useRef({ x: 0, y: 0 });
+  const offset = useRef(new Vector3());
+  const rightAxis = useRef(new Vector3());
+  const worldUp = useRef(new Vector3(0, 1, 0));
 
   useEffect(() => {
     onArriveRef.current = onArrive;
@@ -302,14 +388,18 @@ function TimelineCamera({ activeIndex, steps, reduceMotion, onDepart, onArrive }
   });
 
   useEffect(() => {
-    const stop = resolveCameraStep(steps[activeIndex] ?? steps[0]);
+    const stop = resolveCameraStep(steps[activeIndex] ?? steps[INITIAL_STEP_INDEX]);
     const [camX, camY, camZ] = stop.cameraPos;
     const [targetX, targetY, targetZ] = stop.targetPos;
+
+    const last = Math.max(steps.length - 1, 1);
+    const nextProgress = activeIndex / last;
 
     if (!settled.current || reduceMotion) {
       settled.current = true;
       anchor.current.set(camX, camY, camZ);
       target.current.set(targetX, targetY, targetZ);
+      if (pathProgress) pathProgress.current = nextProgress;
       onArriveRef.current?.(activeIndex);
       return undefined;
     }
@@ -336,22 +426,45 @@ function TimelineCamera({ activeIndex, steps, reduceMotion, onDepart, onArrive }
       }),
     ];
 
-    return () => tweens.forEach((tween) => tween.kill());
-  }, [activeIndex, reduceMotion, steps]);
+    if (pathProgress) {
+      tweens.push(
+        gsap.to(pathProgress, {
+          current: nextProgress,
+          duration: FLY_DURATION,
+          ease: FLY_EASE,
+          overwrite: true,
+        }),
+      );
+    }
 
-  useFrame((state) => {
+    return () => tweens.forEach((tween) => tween.kill());
+  }, [activeIndex, pathProgress, reduceMotion, steps]);
+
+  useFrame((state, delta) => {
     const camera = cameraRef.current;
     if (!camera) return;
+
+    const aimX = reduceMotion ? 0 : state.pointer.x;
+    const aimY = reduceMotion ? 0 : Math.max(state.pointer.y, -0.2);
+    pointerAim.current.x = MathUtils.damp(pointerAim.current.x, aimX, LOOK_DAMP, delta);
+    pointerAim.current.y = MathUtils.damp(pointerAim.current.y, aimY, LOOK_DAMP, delta);
+
+    offset.current.copy(anchor.current).sub(target.current);
+    offset.current.applyAxisAngle(worldUp.current, pointerAim.current.x * LOOK_YAW);
+
+    rightAxis.current.crossVectors(worldUp.current, offset.current);
+    if (rightAxis.current.lengthSq() > 0.0001) {
+      rightAxis.current.normalize();
+      offset.current.applyAxisAngle(rightAxis.current, pointerAim.current.y * LOOK_PITCH);
+    }
 
     const elapsed = state.clock.elapsedTime;
     const swayX = reduceMotion ? 0 : Math.sin(elapsed * 0.3) * 0.035;
     const swayY = reduceMotion ? 0 : Math.cos(elapsed * 0.22) * 0.02;
 
-    camera.position.set(
-      anchor.current.x + swayX,
-      anchor.current.y + swayY,
-      anchor.current.z,
-    );
+    camera.position.copy(target.current).add(offset.current);
+    camera.position.x += swayX;
+    camera.position.y = Math.max(camera.position.y + swayY, anchor.current.y - 0.05);
     camera.lookAt(target.current);
   });
 
@@ -361,17 +474,16 @@ function TimelineCamera({ activeIndex, steps, reduceMotion, onDepart, onArrive }
       makeDefault
       fov={38}
       near={0.05}
-      far={80}
-      position={first.cameraPos}
+      far={120}
+      position={openingRef.current.cameraPos}
     />
   );
 }
 
-function PreviewCamera({ reduceMotion, steps }) {
+function PreviewCamera({ reduceMotion }) {
   const cameraRef = useRef(null);
-  const first = resolveCameraStep(steps[0] ?? FALLBACK_CAMERA);
-  const base = useRef(new Vector3(...first.cameraPos));
-  const target = useRef(new Vector3(...first.targetPos));
+  const base = useRef(new Vector3(...PREVIEW_POSE.cameraPos));
+  const target = useRef(new Vector3(...PREVIEW_POSE.targetPos));
 
   useFrame((state) => {
     const camera = cameraRef.current;
@@ -392,7 +504,7 @@ function PreviewCamera({ reduceMotion, steps }) {
   });
 
   return (
-    <PerspectiveCamera ref={cameraRef} makeDefault fov={36} near={0.1} far={80} />
+    <PerspectiveCamera ref={cameraRef} makeDefault fov={36} near={0.1} far={120} />
   );
 }
 
@@ -413,7 +525,7 @@ function LoadingReadout() {
 }
 
 export default function EducationScene({
-  activeIndex = 0,
+  activeIndex = INITIAL_STEP_INDEX,
   steps = timelineData,
   mode = "focus",
   reduceMotion = false,
@@ -424,6 +536,7 @@ export default function EducationScene({
 }) {
   const isPreview = mode === "preview";
   const [shownIndex, setShownIndex] = useState(activeIndex);
+  const pathProgress = useRef(activeIndex / Math.max(steps.length - 1, 1));
   const documentHidden = useSyncExternalStore(
     subscribeToVisibility,
     () => document.hidden,
@@ -458,6 +571,8 @@ export default function EducationScene({
         <Suspense fallback={null}>
           <PaintingModel />
 
+          {!isPreview ? <CameraRoute steps={steps} progressRef={pathProgress} /> : null}
+
           {!isPreview && shownIndex >= 0 && steps[shownIndex] ? (
             <TimelineNode
               key={`${steps[shownIndex].year}-${steps[shownIndex].title}`}
@@ -470,7 +585,7 @@ export default function EducationScene({
         </Suspense>
 
         {isPreview ? (
-          <PreviewCamera reduceMotion={reduceMotion} steps={steps} />
+          <PreviewCamera reduceMotion={reduceMotion} />
         ) : (
           <TimelineCamera
             activeIndex={activeIndex}
@@ -478,6 +593,7 @@ export default function EducationScene({
             reduceMotion={reduceMotion}
             onDepart={handleDepart}
             onArrive={handleArrive}
+            pathProgress={pathProgress}
           />
         )}
       </Canvas>

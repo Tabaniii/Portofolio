@@ -5,64 +5,70 @@
  * NORMALIZED_SIZE di EducationScene): objek lukisannya di-center di origin
  * sumbu X/Z dengan alas di y = 0, dan diorama-nya diskalakan ke 10 unit.
  *
- * - `anchorPos` : titik di permukaan objek lukisan tempat kotak penanda menempel.
- * - `labelPos`  : ujung garis putus-putus / pangkal blok judul (tepat di samping teks).
- * - `labelSide` : teks merentang ke kiri atau kanan dari ujung garis.
- * - `cameraPos` / `targetPos` : perhentian kamera untuk node ini.
+ * Tiap jenjang nempel di aset 3D yang terlihat di screenshot:
+ * 1. SDN  — kotak kayu + jam oranye ber-semut (dekat, dari kiri-bawah)
+ * 2. SMP  — jam meleleh di tepi kotak / jam gantung di pohon
+ * 3. SMK  — komposisi penuh (wajah organik + semua jam)
+ * 4. Intern — platform air biru di kiri, kamera rendah menghadap horizon
+ * 5. Universitas — tebing emas di kanan, sudut rendah yang sama
  *
- * Jarak X/Z antar node sengaja lebar supaya terbang antar tahun terasa
- * seperti berjalan ke titik berikutnya, bukan geser milimeter.
+ * Scene dibuka di kotak bawah supaya jam meleleh langsung kebaca, lalu
+ * scroll terbang ke aset berikutnya.
  */
+export const INITIAL_STEP_INDEX = 0;
+
 export const educationData = [
   {
     year: "2014 - 2020",
     title: "SDN Grogol Utara 16 Pagi",
     subtitle: "Elementary School",
-    cameraPos: [-5.2, 1.22, 7.4],
-    targetPos: [-1.35, 0.58, 0.35],
-    anchorPos: [-1.28, 0.64, 1.18],
-    labelPos: [-3.15, 0.78, 2.05],
+    cameraPos: [-0.88, 0.52, 2.18],
+    targetPos: [-0.14, 0.66, 1.16],
+    anchorPos: [-0.21, 0.58, 1.28],
+    labelPos: [-0.45, 0.5, 1.42],
     labelSide: "left",
   },
   {
     year: "2020 - 2023",
     title: "SMP Negeri 16 Jakarta",
     subtitle: "Junior High School",
-    cameraPos: [-2.6, 1.48, 4.35],
-    targetPos: [-0.55, 0.72, -0.25],
-    anchorPos: [-0.62, 0.82, 0.28],
-    labelPos: [-2.45, 0.98, -0.15],
+    cameraPos: [0.82, 0.48, 2.28],
+    targetPos: [-0.06, 0.78, 1.08],
+    anchorPos: [-0.11, 0.72, 1.16],
+    labelPos: [0.06, 0.56, 1.58],
     labelSide: "left",
   },
   {
     year: "2023 - 2026",
     title: "SMK Negeri 6 Jakarta",
     subtitle: "Rekayasa Perangkat Lunak",
-    cameraPos: [0.18, 1.82, 3.05],
-    targetPos: [0.08, 0.84, -0.12],
-    anchorPos: [0.06, 0.9, 0.92],
-    labelPos: [2.15, 0.86, 1.55],
+    cameraPos: [0.22, 0.7, 1.82],
+    targetPos: [0.2, 0.58, 0.84],
+    anchorPos: [0.33, 0.68, 0.88],
+    labelPos: [0.42, 0.62, 1.25],
     labelSide: "right",
   },
   {
-    year: "Nov 2025 - Feb 2026",
+    year: "November 2025 - February 2026",
     title: "Rubicweb",
     subtitle: "Web Development Intern",
-    cameraPos: [3.15, 1.38, 5.15],
-    targetPos: [1.05, 0.64, 0.02],
-    anchorPos: [0.78, 0.7, 0.42],
-    labelPos: [2.85, 0.74, 0.88],
+    cameraPos: [0.1, 1.14, 0.7],
+    targetPos: [-0.38, 1.34, -1.5],
+    anchorPos: [-1.12, 1.18, -0.88],
+    labelPos: [0.11, 1.15, -0.18],
     labelSide: "right",
+    labelTone: "bright",
   },
   {
     year: "2026 - 2030",
     title: "Cakrawala University",
-    subtitle: "Artificial Intelligence Major",
-    cameraPos: [5.4, 1.62, 8.05],
-    targetPos: [1.85, 0.72, -0.55],
-    anchorPos: [1.42, 0.68, -0.42],
-    labelPos: [3.55, 0.84, -0.18],
+    subtitle: "Jurusan Artificial Intelligence",
+    cameraPos: [0.48, 1.28, 0.92],
+    targetPos: [0.42, 1.68, -1.65],
+    anchorPos: [1.08, 1.38, -1.32],
+    labelPos: [0.67, 1.37, -0.02],
     labelSide: "right",
+    labelTone: "bright",
   },
 ];
 
@@ -71,8 +77,8 @@ export const timelineData = educationData;
 
 /** Dipakai kalau cameraPos / targetPos disetel ke nilai yang tidak valid. */
 export const FALLBACK_CAMERA = {
-  cameraPos: educationData[0].cameraPos,
-  targetPos: educationData[0].targetPos,
+  cameraPos: educationData[INITIAL_STEP_INDEX].cameraPos,
+  targetPos: educationData[INITIAL_STEP_INDEX].targetPos,
 };
 
 function toTriple(value, fallback) {
@@ -101,5 +107,6 @@ export function resolveNodePoints(step, index = 0) {
       targetPos[2] + 0.35 * index,
     ]),
     labelSide: step?.labelSide === "left" ? "left" : "right",
+    labelTone: step?.labelTone === "bright" ? "bright" : "default",
   };
 }
