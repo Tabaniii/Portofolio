@@ -234,18 +234,18 @@ export default function Card({
   return (
     <div
       ref={cardRef}
-      className="sticky top-0 z-0 flex h-[100dvh] w-full items-center justify-center max-sm:box-border max-sm:py-4"
+      className="sticky top-0 z-0 flex h-[100dvh] w-full items-center justify-center max-sm:box-border max-sm:top-[var(--project-heading-offset)] max-sm:h-[calc(100dvh-var(--project-heading-offset))] max-sm:items-start max-sm:py-0"
     >
       {reduceMotion ? (
         <div
-          className="relative w-full origin-top max-sm:max-h-full"
+          className="relative w-full origin-top max-sm:max-h-full max-sm:!top-0"
           style={{ top: stackLift }}
         >
           {body}
         </div>
       ) : (
         <motion.div
-          className="relative w-full origin-top will-change-transform max-sm:max-h-full"
+          className="relative w-full origin-top will-change-transform max-sm:max-h-full max-sm:!top-0"
           style={{
             scale,
             y: enterY,

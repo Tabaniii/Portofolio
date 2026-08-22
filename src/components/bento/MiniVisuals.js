@@ -12,7 +12,7 @@ export function PhilosophyVisual({ className }) {
     <div
       aria-hidden="true"
       className={cn(
-        "absolute bottom-12 right-5 h-[44px] w-[118px] sm:bottom-14 sm:right-7 sm:h-[48px] sm:w-[132px]",
+        "absolute bottom-8 right-3 h-[36px] w-[96px] lg:bottom-14 lg:right-7 lg:h-[48px] lg:w-[132px]",
         className
       )}
     >
@@ -94,7 +94,7 @@ export function EducationVisual({ className }) {
   return (
     <div
       className={cn(
-        "absolute inset-x-6 bottom-16 sm:inset-x-8",
+        "absolute inset-x-3 bottom-9 lg:inset-x-8 lg:bottom-16",
         className
       )}
     >
@@ -119,10 +119,10 @@ export function EducationVisual({ className }) {
 }
 
 /**
- * Art — a type sketch caught mid-construction: an outlined glyph pair on live
- * baseline guides, crossed by a brush gesture and two bare geometric marks.
+ * right brain zone — a type sketch caught mid-construction: an outlined glyph
+ * pair on live baseline guides, crossed by a brush gesture and two bare marks.
  */
-export function ArtVisual({ className }) {
+export function RightBrainVisual({ className }) {
   const guides = [
     { d: "M4 32h156", delay: "0s", opacity: "0.22" },
     { d: "M4 54h156", delay: "0.5s", opacity: "0.14" },
@@ -133,7 +133,7 @@ export function ArtVisual({ className }) {
     <div
       aria-hidden="true"
       className={cn(
-        "absolute bottom-11 right-5 h-[64px] w-[114px] sm:bottom-14 sm:right-7 sm:h-[92px] sm:w-[164px]",
+        "absolute bottom-8 right-3 h-[48px] w-[86px] lg:bottom-14 lg:right-7 lg:h-[92px] lg:w-[164px]",
         className
       )}
     >
@@ -235,7 +235,7 @@ export function ResumeVisual({ className }) {
     <div
       aria-hidden="true"
       className={cn(
-        "absolute bottom-11 right-5 flex items-end gap-3 sm:bottom-14 sm:right-7 sm:gap-4",
+        "absolute bottom-8 right-3 flex items-end gap-2 lg:bottom-14 lg:right-7 lg:gap-4",
         className
       )}
     >

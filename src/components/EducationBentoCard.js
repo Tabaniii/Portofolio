@@ -3,7 +3,7 @@
 import dynamic from "next/dynamic";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useLenis } from "lenis/react";
-import { ChevronLeft, ChevronRight, GraduationCap, Maximize2, X } from "lucide-react";
+import { ArrowRight, ChevronLeft, ChevronRight, GraduationCap, X } from "lucide-react";
 import {
   useCallback,
   useEffect,
@@ -23,32 +23,6 @@ const EducationScene = dynamic(() => import("./bento/EducationScene"), {
 
 const SCENE_MODULE = () => import("./bento/EducationScene");
 
-const WIDE_SCREEN = "(min-width: 768px)";
-
-function subscribeToWideScreen(onChange) {
-  const query = window.matchMedia(WIDE_SCREEN);
-  query.addEventListener("change", onChange);
-  return () => query.removeEventListener("change", onChange);
-}
-
-function readLightPreview() {
-  const connection = navigator.connection;
-  return (
-    !window.matchMedia(WIDE_SCREEN).matches ||
-    Boolean(connection?.saveData) ||
-    /(^|-)2g$/.test(connection?.effectiveType ?? "")
-  );
-}
-
-/**
- * Model .glb-nya ~13 MB, jadi preview 3D di kartu cuma dinyalakan di layar besar
- * dengan koneksi normal. Di luar itu kartu tetap memakai rail tahun yang lama dan
- * scene baru dimuat saat kartu benar-benar dibuka.
- */
-function useLightPreview() {
-  return useSyncExternalStore(subscribeToWideScreen, readLightPreview, () => true);
-}
-
 const subscribeToNothing = () => () => {};
 
 function useIsClient() {
@@ -59,25 +33,6 @@ function useIsClient() {
   );
 }
 
-function useInView(ref, { rootMargin = "200px" } = {}) {
-  const [inView, setInView] = useState(false);
-
-  useEffect(() => {
-    const node = ref.current;
-    if (!node || typeof IntersectionObserver === "undefined") return undefined;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => setInView(entry.isIntersecting),
-      { rootMargin },
-    );
-
-    observer.observe(node);
-    return () => observer.disconnect();
-  }, [ref, rootMargin]);
-
-  return inView;
-}
-
 export default function EducationBentoCard({
   className,
   steps = educationData,
@@ -86,7 +41,6 @@ export default function EducationBentoCard({
   revealOnce = true,
 }) {
   const reduceMotion = useReducedMotion();
-  const lightPreview = useLightPreview();
   const lenis = useLenis();
 
   const cardRef = useRef(null);
@@ -104,10 +58,8 @@ export default function EducationBentoCard({
   const [viewport, setViewport] = useState({ width: 0, height: 0 });
 
   const portalReady = useIsClient();
-  const inView = useInView(cardRef);
   const lastIndex = steps.length - 1;
   const activeStep = steps[activeIndex] ?? steps[0];
-  const showPreview = inView && !expanded && !lightPreview;
 
   useEffect(() => {
     activeIndexRef.current = activeIndex;
@@ -283,48 +235,35 @@ export default function EducationBentoCard({
         aria-hidden={expanded}
       >
         <div className="pointer-events-none absolute inset-0 z-0">
-          {showPreview ? (
-            <div className="absolute inset-0 opacity-80 transition-opacity duration-500 group-hover:opacity-100">
-              <EducationScene
-                mode="preview"
-                steps={steps}
-                reduceMotion={Boolean(reduceMotion)}
-                paused={!inView}
-              />
-            </div>
-          ) : (
-            <EducationVisual />
-          )}
+          <EducationVisual />
         </div>
 
-        <div className="relative z-10 flex h-full min-h-0 md:min-h-[16rem] lg:min-h-0 flex-col justify-between p-6 sm:p-7 md:p-8">
-          <div className="flex max-w-[90%] flex-col gap-3">
-            <span className="font-outfit text-[10px] font-medium uppercase tracking-[0.2em] text-neutral-500">
+        <div className="relative z-10 flex h-full min-h-0 flex-col justify-between p-3 lg:p-8">
+          <div className="flex max-w-[90%] flex-col gap-1.5 lg:gap-3">
+            <span className="font-outfit text-[8px] font-medium uppercase tracking-[0.16em] text-neutral-500 lg:text-[10px] lg:tracking-[0.2em]">
               journey
             </span>
 
             <GraduationCap
-              className="size-5 text-neutral-400 transition-colors duration-300 group-hover:text-brand-red sm:size-6"
+              className="size-4 text-neutral-400 transition-colors duration-300 group-hover:text-brand-red lg:size-6"
               strokeWidth={1.5}
             />
 
-            <div className="space-y-2">
-              <h3 className="md:hidden m-0 font-bricolage text-[1.35rem] font-semibold tracking-[-0.03em] leading-tight text-brand-cream">
+            <div className="space-y-1 lg:space-y-2">
+              <h3 className="lg:hidden m-0 font-bricolage text-[0.98rem] font-semibold tracking-[-0.03em] leading-tight text-brand-cream">
                 Pendidikan
               </h3>
-              <h3 className="hidden md:block m-0 font-bricolage text-[clamp(1.35rem,2.4vw,1.75rem)] font-semibold tracking-[-0.03em] leading-tight text-brand-cream">
-                Education / Experience
+              <h3 className="hidden lg:block m-0 font-bricolage text-[clamp(1.35rem,2.4vw,1.75rem)] font-semibold tracking-[-0.03em] leading-tight text-brand-cream">
+                Education
               </h3>
-              <p className="m-0 max-w-sm font-outfit text-[13px] leading-relaxed text-neutral-400 line-clamp-2 md:line-clamp-3">
+              <p className="m-0 max-w-sm font-outfit text-[13px] leading-relaxed text-neutral-400 line-clamp-3 max-lg:hidden">
                 Academic and learning path.
               </p>
             </div>
           </div>
 
-          <div className="mt-6 flex items-end justify-between gap-3">
-            <p className="m-0 font-outfit text-[11px] uppercase tracking-[0.14em] text-neutral-600">
-              3d timeline
-            </p>
+          <div className="mt-auto flex items-end justify-between gap-3 pt-2">
+            <span />
 
             <button
               ref={triggerRef}
@@ -335,10 +274,10 @@ export default function EducationBentoCard({
                 open();
               }}
               onFocus={warmScene}
-              className="inline-flex items-center gap-1.5 rounded-md font-outfit text-[12px] font-medium text-neutral-400 transition-colors duration-300 group-hover:text-brand-cream hover:text-brand-cream focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-red"
+              className="inline-flex items-center gap-1 rounded-md font-outfit text-[11px] font-medium text-neutral-400 transition-colors duration-300 group-hover:text-brand-cream hover:text-brand-cream focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-red lg:gap-1.5 lg:text-[12px]"
             >
-              Expand / View
-              <Maximize2
+              View
+              <ArrowRight
                 className="size-3.5 transition-transform duration-300 ease-out group-hover:translate-x-1"
                 strokeWidth={1.5}
               />

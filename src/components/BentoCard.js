@@ -181,37 +181,37 @@ export default function BentoCard({
         </div>
       ) : null}
 
-      <div className="relative z-10 flex h-full min-h-0 md:min-h-[16rem] lg:min-h-0 flex-col justify-between p-6 sm:p-7 md:p-8">
-        <div className="flex max-w-[90%] flex-col gap-3">
+      <div className="relative z-10 flex h-full min-h-0 flex-col justify-between p-3 lg:p-8">
+        <div className="flex max-w-[90%] flex-col gap-1.5 lg:gap-3">
           {eyebrow ? (
-            <span className="font-outfit text-[10px] font-medium uppercase tracking-[0.2em] text-neutral-500">
+            <span className="font-outfit text-[8px] font-medium uppercase tracking-[0.16em] text-neutral-500 lg:text-[10px] lg:tracking-[0.2em]">
               {eyebrow}
             </span>
           ) : null}
 
           {Icon ? (
             <Icon
-              className="size-5 text-neutral-400 transition-colors duration-300 group-hover:text-brand-red sm:size-6"
+              className="size-4 text-neutral-400 transition-colors duration-300 group-hover:text-brand-red lg:size-6"
               strokeWidth={1.5}
             />
           ) : null}
 
-          <div className="space-y-2">
-            <h3 className="md:hidden m-0 font-bricolage text-[1.35rem] font-semibold tracking-[-0.03em] leading-tight text-brand-cream">
+          <div className="space-y-1 lg:space-y-2">
+            <h3 className="lg:hidden m-0 font-bricolage text-[0.98rem] font-semibold tracking-[-0.03em] leading-tight text-brand-cream">
               {displayMobileName}
             </h3>
-            <h3 className="hidden md:block m-0 font-bricolage text-[clamp(1.35rem,2.4vw,1.75rem)] font-semibold tracking-[-0.03em] leading-tight text-brand-cream">
+            <h3 className="hidden lg:block m-0 font-bricolage text-[clamp(1.35rem,2.4vw,1.75rem)] font-semibold tracking-[-0.03em] leading-tight text-brand-cream">
               {name}
             </h3>
             {description ? (
-              <p className="m-0 max-w-sm font-outfit text-[13px] leading-relaxed text-neutral-400 line-clamp-2 md:line-clamp-3">
+              <p className="m-0 max-w-sm font-outfit text-[13px] leading-relaxed text-neutral-400 line-clamp-3 max-lg:hidden">
                 {description}
               </p>
             ) : null}
           </div>
         </div>
 
-        <div className="mt-6 flex items-end justify-between gap-3">
+        <div className="mt-auto flex items-end justify-between gap-3 pt-2">
           {note ? (
             <p className="m-0 font-outfit text-[11px] uppercase tracking-[0.14em] text-neutral-600">
               {note}
@@ -221,7 +221,7 @@ export default function BentoCard({
           )}
 
           {cta ? (
-            <span className="inline-flex items-center gap-1.5 font-outfit text-[12px] font-medium text-neutral-400 transition-colors duration-300 group-hover:text-brand-cream">
+            <span className="inline-flex items-center gap-1 font-outfit text-[11px] font-medium text-neutral-400 transition-colors duration-300 group-hover:text-brand-cream lg:gap-1.5 lg:text-[12px]">
               {cta}
               <ArrowRight className="size-3.5 transition-transform duration-300 ease-out group-hover:translate-x-1" />
             </span>

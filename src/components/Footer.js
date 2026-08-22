@@ -14,12 +14,16 @@ export default function Footer() {
   const footerLinks = [
     { label: "Email", href: "mailto:tabani@email.com" },
     { label: "Projects", href: "#projek" },
-    { label: "CV", href: "#cv" },
+    {
+      label: "Resume",
+      href: "https://drive.google.com/file/d/1eBgic2PsW0uH6lIaXN27BfMwuylNPWlb/view?usp=sharing",
+      external: true,
+    },
   ];
 
   return (
     <footer
-      className="relative w-full h-screen min-h-[100svh] bg-black text-white overflow-hidden snap-start"
+      className="relative w-full h-screen min-h-[100svh] bg-black text-white overflow-hidden"
       id="contact"
       aria-label="Footer"
     >
@@ -35,7 +39,7 @@ export default function Footer() {
             distance={38}
             amount={0.25}
           >
-            <h2 className="m-0 text-[clamp(32px,9vw,72px)] font-black leading-[0.9] tracking-tight">
+            <h2 className="mt-5 text-[clamp(32px,9vw,72px)] font-black leading-[0.9] tracking-tight">
               Let's <br />
               <span
                 className="inline-block mt-2 sm:mt-[20px] mb-1 sm:-mb-[20px] font-normal text-brand-red text-[1.7em] sm:text-[2.0em]"
@@ -76,6 +80,9 @@ export default function Footer() {
                 {footerLinks[index] ? (
                   <a
                     href={footerLinks[index].href}
+                    {...(footerLinks[index].external
+                      ? { target: "_blank", rel: "noopener noreferrer" }
+                      : {})}
                     className="touch-target inline-flex items-center -mx-3 sm:-mx-4 text-[clamp(12px,2.8vw,14px)] font-medium uppercase tracking-[0.1em] text-zinc-300 no-underline transition-colors duration-300 hover:text-brand-red focus-visible:outline-none focus-visible:text-brand-red"
                   >
                     {footerLinks[index].label}

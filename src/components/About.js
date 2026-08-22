@@ -76,14 +76,14 @@ export default function About({ scrollContainerRef }) {
   return (
     <section
       ref={sectionRef}
-      className="w-full min-h-screen bg-black flex flex-col justify-between overflow-hidden snap-start py-4 sm:py-0"
+      className="w-full min-h-screen bg-black flex flex-col justify-between overflow-hidden py-4 sm:py-0"
       aria-label="Introduction"
     >
       {/* Marquee Atas - Menempel di ujung atas section */}
       <div className="w-full pt-2 sm:pt-2 shrink-0">
         <ScrollVelocity
           scrollContainerRef={scrollContainerRef}
-          className="text-[clamp(28px,8vw,120px)] font-black leading-[0.86] uppercase text-brand-red"
+          className="text-[clamp(18px,5.5vw,120px)] font-black leading-[0.86] uppercase text-brand-red sm:text-[clamp(28px,8vw,120px)]"
           texts={[HELLO_ALL_MARQUEE_TEXT]}
           velocity={60}
           numCopies={8}
@@ -97,11 +97,11 @@ export default function About({ scrollContainerRef }) {
         {/* SEBELAH KIRI: Teks Perkenalan */}
         <div ref={introRef} className="flex items-center justify-start text-left order-2 md:order-1">
           <div className="w-full max-w-[580px] flex flex-col gap-3 sm:gap-4">
-            <p className="m-0 text-[clamp(11px,2.5vw,14px)] font-black leading-none tracking-[0.18em] uppercase text-brand-red">
+            <p className="m-0 text-[clamp(9px,2vw,14px)] font-black leading-none tracking-[0.18em] uppercase text-brand-red sm:text-[clamp(11px,2.5vw,14px)]">
               introduction
             </p>
 
-            <h2 className="m-0 text-[clamp(32px,10vw,64px)] font-black leading-[0.95] lowercase text-white">
+            <h2 className="m-0 text-[clamp(24px,7.2vw,64px)] font-black leading-[0.95] lowercase text-white sm:text-[clamp(32px,10vw,64px)]">
               i'm tabani
             </h2>
 
@@ -109,7 +109,7 @@ export default function About({ scrollContainerRef }) {
               {INTRO_PARAGRAPHS.map((paragraph) => (
                 <p
                   key={paragraph}
-                  className="w-full m-0 text-[clamp(14px,3vw,17px)] font-medium leading-[1.6] tracking-[0.02em] text-zinc-300 line-length-control"
+                  className="w-full m-0 text-[clamp(12px,2.7vw,17px)] font-medium leading-[1.6] tracking-[0.02em] text-zinc-300 line-length-control sm:text-[clamp(14px,3vw,17px)]"
                 >
                   {paragraph}
                 </p>
@@ -137,10 +137,10 @@ export default function About({ scrollContainerRef }) {
               overlayContent={
                 <div className="flex h-full w-full items-end justify-start rounded-[15px] bg-gradient-to-t from-black/85 via-black/20 to-transparent p-4 sm:p-5">
                   <div className="flex flex-col gap-1 text-left">
-                    <p className="m-0 text-[clamp(22px,6vw,40px)] font-black leading-none text-white">
+                    <p className="m-0 text-[clamp(18px,5vw,40px)] font-black leading-none text-white sm:text-[clamp(22px,6vw,40px)]">
                       Tabani
                     </p>
-                    <p className="m-0 text-[clamp(10px,2vw,12px)] font-extrabold uppercase tracking-[0.2em] text-white">
+                    <p className="m-0 text-[clamp(8px,1.7vw,12px)] font-extrabold uppercase tracking-[0.2em] text-white sm:text-[clamp(10px,2vw,12px)]">
                       full-stack web developer
                     </p>
                   </div>
@@ -155,7 +155,7 @@ export default function About({ scrollContainerRef }) {
       <div className="w-full pb-2 sm:pb-2 shrink-0">
         <ScrollVelocity
           scrollContainerRef={scrollContainerRef}
-          className="text-[clamp(28px,8vw,120px)] font-black leading-[0.86] uppercase text-brand-red"
+          className="text-[clamp(18px,5.5vw,120px)] font-black leading-[0.86] uppercase text-brand-red sm:text-[clamp(28px,8vw,120px)]"
           texts={[HELLO_ALL_MARQUEE_TEXT]}
           velocity={-60}
           numCopies={8}

@@ -7,7 +7,7 @@ function WireframeCard({ title, variant = "a" }) {
   return (
     <div
       className={cn(
-        "relative h-[88px] w-[140px] shrink-0 overflow-hidden rounded-lg",
+        "relative h-[56px] w-[96px] shrink-0 overflow-hidden rounded-lg lg:h-[88px] lg:w-[140px]",
         "border border-white/10 bg-neutral-900/80"
       )}
     >
@@ -54,7 +54,7 @@ const PROJECTS = [
 
 export default function ProjectsMarquee({ className }) {
   return (
-    <div className={cn("absolute inset-x-0 bottom-14 flex items-end overflow-hidden sm:bottom-16", className)}>
+    <div className={cn("absolute inset-x-0 bottom-8 flex items-end overflow-hidden lg:bottom-16", className)}>
       <div className="w-full [mask-image:linear-gradient(to_right,transparent,black_12%,black_88%,transparent)]">
         <Marquee pauseOnHover className="[--duration:28s] [--gap:0.75rem]">
           {PROJECTS.map((item) => (

@@ -40,7 +40,7 @@ export const PROJECTS = [
     price: "Live",
     color: "#000000",
     tone: "black",
-    cover: "/assets/img/SajiIndarkmode.png",
+    cover: "/assets/img/SajiIndarkmodefix.png",
     coverContain: true,
     coverLift: true,
     href: "https://sajihub.vercel.app",

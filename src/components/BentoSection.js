@@ -13,7 +13,7 @@ import StackBeam from "./bento/StackBeam";
 import ProjectsMarquee from "./bento/ProjectsMarquee";
 import {
   PhilosophyVisual,
-  ArtVisual,
+  RightBrainVisual,
   ResumeVisual,
 } from "./bento/MiniVisuals";
 
@@ -21,14 +21,14 @@ export default function BentoSection({ id = "bento" }) {
   return (
     <section
       id={id}
-      className="w-full min-h-[100dvh] bg-black text-white section-padding-x py-8 sm:py-12 lg:min-h-0 lg:h-[100svh] lg:max-h-[100svh] lg:py-5 flex flex-col items-center justify-start lg:justify-center overflow-hidden snap-start snap-always"
+      className="w-full h-[100dvh] max-h-[100dvh] bg-black text-white section-padding-x py-3 sm:py-4 lg:h-[100svh] lg:max-h-[100svh] lg:py-5 flex flex-col items-stretch justify-stretch overflow-hidden"
       aria-label="Navigasi portfolio"
     >
-      <BentoGrid className="max-w-6xl mx-auto w-full lg:flex-1 lg:min-h-0 lg:max-h-full">
+      <BentoGrid className="max-w-6xl mx-auto w-full flex-1 min-h-0">
         <BentoCard
           name="Stack"
           mobileName="Stack"
-          className="col-span-1 min-h-[18rem] md:col-span-2 md:min-h-[18rem] lg:col-span-2 lg:row-span-2 lg:min-h-0"
+          className="col-span-1 min-h-0 lg:col-span-2 lg:row-span-2"
           entryFrom="left"
           revealOnce
           revealDelay={0}
@@ -38,7 +38,7 @@ export default function BentoSection({ id = "bento" }) {
           href="/stack"
           cta="View Stack"
           background={
-            <div className="absolute inset-x-0 bottom-12 top-[40%] sm:top-[36%] lg:top-[30%]">
+            <div className="absolute inset-x-0 bottom-8 top-[48%] lg:bottom-12 lg:top-[30%]">
               <StackBeam />
             </div>
           }
@@ -47,7 +47,7 @@ export default function BentoSection({ id = "bento" }) {
         <BentoCard
           name="Projects"
           mobileName="Projek"
-          className="col-span-1 min-h-[14rem] md:col-span-1 md:min-h-[17rem] lg:col-span-2 lg:min-h-0"
+          className="col-span-1 min-h-0 lg:col-span-2"
           entryFrom="right"
           revealOnce
           revealDelay={0.06}
@@ -62,7 +62,7 @@ export default function BentoSection({ id = "bento" }) {
         <BentoCard
           name="Philosophy"
           mobileName="Filosofi"
-          className="col-span-1 min-h-[13rem] md:col-span-1 md:min-h-[17rem] lg:col-span-1 lg:min-h-0"
+          className="col-span-1 min-h-0 lg:col-span-1"
           entryFrom="left"
           revealOnce
           revealDelay={0.1}
@@ -75,31 +75,31 @@ export default function BentoSection({ id = "bento" }) {
         />
 
         <EducationBentoCard
-          className="col-span-1 min-h-[13rem] md:col-span-2 md:min-h-[17rem] lg:col-span-1 lg:min-h-0"
+          className="col-span-1 min-h-0 lg:col-span-1"
           entryFrom="right"
           revealOnce
           revealDelay={0.14}
         />
 
         <BentoCard
-          name="Art"
-          mobileName="Art"
-          className="col-span-1 min-h-[13rem] md:col-span-1 md:min-h-[17rem] lg:col-span-2 lg:min-h-0"
+          name="right brain zone"
+          mobileName="right brain"
+          className="col-span-1 min-h-0 lg:col-span-2"
           entryFrom="left"
           revealOnce
           revealDelay={0.18}
           Icon={Frame}
           eyebrow="visual practice"
           description="Studies in type and composition."
-          href="#Art"
+          href="#right-brain"
           cta="View"
-          background={<ArtVisual />}
+          background={<RightBrainVisual />}
         />
 
         <BentoCard
           name="Resume"
           mobileName="resume"
-          className="col-span-1 min-h-[13rem] md:col-span-2 md:min-h-[17rem] lg:col-span-2 lg:min-h-0"
+          className="col-span-1 min-h-0 lg:col-span-2"
           entryFrom="right"
           revealOnce
           revealDelay={0.22}

@@ -14,13 +14,13 @@ export default function ProjectBand({ scrollContainerRef }) {
   return (
     <section
       id="projek"
-      className="relative isolate w-full snap-none bg-black section-padding-x pt-24 sm:pt-32 lg:pt-40 pb-10 sm:pb-12 text-white"
+      className="relative isolate w-full bg-black section-padding-x pt-0 sm:pt-32 lg:pt-40 pb-10 sm:pb-12 text-white max-sm:[--project-heading-offset:12vh]"
       aria-labelledby="project-heading"
     >
-      <header className="sticky top-6 z-50 isolate mb-8 flex items-center justify-center pointer-events-none sm:top-8 sm:mb-10">
+      <header className="sticky top-0 z-20 isolate mb-8 flex items-center justify-center pointer-events-none max-sm:mb-0 max-sm:h-[var(--project-heading-offset)] sm:top-8 sm:z-50 sm:mb-10">
         <h2
           id="project-heading"
-          className="project-heading-title m-0 max-w-[95vw] text-center font-[TabaniDisplay,Inter,Poppins,Arial,Helvetica,sans-serif] text-[clamp(42px,9vw,92px)] font-black leading-[0.92] tracking-[0.04em] uppercase"
+          className="project-heading-title m-0 max-w-[95vw] text-center font-[TabaniDisplay,Inter,Poppins,Arial,Helvetica,sans-serif] text-[clamp(48px,14vw,92px)] font-black leading-[0.9] tracking-[0.04em] uppercase sm:text-[clamp(42px,9vw,92px)]"
         >
           <span className="sr-only">{PROJECT_HEADING}</span>
           <motion.span

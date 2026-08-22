@@ -8,7 +8,7 @@ const HERO_LETTERS = ["T", "A", "B", "A", "N", "I"];
 export default function Hero() {
   return (
     <header
-      className="hero-section relative w-full h-screen min-h-[100svh] overflow-hidden snap-start"
+      className="hero-section relative w-full h-screen min-h-[100svh] overflow-hidden"
       aria-label="Hero"
     >
       <h1
