@@ -22,7 +22,7 @@ export const PROJECTS = [
     tone: "red",
     cover: "/assets/img/darkmodefix.png",
     coverContain: true,
-    href: "https://ride62.vercel.app/",
+    href: "https://ride62.tabani.is-a.dev/",
     status: "live",
     stack: {
       frontend: ["Bootstrap", "Tailwind CSS", "jQuery", "Vite", "Sass", "Laravel Echo"],
@@ -43,7 +43,7 @@ export const PROJECTS = [
     cover: "/assets/img/SajiIndarkmodefix.png",
     coverContain: true,
     coverLift: true,
-    href: "https://sajihub.vercel.app",
+    href: "https://sajihub.tabani.is-a.dev/",
     status: "live",
     stack: {
       frontend: ["HTML", "CSS", "Tailwind", "Vanilla JavaScript"],
