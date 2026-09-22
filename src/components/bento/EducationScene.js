@@ -304,7 +304,7 @@ function TimelineNode({ step, index, active, reduceMotion }) {
       >
         <div
           ref={htmlRef}
-          className="flex w-max max-w-[240px] select-none items-stretch gap-[10px] sm:max-w-[280px]"
+          className="hidden w-max max-w-[240px] select-none items-stretch gap-[10px] lg:flex sm:max-w-[280px]"
           style={{
             opacity: 0,
             visibility: "hidden",

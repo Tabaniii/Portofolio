@@ -330,6 +330,35 @@ h6 {
   --color-red: #780606;
 }
 
+/* Hero MOBILE LAYOUT — Akmal (font biasa) + tabani (script) + foto di DEPAN (under 768px only) */
+.mobile-hero-name-wrap {
+  width: 100%;
+}
+
+.mobile-hero-name-akmal {
+  font-size: clamp(72px, 22vw, 160px);
+  text-shadow: 0 4px 24px rgba(0, 0, 0, 0.45);
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.06);
+  text-transform: none;
+}
+
+.mobile-hero-name-tabani {
+  font-size: clamp(96px, 28vw, 200px);
+  margin-top: -0.08em;
+  text-shadow: 0 6px 32px rgba(120, 6, 6, 0.35);
+  filter: drop-shadow(0 4px 18px rgba(120, 6, 6, 0.25));
+}
+
+.mobile-hero-photo-frame {
+  width: clamp(130px, 38vw, 190px);
+  height: clamp(185px, 55vw, 275px);
+  border-radius: 50%;
+  border: 2.5px solid rgba(255, 255, 255, 0.15);
+  box-shadow:
+    0 16px 56px rgba(0, 0, 0, 0.72),
+    0 0 0 1px rgba(120, 6, 6, 0.25);
+}
+
 /* Hero — mobile: TABANI vertikal + lebar; tablet horizontal; desktop landscape locked */
 .hero-section {
   --hero-stroke: 4px;

@@ -378,6 +378,19 @@ export default function EducationBentoCard({
                         {`${activeStep.year} — ${activeStep.title}, ${activeStep.subtitle}`}
                       </div>
 
+                      <div className="pointer-events-none absolute inset-x-0 top-0 z-[15] bg-gradient-to-b from-black/75 via-black/35 to-transparent px-5 pb-16 pt-16 lg:hidden">
+                        <p className="m-0 font-outfit text-[11px] font-medium uppercase leading-none tracking-[0.22em] text-brand-cream">
+                          {activeStep.year}
+                        </p>
+                        <span className="mt-2 mb-2 block h-px w-8 bg-brand-cream/70" />
+                        <h3 className="m-0 max-w-[18rem] font-instrument text-[clamp(26px,7.4vw,34px)] font-normal leading-[0.95] tracking-[-0.01em] text-brand-cream">
+                          {activeStep.title}
+                        </h3>
+                        <p className="m-0 mt-2 max-w-[16rem] font-outfit text-[14px] leading-tight text-brand-cream/85">
+                          {activeStep.subtitle}
+                        </p>
+                      </div>
+
                       <motion.div
                         initial={{ opacity: 0 }}
                         animate={{

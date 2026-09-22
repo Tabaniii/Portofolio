@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useLenis } from "lenis/react";
 import ScrollVelocity from "./ScrollVelocity";
 import TiltedCard from "./TiltedCard";
 
@@ -34,6 +35,78 @@ const INTRO_PARAGRAPHS = [
   "from my internship at Rubicweb to building an automotive marketplace, i've always believed clean code is the foundation of a great product.",
 ];
 
+const INTRO_FADE_DIM = 0.2;
+
+function IntroParagraphs({ paragraphs, scrollContainerRef }) {
+  const rootRef = useRef(null);
+
+  const updateFade = useCallback(() => {
+    const root = rootRef.current;
+    if (!root) return;
+
+    const words = root.querySelectorAll("[data-fade-word]");
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const scroller = scrollContainerRef?.current;
+    const bounds = scroller?.getBoundingClientRect();
+    const viewTop = bounds?.top ?? 0;
+    const viewHeight = bounds?.height || window.innerHeight;
+    const solidLine = viewTop + viewHeight * 0.82;
+    const dimLine = viewTop + viewHeight * 0.98;
+
+    words.forEach((word) => {
+      if (reduceMotion) {
+        word.style.opacity = "1";
+        return;
+      }
+
+      const top = word.getBoundingClientRect().top;
+      if (top <= solidLine) {
+        word.style.opacity = "1";
+        return;
+      }
+      if (top >= dimLine) {
+        word.style.opacity = String(INTRO_FADE_DIM);
+        return;
+      }
+
+      const progress = (top - solidLine) / (dimLine - solidLine);
+      word.style.opacity = String(1 - progress * (1 - INTRO_FADE_DIM));
+    });
+  }, [scrollContainerRef]);
+
+  useLenis(updateFade);
+
+  useLayoutEffect(() => {
+    updateFade();
+
+    const scroller = scrollContainerRef?.current;
+    scroller?.addEventListener("scroll", updateFade, { passive: true });
+    window.addEventListener("resize", updateFade);
+
+    return () => {
+      scroller?.removeEventListener("scroll", updateFade);
+      window.removeEventListener("resize", updateFade);
+    };
+  }, [scrollContainerRef, updateFade]);
+
+  return (
+    <div ref={rootRef} className="flex flex-col gap-2 sm:gap-3 mt-1 sm:mt-2">
+      {paragraphs.map((paragraph) => (
+        <p
+          key={paragraph}
+          className="w-full m-0 text-[clamp(12px,2.7vw,17px)] font-medium leading-[1.6] tracking-[0.02em] text-white line-length-control sm:text-[clamp(14px,3vw,17px)]"
+        >
+          {paragraph.split(" ").map((word, index) => (
+            <span key={`${word}-${index}`} data-fade-word style={{ opacity: INTRO_FADE_DIM }}>
+              {word}{" "}
+            </span>
+          ))}
+        </p>
+      ))}
+    </div>
+  );
+}
+
 export default function About({ scrollContainerRef }) {
   const sectionRef = useRef(null);
   const introRef = useRef(null);
@@ -56,7 +129,7 @@ export default function About({ scrollContainerRef }) {
           scrollTrigger: {
             trigger: section,
             scroller: scrollContainerRef?.current || undefined,
-            start: "top 72%",
+            start: "top 92%",
             toggleActions: "play none none reverse",
           },
         }
@@ -105,16 +178,10 @@ export default function About({ scrollContainerRef }) {
               i'm tabani
             </h2>
 
-            <div className="flex flex-col gap-2 sm:gap-3 mt-1 sm:mt-2">
-              {INTRO_PARAGRAPHS.map((paragraph) => (
-                <p
-                  key={paragraph}
-                  className="w-full m-0 text-[clamp(12px,2.7vw,17px)] font-medium leading-[1.6] tracking-[0.02em] text-zinc-300 line-length-control sm:text-[clamp(14px,3vw,17px)]"
-                >
-                  {paragraph}
-                </p>
-              ))}
-            </div>
+            <IntroParagraphs
+              paragraphs={INTRO_PARAGRAPHS}
+              scrollContainerRef={scrollContainerRef}
+            />
           </div>
         </div>
 
