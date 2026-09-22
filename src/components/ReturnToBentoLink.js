@@ -15,6 +15,12 @@ export function clearScrollTarget() {
   sessionStorage.removeItem(SCROLL_KEY);
 }
 
+export function hasPendingScrollTarget() {
+  if (typeof window === "undefined") return false;
+  if (sessionStorage.getItem(SCROLL_KEY)) return true;
+  return Boolean(window.location.hash?.replace(/^#/, ""));
+}
+
 export function consumeScrollTarget() {
   if (typeof window === "undefined") return null;
   const fromStore = sessionStorage.getItem(SCROLL_KEY);

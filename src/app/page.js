@@ -8,7 +8,12 @@ import ProjectBand from "../components/ProjectBand";
 import Footer from "../components/Footer";
 import LenisProvider from "../components/LenisProvider";
 import { useHomepageScripts } from "../hooks/useHomepageScripts";
-import { consumeScrollTarget, clearScrollTarget, isPageReload } from "../components/ReturnToBentoLink";
+import {
+  consumeScrollTarget,
+  clearScrollTarget,
+  hasPendingScrollTarget,
+  isPageReload,
+} from "../components/ReturnToBentoLink";
 
 function scrollScrollerToId(scroller, id) {
   const target = document.getElementById(id);
@@ -55,6 +60,9 @@ export default function Home() {
       const wrapper = lenisRef.current?.wrapper ?? null;
       if (wrapper) {
         scrollContainerRef.current = wrapper;
+        if (isPageReload() || !hasPendingScrollTarget()) {
+          wrapper.scrollTop = 0;
+        }
         setScrollReady(true);
         return;
       }
@@ -72,7 +80,17 @@ export default function Home() {
   useEffect(() => {
     if (!scrollReady) return undefined;
 
-    // Hard refresh harus selalu mulai dari Hero, bukan sisa hash/scroll bento.
+    const resetToHero = () => {
+      const nextScroller =
+        lenisRef.current?.wrapper ?? scrollContainerRef.current;
+      const nextLenis = lenisRef.current?.lenis;
+      nextScroller?.scrollTo({ top: 0, behavior: "auto" });
+      nextLenis?.scrollTo(0, { immediate: true });
+      window.scrollTo(0, 0);
+    };
+
+    // Reload selalu Hero. Masuk link biasa juga Hero, kecuali ada target
+    // scroll yang disengaja (hash / kembali dari halaman dalam).
     if (isPageReload()) {
       clearScrollTarget();
       if (window.location.hash) {
@@ -83,26 +101,22 @@ export default function Home() {
         );
       }
 
-      const resetToHero = () => {
-        const nextScroller =
-          lenisRef.current?.wrapper ?? scrollContainerRef.current;
-        const nextLenis = lenisRef.current?.lenis;
-        nextScroller?.scrollTo({ top: 0, behavior: "auto" });
-        nextLenis?.scrollTo(0, { immediate: true });
-        window.scrollTo(0, 0);
-      };
-
-      const timers = [0, 50, 150, 350].map((delay) =>
+      const timers = [0, 50, 150, 350, 700].map((delay) =>
         window.setTimeout(resetToHero, delay),
       );
       return () => timers.forEach((timer) => window.clearTimeout(timer));
     }
 
     const sectionId = consumeScrollTarget();
-    if (!sectionId) return undefined;
+    const hasTarget =
+      sectionId &&
+      (sectionId === "bento" || Boolean(document.getElementById(sectionId)));
 
-    if (sectionId !== "bento" && !document.getElementById(sectionId)) {
-      return undefined;
+    if (!hasTarget) {
+      const timers = [0, 50, 150, 350, 700].map((delay) =>
+        window.setTimeout(resetToHero, delay),
+      );
+      return () => timers.forEach((timer) => window.clearTimeout(timer));
     }
 
     const timers = [0, 50, 150, 350, 700].map((delay) =>
