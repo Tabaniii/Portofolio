@@ -10,7 +10,39 @@ const inter = Inter({
 
 export const metadata = {
   title: "TABANI — Portfolio",
-  description: "Portfolio Tabani — full-stack web developer",
+  description: "Portfolio Tabani — full-stack web developer & UI designer.",
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL || "https://tabani.me"
+  ),
+  icons: {
+    icon: [
+      { url: "/icon.png", type: "image/png" },
+      { url: "/favicon.ico" },
+    ],
+    apple: [{ url: "/apple-icon.png", type: "image/png" }],
+  },
+  openGraph: {
+    title: "TABANI — Portfolio",
+    description: "Portfolio Tabani — full-stack web developer & UI designer.",
+    url: "/",
+    siteName: "TABANI",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "TABANI Portfolio",
+      },
+    ],
+    locale: "id_ID",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "TABANI — Portfolio",
+    description: "Portfolio Tabani — full-stack web developer & UI designer.",
+    images: ["/og-image.png"],
+  },
 };
 
 export default function RootLayout({ children }) {
