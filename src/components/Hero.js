@@ -1,47 +1,20 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
 import ShinyText from "./ShinyText";
-import { ChevronDown } from "lucide-react";
-import { useLenis } from "./LenisProvider";
+import { Menu, ChevronDown } from "lucide-react";
+import { color } from "framer-motion";
 
 const HERO_LETTERS = ["T", "A", "B", "A", "N", "I"];
 const MOBILE_FIRST_ROW = ["A", "K", "M", "A", "L"];
 const MOBILE_SECOND_ROW = ["T", "A", "B", "A", "N", "I"];
 
 export default function Hero() {
-  const lenis = useLenis();
-  const [expansion, setExpansion] = useState(0);
-  const [viewport, setViewport] = useState({ width: 0, height: 0 });
-
-  useEffect(() => {
-    const updateViewport = () =>
-      setViewport({ width: window.innerWidth, height: window.innerHeight });
-    updateViewport();
-    window.addEventListener("resize", updateViewport);
-    return () => window.removeEventListener("resize", updateViewport);
-  }, []);
-
-  useEffect(() => {
-    if (!lenis) return undefined;
-
-    const updateExpansion = ({ scroll }) => {
-      const distance = window.innerHeight * 0.8;
-      setExpansion(Math.min(1, Math.max(0, scroll / distance)));
-    };
-
-    lenis.on("scroll", updateExpansion);
-    updateExpansion({ scroll: lenis.scroll });
-    return () => lenis.off("scroll", updateExpansion);
-  }, [lenis]);
-
   return (
     <header
-      className="hero-section relative w-full h-screen min-h-[100svh] overflow-hidden md:h-[180svh] md:min-h-[180svh]"
+      className="hero-section relative w-full h-screen min-h-[100svh] overflow-hidden"
       aria-label="Hero"
     >
-      <div className="absolute inset-0 md:sticky md:top-0 md:h-screen md:min-h-[100svh] md:overflow-hidden">
       {/* MOBILE LAYOUT (under 768px) — Akmal (font biasa) + tabani (script cursive) + foto oval di DEPAN */}
       <div className="md:hidden absolute inset-0 z-[2] flex flex-col w-full h-full bg-black">
 
@@ -75,7 +48,7 @@ export default function Hero() {
         {/* Role + short bio */}
         <div className="px-6 pb-4 text-center relative z-[3] mb-[20%]">
           <h2 className="mobile-hero-role text-white/70 font-[InstrumentSerif,ui-serif,Georgia,serif] italic text-lg tracking-wide mb-2">
-            Full-Stack developer
+            Full stack developer
           </h2>
         </div>
 
@@ -119,28 +92,7 @@ export default function Hero() {
           fill
           priority
           sizes="100vw"
-          style={{ opacity: 1 - expansion }}
         />
-        <div
-          aria-hidden="true"
-          className="absolute z-[2] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 overflow-hidden"
-          style={{
-            width: `${300 + expansion * Math.max(0, viewport.width - 300)}px`,
-            height: `${400 + expansion * Math.max(0, viewport.height - 400)}px`,
-            maxWidth: "100vw",
-            maxHeight: "100vh",
-          }}
-        >
-          <Image
-            src="/assets/img/homepage.jpg"
-            alt=""
-            fill
-            sizes="100vw"
-            className="object-cover"
-            priority
-          />
-        </div>
-      </div>
       </div>
     </header>
   );
