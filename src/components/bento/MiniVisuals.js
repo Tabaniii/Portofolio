@@ -119,6 +119,67 @@ export function EducationVisual({ className }) {
 }
 
 /**
+ * Workflow / Cara Kerja visual — connected flow nodes with glowing pulses.
+ */
+export function WorkflowVisual({ className }) {
+  return (
+    <div
+      aria-hidden="true"
+      className={cn(
+        "absolute bottom-7 right-3 h-[52px] w-[96px] lg:bottom-12 lg:right-6 lg:h-[84px] lg:w-[156px]",
+        className
+      )}
+    >
+      <svg viewBox="0 0 156 84" fill="none" className="h-full w-full">
+        {/* Connecting flow line */}
+        <path
+          d="M16 26 H60 L86 58 H138"
+          className="bento-draw-path animate-bento-draw"
+          style={{ "--bento-dash": "200", strokeDasharray: "200", animationDelay: "0.2s" }}
+          stroke="#780606"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+        />
+
+        {/* Node 1: Planning */}
+        <circle cx="16" cy="26" r="5" fill="#111" stroke="#ff8d28" strokeWidth="1.5" />
+        <circle cx="16" cy="26" r="2" fill="#ff8d28" className="animate-bento-pulse" />
+
+        {/* Node 2: Analysis */}
+        <circle cx="56" cy="26" r="5" fill="#111" stroke="#f5f0e8" strokeOpacity="0.7" strokeWidth="1.5" />
+        <circle cx="56" cy="26" r="2" fill="#f5f0e8" />
+
+        {/* Node 3: Design */}
+        <circle cx="78" cy="46" r="4.5" fill="#111" stroke="#780606" strokeWidth="1.5" />
+
+        {/* Node 4: Implementation */}
+        <circle cx="102" cy="58" r="5" fill="#111" stroke="#f5f0e8" strokeOpacity="0.7" strokeWidth="1.5" />
+        <circle cx="102" cy="58" r="2" fill="#f5f0e8" />
+
+        {/* Node 5 & 6: Testing & Launch */}
+        <circle cx="138" cy="58" r="6" fill="#780606" stroke="#ff8d28" strokeWidth="1.5" />
+        <path
+          d="M135 58 L137 60 L142 55"
+          stroke="#fff"
+          strokeWidth="1.2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <circle
+          cx="138"
+          cy="58"
+          r="10"
+          className="animate-bento-pulse"
+          stroke="#ff8d28"
+          strokeOpacity="0.4"
+          strokeWidth="1"
+        />
+      </svg>
+    </div>
+  );
+}
+
+/**
  * right brain zone — a type sketch caught mid-construction: an outlined glyph
  * pair on live baseline guides, crossed by a brush gesture and two bare marks.
  */

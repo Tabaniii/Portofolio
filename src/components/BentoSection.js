@@ -4,7 +4,7 @@ import {
   Layers,
   LayoutDashboard,
   Compass,
-  Frame,
+  Workflow,
   FileText,
 } from "lucide-react";
 import { BentoGrid, BentoCard } from "./BentoGrid";
@@ -13,7 +13,7 @@ import StackBeam from "./bento/StackBeam";
 import ProjectsMarquee from "./bento/ProjectsMarquee";
 import {
   PhilosophyVisual,
-  RightBrainVisual,
+  WorkflowVisual,
   ResumeVisual,
 } from "./bento/MiniVisuals";
 
@@ -82,18 +82,18 @@ export default function BentoSection({ id = "bento" }) {
         />
 
         <BentoCard
-          name="right brain zone"
-          mobileName="right brain"
+          name="Cara Kerja"
+          mobileName="cara kerja"
           className="col-span-1 min-h-0 lg:col-span-2"
           entryFrom="left"
           revealOnce
           revealDelay={0.18}
-          Icon={Frame}
-          eyebrow="visual practice"
-          description="Studies in type and composition."
-          href="#right-brain"
-          cta="View"
-          background={<RightBrainVisual />}
+          Icon={Workflow}
+          eyebrow="how we work"
+          description="6 tahapan alur terstruktur dari ide hingga website siap pakai."
+          href="/cara-kerja"
+          cta="Lihat Alur"
+          background={<WorkflowVisual />}
         />
 
         <BentoCard

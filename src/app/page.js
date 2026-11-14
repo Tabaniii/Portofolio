@@ -34,6 +34,17 @@ export default function Home() {
   useHomepageScripts();
 
   useEffect(() => {
+    const checkRightBrainHash = () => {
+      if (typeof window !== "undefined" && window.location.hash === "#right-brain") {
+        window.location.href = "/cara-kerja";
+      }
+    };
+    checkRightBrainHash();
+    window.addEventListener("hashchange", checkRightBrainHash);
+    return () => window.removeEventListener("hashchange", checkRightBrainHash);
+  }, []);
+
+  useEffect(() => {
     if ("scrollRestoration" in history) {
       history.scrollRestoration = "manual";
     }
