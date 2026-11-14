@@ -1,7 +1,7 @@
 import ReturnToBentoLink from "../../components/ReturnToBentoLink";
 
 export const metadata = {
-  title: "My Philosophy — TABANI",
+  title: "Full-Stack developer — TABANI",
   description:
     "Principles behind execution — clarity, restraint, and craft in code and interface design.",
 };

@@ -30,7 +30,7 @@ const HELLO_ALL_MARQUEE = [
 const HELLO_ALL_MARQUEE_TEXT = `${HELLO_ALL_MARQUEE.join(" • ")} •`;
 
 const INTRO_PARAGRAPHS = [
-  "i'm Tabani, a full-stack web developer who loves exploring the Laravel ecosystem and building clean web workflows.",
+  "i'm Tabani, a Full-Stack developer who loves exploring the Laravel ecosystem and building clean web workflows.",
   "my focus is on apps that don't just work, but also feel secure, responsive, and smooth for real-time needs.",
   "from my internship at Rubicweb to building an automotive marketplace, i've always believed clean code is the foundation of a great product.",
 ];
@@ -208,7 +208,7 @@ export default function About({ scrollContainerRef }) {
                       Tabani
                     </p>
                     <p className="m-0 text-[clamp(8px,1.7vw,12px)] font-extrabold uppercase tracking-[0.2em] text-white sm:text-[clamp(10px,2vw,12px)]">
-                      full-stack web developer
+                      Full-Stack developer
                     </p>
                   </div>
                 </div>

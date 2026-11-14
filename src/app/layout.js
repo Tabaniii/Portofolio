@@ -9,8 +9,11 @@ const inter = Inter({
 });
 
 export const metadata = {
-  title: "TABANI — Portfolio",
-  description: "Portfolio Tabani — full-stack web developer & UI designer.",
+  title: "TABANI — Full-Stack developer",
+  description: "TABANI — Full-Stack developer.",
+  verification: {
+    google: "f_tYe3ZsDiCbSJ0hnS4whXiFuq9YhMKXEte2YoAYuD4",
+  },
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_SITE_URL || "https://tabani.me"
   ),
@@ -22,8 +25,8 @@ export const metadata = {
     apple: [{ url: "/apple-icon.png", type: "image/png" }],
   },
   openGraph: {
-    title: "TABANI — Portfolio",
-    description: "Portfolio Tabani — full-stack web developer & UI designer.",
+    title: "TABANI — Full-Stack developer",
+    description: "TABANI — Full-Stack developer.",
     url: "/",
     siteName: "TABANI",
     images: [
@@ -39,8 +42,8 @@ export const metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "TABANI — Portfolio",
-    description: "Portfolio Tabani — full-stack web developer & UI designer.",
+    title: "TABANI — Full-Stack developer",
+    description: "TABANI — Full-Stack developer.",
     images: ["/og-image.png"],
   },
 };

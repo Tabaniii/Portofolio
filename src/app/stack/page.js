@@ -3,7 +3,7 @@ import TechBadge from "../../components/TechBadge";
 import { STACK_CATEGORIES } from "../../data/techStack";
 
 export const metadata = {
-  title: "Tech Stack & Capabilities — TABANI",
+  title: "Full-Stack developer — TABANI",
   description:
     "Front-end, back-end, database, and infrastructure tools behind the work.",
 };
